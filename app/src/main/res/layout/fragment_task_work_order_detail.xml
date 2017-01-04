@@ -1,0 +1,95 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context="com.handu.poweroperational.main.fragment.workorder.TaskNewWorkOrderDetailFragment">
+
+    <LinearLayout
+        android:id="@+id/ll_step"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+
+        <include layout="@layout/layout_task_work_order_detail_top_progress" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/ll_bottom"
+        android:layout_below="@+id/ll_step"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/layout_detail_info"
+                layout="@layout/layout_task_new_work_order_detail_info"
+                android:visibility="visible" />
+
+            <include
+                android:id="@+id/layout_detail_materials"
+                layout="@layout/layout_task_new_work_order_detail_materials"
+                android:visibility="gone" />
+
+            <include
+                android:id="@+id/layout_detail_locale_affirm"
+                layout="@layout/layout_task_new_work_order_detail_locale_affirm"
+                android:visibility="gone" />
+
+            <include
+                android:id="@+id/layout_detail_handle"
+                layout="@layout/layout_task_new_work_order_detail_handle"
+                android:visibility="gone" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/ll_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/bt_action"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_selector"
+            android:text="@string/action_accept"
+            android:textColor="@color/white"
+            android:textSize="@dimen/system_button_size"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/bt_refuse"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_selector"
+            android:text="@string/action_refuse"
+            android:textColor="@color/white"
+            android:textSize="@dimen/system_button_size"
+            android:textStyle="bold"
+            android:visibility="gone" />
+    </LinearLayout>
+
+</RelativeLayout>

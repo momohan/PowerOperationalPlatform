@@ -1,0 +1,26 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MatchMatch"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.handu.poweroperational.main.fragment.workorder.NewWorkOrderListFragment">
+
+    <com.jayfang.dropdownmenu.DropDownMenu
+        android:id="@+id/drop_down_menu"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/white"
+        android:orientation="horizontal" />
+
+    <ezy.ui.layout.LoadingLayout
+        android:id="@+id/loading_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:llLoadingResId="@layout/layout_loading"
+        android:layout_below="@+id/drop_down_menu">
+
+        <include layout="@layout/layout_refresh_recycler_view" />
+
+    </ezy.ui.layout.LoadingLayout>
+
+</RelativeLayout>

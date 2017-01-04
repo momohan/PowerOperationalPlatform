@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:visibility="visible">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/handle_detail_image"
+        android:textColor="@color/black"
+        android:textSize="@dimen/system_title_size" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/before_handle_image"
+        android:textColor="@color/red_light"
+        android:textSize="@dimen/system_subtitle_size" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center_vertical"
+        android:minHeight="72dp"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/ibt_image_before_add"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/ic_vector_add_image" />
+
+        <com.lzy.ninegrid.NineGridView
+            android:id="@+id/ngv_image_before"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            app:ngv_gridSpacing="3dp"
+            app:ngv_maxSize="9"
+            app:ngv_mode="grid"
+            app:ngv_singleImageRatio="1"
+            app:ngv_singleImageSize="250dp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text="@string/after_handle_image"
+        android:textColor="@color/red_light"
+        android:textSize="@dimen/system_subtitle_size" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center_vertical"
+        android:minHeight="72dp"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/ibt_image_after_add"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/ic_vector_add_image" />
+
+        <com.lzy.ninegrid.NineGridView
+            android:id="@+id/ngv_image_after"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            app:ngv_gridSpacing="3dp"
+            app:ngv_maxSize="9"
+            app:ngv_mode="grid"
+            app:ngv_singleImageRatio="1"
+            app:ngv_singleImageSize="250dp" />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/handle_detail_result"
+        android:textColor="@color/black"
+        android:textSize="@dimen/system_title_size" />
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@android:drawable/editbox_background"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/et_handle_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:gravity="center_vertical|top"
+            android:hint="@string/hint_handle_content"
+            android:minLines="10"
+            android:padding="5dp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/system_default_size" />
+    </android.support.design.widget.TextInputLayout>
+</LinearLayout>

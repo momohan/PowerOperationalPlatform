@@ -1,0 +1,37 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MatchMatch.Vertical"
+    android:background="@color/white"
+    tools:context="com.handu.poweroperational.main.activity.OperationActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        style="@style/MatchWrap"
+        android:orientation="vertical"
+        app:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs"
+            style="@style/MatchWrap"
+            android:background="@color/white"
+            app:tabIndicatorColor="@color/red_light"
+            app:tabSelectedTextColor="@color/red_light"
+            app:tabTextColor="@color/black" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <com.handu.poweroperational.ui.ScrollViewPager
+        android:id="@+id/svg_operation_container"
+        style="@style/MatchMatch"
+        android:background="@color/white"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+</LinearLayout>

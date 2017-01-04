@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/MatchMatch.Vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="@string/handle_detail_locale_affirm"
+        android:textColor="@color/black"
+        android:textSize="@dimen/system_title_size" />
+
+    <LinearLayout
+        style="@style/MatchWrap.Vertical"
+        android:layout_margin="5dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="@dimen/system_list_item_title"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@string/work_order_trouble_genre"
+            android:textColor="@color/black"
+            android:textSize="@dimen/system_default_size" />
+
+        <com.jaredrummler.materialspinner.MaterialSpinner
+            android:id="@+id/sp_work_trouble_genre"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:clickable="false"
+            app:ms_arrow_tint="@color/white"
+            app:ms_background_color="@color/colorPrimary"
+            app:ms_text_color="@color/white" />
+    </LinearLayout>
+
+</LinearLayout>

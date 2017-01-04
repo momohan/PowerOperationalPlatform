@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".main.activity.SelectActivity">
+
+    <include layout="@layout/layout_title_bar"></include>
+
+
+    <LinearLayout
+        android:id="@+id/status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray_light"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/btn_toggleSelection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="多选"
+            android:textColor="@color/black" />
+
+        <Button
+            android:id="@+id/btn_selectAll"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:enabled="false"
+            android:text="全选" />
+
+        <Button
+            android:id="@+id/btn_deselectAll"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:enabled="false"
+            android:text="取消全选" />
+
+        <Button
+            android:id="@+id/btn_checkSelection"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:enabled="false"
+            android:text="确定" />
+
+    </LinearLayout>
+
+    <ezy.ui.layout.LoadingLayout
+        android:id="@+id/loading_view"
+        style="@style/MatchMatch">
+
+        <LinearLayout
+            android:id="@+id/ll_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:orientation="vertical" />
+
+    </ezy.ui.layout.LoadingLayout>
+
+</LinearLayout>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_detail_refuse"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/et_refuse_reason"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@android:drawable/editbox_background"
+        android:gravity="center_vertical|top"
+        android:minLines="5"
+        android:padding="10dp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/system_default_size" />
+
+</LinearLayout>

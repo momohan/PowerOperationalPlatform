@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_add_work_order"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context="com.handu.poweroperational.main.activity.workorder.AddWorkOrderActivity">
+
+    <LinearLayout
+        android:id="@+id/ll_top"
+        style="@style/MatchWrap.Vertical"
+        android:layout_alignParentTop="true">
+
+        <include layout="@layout/layout_title_bar" />
+
+        <com.jaredrummler.materialspinner.MaterialSpinner
+            android:id="@+id/sp_work_type"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_margin="5dp"
+            app:ms_background_color="@color/colorPrimary"
+            app:ms_text_color="@color/white" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ll_top" />
+
+
+</RelativeLayout>

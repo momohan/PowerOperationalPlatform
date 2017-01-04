@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MatchMatch.Vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="@string/handle_detail_work_info"
+        android:textColor="@color/black"
+        android:textSize="@dimen/system_title_size" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="@dimen/system_list_item_title"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@string/work_order_priority"
+            android:textColor="@color/black"
+            android:textSize="@dimen/system_default_size" />
+
+        <TextView
+            android:id="@+id/tv_work_priority"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:gravity="center_vertical|end"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/system_default_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="@dimen/system_list_item_title"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@string/work_order_client_name"
+            android:textColor="@color/black"
+            android:textSize="@dimen/system_default_size" />
+
+        <TextView
+            android:id="@+id/tv_work_client_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:gravity="center_vertical|end"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/system_default_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="@dimen/system_list_item_title"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@string/work_order_num"
+            android:textColor="@color/black"
+            android:textSize="@dimen/system_default_size" />
+
+        <TextView
+            android:id="@+id/tv_work_num"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:gravity="center_vertical|end"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/system_default_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="@dimen/system_list_item_title"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@string/work_order_type"
+            android:textColor="@color/black"
+            android:textSize="@dimen/system_default_size" />
+
+        <TextView
+            android:id="@+id/tv_work_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:gravity="center_vertical|end"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/system_default_size" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="@dimen/system_list_item_title"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@string/work_order_content"
+            android:textColor="@color/black"
+            android:textSize="@dimen/system_default_size" />
+
+        <TextView
+            android:id="@+id/tv_work_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:gravity="center_vertical|end"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/system_default_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="@dimen/system_list_item_title"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@string/work_order_address"
+            android:textColor="@color/black"
+            android:textSize="@dimen/system_default_size" />
+
+        <TextView
+            android:id="@+id/tv_work_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:gravity="center_vertical|end"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/system_default_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="@dimen/system_list_item_title"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@string/work_order_create_time"
+            android:textColor="@color/black"
+            android:textSize="@dimen/system_default_size" />
+
+        <TextView
+            android:id="@+id/tv_work_start_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:gravity="center_vertical|end"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/system_default_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="@dimen/system_list_item_title"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@string/work_order_fz_ry"
+            android:textColor="@color/black"
+            android:textSize="@dimen/system_default_size" />
+
+        <TextView
+            android:id="@+id/tv_work_fzr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:gravity="center_vertical|end"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/system_default_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="@dimen/system_list_item_title"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@string/work_order_xz_ry"
+            android:textColor="@color/black"
+            android:textSize="@dimen/system_default_size" />
+
+        <TextView
+            android:id="@+id/tv_work_xzry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:gravity="center_vertical|end"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/system_default_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="@dimen/system_list_item_title"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@string/work_order_state"
+            android:textColor="@color/black"
+            android:textSize="@dimen/system_default_size" />
+
+        <TextView
+            android:id="@+id/tv_work_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:gravity="center_vertical|end"
+            android:maxLines="1"
+            android:textColor="@color/red_light"
+            android:textSize="@dimen/system_default_size" />
+    </LinearLayout>
+
+</LinearLayout>

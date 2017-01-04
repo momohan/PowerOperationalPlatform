@@ -1,0 +1,20 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MatchMatch.Vertical"
+    android:background="@color/white"
+    tools:context="com.handu.poweroperational.main.fragment.workorder.WorkOrderFragment">
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/work_order_tabs"
+        style="@style/MatchWrap"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="@color/red_light"
+        app:tabSelectedTextColor="@color/red_light"
+        app:tabTextColor="@color/black" />
+
+    <com.handu.poweroperational.ui.ScrollViewPager
+        android:id="@+id/svp_work_order_container"
+        style="@style/MatchMatch" />
+
+</LinearLayout>

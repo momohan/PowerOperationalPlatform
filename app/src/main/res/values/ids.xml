@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="action_search" type="id" />
+    <item name="action_device" type="id" />
+    <item name="action_tenement" type="id" />
+    <item name="action_refresh" type="id" />
+    <item name="action_notification" type="id" />
+    <item name="action_more" type="id" />
+    <item name="action_settings" type="id" />
+    <item name="action_about" type="id" />
+    <item name="tag_type_view" type="id" />
+    <item name="tag_row" type="id" />
+    <item name="tag_column" type="id" />
+    <item name="item_click_support" type="id" />
+</resources>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--时间选择器相关-->
+    <color name="timetimepicker_default_name_color">#999999</color>
+    <color name="timepicker_toolbar_bg">#e60012</color>
+    <color name="timepicker_dialog_bg">#80000000</color>
+    <color name="timepicker_line">#e8e8e8</color>
+
+    <!--系统颜色-->
+    <!--<color name="colorPrimary">#3F51B5</color>-->
+    <!--<color name="colorPrimaryDark">#3F51B5</color>-->
+    <color name="colorPrimary">#218868</color>
+    <color name="colorPrimaryDark">#218868</color>
+    <color name="colorPrimaryDarkTrans">#CCf57257</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="color_item_press">#ffff0000</color>
+    <color name="color_item_normal">#44ff0000</color>
+    <color name="black">#050505</color>
+    <color name="white">#FFFFFF</color>
+    <color name="item_white">#FFFAF0</color>
+    <color name="red_dark">#FF0000</color>
+    <color name="red_light">#FF4500</color>
+    <color name="orange_dark">#FFA500</color>
+    <color name="orange_light">#FFEC8B</color>
+    <color name="yellow_light">#FFFF00</color>
+    <color name="yellow_dark">#FFD700</color>
+    <color name="green_dark">#43CD80</color>
+    <color name="green_light">#00FF7F</color>
+    <color name="blue_dark">#3A5FCD</color>
+    <color name="blue_light">#00BFFF</color>
+    <color name="purple_dark">#EE00EE</color>
+    <color name="purple_light">#EEAEEE</color>
+    <color name="gray_light">#CDC5BF</color>
+    <color name="gray_dark">#ABABAB</color>
+    <color name="shadow_start">#80000000</color>
+    <color name="shadow_end">#00000000</color>
+    <color name="tab_color">#c8d1dc</color>
+
+    <!--物流进度条相关-->
+    <color name="stpi_default_circle_color">#b3bdc2</color>
+    <color name="stpi_default_indicator_color">#218868</color>
+    <color name="stpi_default_line_color">#b3bdc2</color>
+    <color name="stpi_default_line_done_color">#218868</color>
+
+    <!--下拉菜单相关-->
+    <color name="gray">#cccccc</color>
+    <color name="drop_down_selected">#7B1FA2</color>
+    <color name="drop_down_unselected">#111111</color>
+    <color name="mask_color">#88888888</color>
+    <color name="check_bg">#f2f2f2</color>
+    <color name="un_press_color">#9C27B0</color>
+</resources>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MatchWrap.Vertical">
+
+    <LinearLayout style="@style/MatchAuto.Horizontal">
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/separator_table_body_first" />
+
+        <TextView
+            android:id="@android:id/text1"
+            style="@style/AutoWrap"
+            android:gravity="center_vertical"
+            android:padding="5dp"
+            android:textSize="@dimen/system_table_size" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/separator_table_body_first" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/separator_table_body_first" />
+
+</LinearLayout>

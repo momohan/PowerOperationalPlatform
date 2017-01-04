@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_materials_select"
+    style="@style/MatchMatch"
+    android:background="@color/white"
+    android:gravity="center_horizontal"
+    tools:context="com.handu.poweroperational.main.activity.QRCodeScanActivity">
+
+    <cn.bingoogolapple.qrcode.zxing.ZXingView
+        android:id="@+id/zxingview"
+        style="@style/MatchWrap"
+        app:qrcv_animTime="1000"
+        app:qrcv_barCodeTipText="将二维码/条码、放入框内，即可自动扫描"
+        app:qrcv_barcodeRectHeight="140dp"
+        app:qrcv_borderColor="@android:color/white"
+        app:qrcv_borderSize="1dp"
+        app:qrcv_cornerColor="@color/colorPrimaryDark"
+        app:qrcv_cornerLength="20dp"
+        app:qrcv_cornerSize="3dp"
+        app:qrcv_isBarcode="false"
+        app:qrcv_isOnlyDecodeScanBoxArea="false"
+        app:qrcv_isScanLineReverse="true"
+        app:qrcv_isShowDefaultGridScanLineDrawable="true"
+        app:qrcv_isShowDefaultScanLineDrawable="false"
+        app:qrcv_isShowTipBackground="true"
+        app:qrcv_isShowTipTextAsSingleLine="false"
+        app:qrcv_isTipTextBelowRect="false"
+        app:qrcv_maskColor="#33FFFFFF"
+        app:qrcv_qrCodeTipText="将二维码/条码、放入框内，即可自动扫描"
+        app:qrcv_rectWidth="200dp"
+        app:qrcv_scanLineColor="@color/colorPrimaryDark"
+        app:qrcv_scanLineMargin="0dp"
+        app:qrcv_scanLineSize="1dp"
+        app:qrcv_tipTextColor="@android:color/white"
+        app:qrcv_tipTextSize="12sp"
+        app:qrcv_toolbarHeight="56dp"
+        app:qrcv_topOffset="90dp" />
+
+    <RelativeLayout
+        style="@style/MatchMatch"
+        android:layout_width="match_parent"
+        android:gravity="center">
+
+        <include
+            android:id="@+id/top_bar"
+            layout="@layout/layout_title_bar" />
+
+        <LinearLayout
+            android:id="@+id/ll_bottom"
+            style="@style/MatchWrap.Vertical"
+            android:layout_alignParentBottom="true">
+
+            <LinearLayout style="@style/MatchWrap.Horizontal">
+
+                <TextView
+                    android:id="@+id/scan_qrcode"
+                    style="@style/AutoWrapTv"
+                    android:text="扫二维码" />
+
+                <TextView
+                    android:id="@+id/scan_barcode"
+                    style="@style/AutoWrapTv"
+                    android:text="扫条码" />
+
+            </LinearLayout>
+
+            <LinearLayout style="@style/MatchWrap.Horizontal">
+
+                <TextView
+                    android:id="@+id/start_spot"
+                    style="@style/AutoWrapTv"
+                    android:text="开始扫描" />
+
+                <TextView
+                    android:id="@+id/stop_spot"
+                    style="@style/AutoWrapTv"
+                    android:text="暂停扫描" />
+
+                <TextView
+                    android:id="@+id/open_flashlight"
+                    style="@style/AutoWrapTv"
+                    android:text="开灯" />
+
+                <TextView
+                    android:id="@+id/close_flashlight"
+                    style="@style/AutoWrapTv"
+                    android:text="关灯" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </RelativeLayout>
+</FrameLayout>

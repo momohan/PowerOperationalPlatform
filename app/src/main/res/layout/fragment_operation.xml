@@ -1,0 +1,24 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MatchMatch.Vertical"
+    android:background="@color/white"
+    tools:context="com.handu.poweroperational.main.fragment.operaton.OperationFragment">
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabs"
+        style="@style/MatchWrap"
+        android:background="@color/white"
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        app:tabIndicatorColor="@color/red_light"
+        app:tabSelectedTextColor="@color/red_light"
+        app:tabTextColor="@color/black" />
+
+    <com.handu.poweroperational.ui.ScrollViewPager
+        android:id="@+id/svg_operation_container"
+        style="@style/MatchMatch"
+        android:layout_margin="5dp"
+        android:background="@color/white" />
+
+</LinearLayout>

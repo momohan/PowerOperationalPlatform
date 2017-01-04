@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="系统功能">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_cache_clear"
+                    android:icon="@drawable/ic_vector_cache_clear"
+                    android:title="缓存清理" />
+                <item
+                    android:id="@+id/nav_check_version"
+                    android:icon="@drawable/ic_vector_check_version"
+                    android:title="检查更新" />
+            </group>
+        </menu>
+    </item>
+    <item android:title="其他功能">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_qr_code_scan"
+                    android:icon="@drawable/ic_vector_qr_code"
+                    android:title="扫一扫" />
+            </group>
+        </menu>
+    </item>
+    <item android:title="用户中心">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_reset_login"
+                    android:icon="@drawable/ic_vector_user_exit"
+                    android:title="更换用户" />
+
+            </group>
+        </menu>
+    </item>
+</menu>

@@ -1,0 +1,143 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MatchMatch"
+    android:layout_margin="10dp"
+    android:background="@color/white"
+    tools:context="com.handu.poweroperational.main.fragment.workorder.AddTaskWorkOrderFragment">
+
+    <ScrollView
+        style="@style/MatchMatch"
+        android:layout_above="@+id/bt_add">
+
+        <LinearLayout style="@style/MatchMatch.Vertical">
+
+            <com.roughike.swipeselector.SwipeSelector
+                android:id="@+id/prioritySelector"
+                android:layout_width="match_parent"
+                android:layout_height="100dp" />
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|start"
+                android:layout_marginTop="5dp"
+                android:background="@android:drawable/editbox_background"
+                android:hint="@string/work_order_fz_ry">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/et_fzr"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:background="@null"
+                    android:enabled="false"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/system_default_size" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|start"
+                android:background="@android:drawable/editbox_background"
+                android:hint="@string/work_order_client_name">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/et_kh_mc"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:background="@null"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/system_default_size" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|start"
+                android:background="@android:drawable/editbox_background"
+                android:hint="@string/work_order_client_phone">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/et_kh_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:background="@null"
+                    android:enabled="false"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/system_default_size" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|start"
+                android:background="@android:drawable/editbox_background"
+                android:hint="@string/work_order_client_address">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/et_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:background="@null"
+                    android:enabled="false"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/system_default_size" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|start"
+                android:background="@android:drawable/editbox_background"
+                android:hint="@string/work_order_trouble_content">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/et_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:gravity="top"
+                    android:minHeight="48dp"
+                    android:minLines="5"
+                    android:padding="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/system_default_size" />
+
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/bt_add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/btn_selector"
+        android:text="@string/action_add"
+        android:textColor="@color/white"
+        android:textSize="@dimen/system_button_size"
+        android:textStyle="bold" />
+</RelativeLayout>
