@@ -1,13 +1,115 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ezy.ui.layout.LoadingLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.handu.poweroperational.main.fragment.operaton.DeviceAlarmFragment">
+    android:id="@+id/loading_view"
+    style="@style/MatchMatch"
+    app:llLoadingResId="@layout/layout_loading"
+    tools:context="com.handu.poweroperational.main.fragment.operaton.CurrentFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <android.support.design.widget.CoordinatorLayout
+        style="@style/MatchMatch"
+        android:background="@color/white">
 
-</FrameLayout>
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
+            style="@style/MatchWrap"
+            android:orientation="vertical"
+            app:theme="@style/AppTheme.AppBarOverlay">
+
+            <LinearLayout
+                style="@style/MatchWrap.Vertical"
+                android:background="@color/white"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                <LinearLayout
+                    style="@style/MatchWrap.Horizontal"
+                    android:layout_margin="1dp"
+                    android:gravity="center_vertical"
+                    android:minHeight="40dp">
+
+                    <TextView
+                        android:id="@+id/tv_device_name"
+                        style="@style/AutoWrap"
+                        android:gravity="start|center_vertical"
+                        android:paddingEnd="10dp"
+                        android:paddingStart="10dp"
+                        android:textColor="@color/black" />
+
+                    <Button
+                        android:id="@+id/bt_change_device"
+                        style="@style/WrapWrap"
+                        android:layout_marginEnd="10dp"
+                        android:background="@null"
+                        android:gravity="center_vertical|end"
+                        android:text="@string/action_change"
+                        android:textColor="@color/colorAccent" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/MatchWrap.Horizontal"
+                    android:layout_margin="1dp"
+                    android:gravity="center_vertical"
+                    android:minHeight="40dp">
+
+                    <TextView
+                        android:id="@+id/tv_start_time"
+                        style="@style/WrapWrap"
+                        android:drawableStart="@drawable/ic_vector_date_time"
+                        android:gravity="center_vertical|start"
+                        android:paddingEnd="10dp"
+                        android:paddingStart="10dp"
+                        android:textColor="@color/black" />
+
+                    <ImageButton
+                        style="@style/WrapWrap"
+                        android:contentDescription="@null"
+                        android:background="@null"
+                        android:gravity="center"
+                        android:scaleType="center"
+                        android:src="@drawable/ic_vector_to" />
+
+                    <TextView
+                        android:id="@+id/tv_end_time"
+                        style="@style/AutoWrap"
+                        android:drawableStart="@drawable/ic_vector_date_time"
+                        android:gravity="center_vertical|start"
+                        android:paddingEnd="10dp"
+                        android:paddingStart="10dp"
+                        android:textColor="@color/black" />
+
+                    <Button
+                        android:id="@+id/bt_search"
+                        style="@style/WrapWrap"
+                        android:layout_marginEnd="10dp"
+                        android:background="@null"
+                        android:gravity="center_vertical|end"
+                        android:text="@string/action_query"
+                        android:textColor="@color/colorAccent" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <com.chanven.lib.cptr.PtrClassicFrameLayout
+            android:id="@+id/refreshLayout"
+            style="@style/MatchMatch"
+            android:background="@color/white"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            cube_ptr:ptr_keep_header_when_refresh="true"
+            cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
+            cube_ptr:ptr_resistance="1.7">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                style="@style/MatchMatch" />
+
+        </com.chanven.lib.cptr.PtrClassicFrameLayout>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+</ezy.ui.layout.LoadingLayout>

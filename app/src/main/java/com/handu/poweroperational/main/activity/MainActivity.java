@@ -36,7 +36,6 @@ import com.handu.poweroperational.callback.JsonDialogCallback;
 import com.handu.poweroperational.main.bean.constants.EventType;
 import com.handu.poweroperational.main.fragment.AlarmListFragment;
 import com.handu.poweroperational.main.fragment.HomeFragment;
-import com.handu.poweroperational.main.fragment.operaton.OperationFragment;
 import com.handu.poweroperational.main.fragment.workorder.WorkOrderFragment;
 import com.handu.poweroperational.main.receiver.RestartLocationUploadReceiver;
 import com.handu.poweroperational.main.service.LocationUploadService;
@@ -53,6 +52,7 @@ import com.lzy.okhttputils.request.BaseRequest;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.PermissionListener;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -81,22 +81,20 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private Intent LocationUploadIntent;
     private AlarmManager locationAlarmManager;
     private PendingIntent locationUploadPi;
-
     private BottomNavigationItem homeItem;
     private BottomNavigationItem operationItem;
     private BottomNavigationItem alarmItem;
     private BottomNavigationItem workOrderItem;
     private BadgeItem alarmBadgeItem;
     private BadgeItem workOrderBadgeItem;
-
     private String currentTag = "HomeFragment";
     private int currentPosition = 0;
-
     private HomeFragment homeFragment;
     private AlarmListFragment alarmListFragment;
     private WorkOrderFragment workOrderFragment;
-    private OperationFragment operationFragment;
+    //    private OperationFragment operationFragment;
     private Fragment currentFragment;
+    private MenuItem menuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -232,10 +230,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                                 MainTopMenuDialog dialog = new MainTopMenuDialog(mContext, flContainer);
                                 dialog.show();
                                 break;
+                            case R.id.action_refresh:
+                                EventBus.getDefault().post(new BaseEvent(EventType.homeRefresh.getType()));
+                                break;
                         }
                         return false;
                     }
                 });
+        menuItem = toolbar.getMenu().findItem(R.id.action_refresh);
+        menuItem.setVisible(true);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -296,17 +299,19 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
         if (savedInstanceState == null) {
             homeFragment = HomeFragment.newInstance("主页");
-            operationFragment = OperationFragment.newInstance("运维");
+//            operationFragment = OperationFragment.newInstance("运维");
             alarmListFragment = AlarmListFragment.newInstance("告警");
             workOrderFragment = WorkOrderFragment.newInstance("工单");
             currentFragment = homeFragment;
             ft.add(R.id.fl_container, homeFragment, currentTag).hide(homeFragment).show(homeFragment).commit();
         } else {
             homeFragment = (HomeFragment) fm.findFragmentByTag("HomeFragment");
-            operationFragment = (OperationFragment) fm.findFragmentByTag("OperationFragment");
+//            operationFragment = (OperationFragment) fm.findFragmentByTag("OperationFragment");
             alarmListFragment = (AlarmListFragment) fm.findFragmentByTag("AlarmListFragment");
             workOrderFragment = (WorkOrderFragment) fm.findFragmentByTag("WorkOrderFragment");
-            ft.show(homeFragment).hide(operationFragment).hide(alarmListFragment).hide(workOrderFragment).commit();
+            ft.show(homeFragment)
+//                    .hide(operationFragment)
+                    .hide(alarmListFragment).hide(workOrderFragment).commit();
         }
     }
 
@@ -432,6 +437,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 currentPosition = 0;
                 currentTag = "HomeFragment";
                 switchContent(currentFragment, homeFragment);
+                menuItem.setVisible(true);
                 break;
             case 1:
 //                currentPosition = 1;
@@ -444,11 +450,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 currentPosition = 2;
                 currentTag = "AlarmListFragment";
                 switchContent(currentFragment, alarmListFragment);
+                menuItem.setVisible(false);
                 break;
             case 3:
                 currentPosition = 3;
                 currentTag = "WorkOrderFragment";
                 switchContent(currentFragment, workOrderFragment);
+                menuItem.setVisible(false);
                 break;
         }
     }

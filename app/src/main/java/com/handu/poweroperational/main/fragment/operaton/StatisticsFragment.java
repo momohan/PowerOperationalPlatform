@@ -53,9 +53,7 @@ import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
  * create an instance of this fragment.
  */
 public class StatisticsFragment extends BaseFragment {
-    // TODO: Rename parameter arguments, choose names that match
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+
     @Bind(R.id.loading_view)
     LoadingLayout loadingView;
     @Bind(R.id.refreshLayout)
@@ -73,23 +71,15 @@ public class StatisticsFragment extends BaseFragment {
     private StaggeredGridLayoutManager manager;
     private CommonRecyclerViewAdapter<String[]> mAdapter;
     private Handler mHandler = new Handler();
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
         registerEvent();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
         return rootView;
@@ -103,7 +93,6 @@ public class StatisticsFragment extends BaseFragment {
     }
 
     public StatisticsFragment() {
-        // Required empty public constructor
     }
 
     /**
@@ -117,10 +106,6 @@ public class StatisticsFragment extends BaseFragment {
     // TODO: Rename and change types and number of parameters
     public static StatisticsFragment newInstance(String param1, String param2) {
         StatisticsFragment fragment = new StatisticsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -299,6 +284,7 @@ public class StatisticsFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)//在ui线程执行 操作ui必须在此线程
     public void onEvent(BaseEvent event) {
+        if (!isFirstLoad)
         if (event.eventType == EventType.selectOperationDevice.getType()) {
             tvDeviceName.setText((String) event.data);
             refresh();

@@ -14,26 +14,23 @@
         cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
         cube_ptr:ptr_resistance="1.7">
 
-        <!--<ScrollView-->
-            <!--android:id="@+id/scrollView"-->
-            <!--style="@style/MatchMatch">-->
+        <LinearLayout style="@style/MatchMatch.Vertical">
 
-            <LinearLayout style="@style/MatchWrap.Vertical">
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pieChart"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/pieChart"
-                    android:layout_width="match_parent"
-                    android:layout_height="300dp" />
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/lineChart"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1" />
 
-                <com.github.mikephil.charting.charts.LineChart
-                    android:id="@+id/lineChart"
-                    android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp" />
-
-            </LinearLayout>
-        <!--</ScrollView>-->
+        </LinearLayout>
     </com.chanven.lib.cptr.PtrClassicFrameLayout>
 </ezy.ui.layout.LoadingLayout>
 

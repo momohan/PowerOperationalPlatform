@@ -4,6 +4,8 @@ import android.app.Application;
 import android.app.Service;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
+import android.os.StrictMode;
 import android.os.Vibrator;
 
 import com.baidu.mapapi.SDKInitializer;
@@ -37,6 +39,11 @@ public class PowerOperationalApplication extends Application {
     public void onCreate() {
         super.onCreate();
         powerOperationalApplication = this;
+        //安卓7.0后的私有权限
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+            StrictMode.setVmPolicy(builder.build());
+        }
         CrashHandler.getInstance().init(getApplicationContext());
         initLocation();
         initOkHttpUtils();

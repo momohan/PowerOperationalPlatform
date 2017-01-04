@@ -252,9 +252,10 @@ public class CurrentFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)//在ui线程执行 操作ui必须在此线程
     public void onEvent(BaseEvent event) {
-        if (event.eventType == EventType.selectOperationDevice.getType()) {
-            tvDeviceName.setText((String) event.data);
-            refresh();
-        }
+        if (!isFirstLoad)
+            if (event.eventType == EventType.selectOperationDevice.getType()) {
+                tvDeviceName.setText((String) event.data);
+                refresh();
+            }
     }
 }

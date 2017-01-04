@@ -34,8 +34,13 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.handu.poweroperational.R;
+import com.handu.poweroperational.base.BaseEvent;
 import com.handu.poweroperational.base.BaseFragment;
+import com.handu.poweroperational.main.bean.constants.EventType;
 import com.handu.poweroperational.utils.Tools;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,8 +63,6 @@ public class HomeFragment extends BaseFragment {
     LineChart lineChart;
     @Bind(R.id.loading_view)
     LoadingLayout loadingView;
-    //    @Bind(R.id.scrollView)
-//    ScrollView scrollView;
     @Bind(R.id.refreshLayout)
     PtrClassicFrameLayout refreshLayout;
     private XAxis xAxis;//x轴
@@ -73,6 +76,7 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        registerEvent();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
         }
@@ -120,30 +124,6 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-//        scrollView.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View view, MotionEvent event) {
-//                switch (event.getAction()) {
-//                    case MotionEvent.ACTION_DOWN:
-//                        break;
-//                    case MotionEvent.ACTION_MOVE:
-//                        int scrollY = view.getScrollY();
-//                        int height = view.getHeight();
-//                        int scrollViewMeasuredHeight = scrollView.getChildAt(0).getMeasuredHeight();
-//                        if (scrollY == 0) {
-//                            //滑动到了顶部
-//                            isCanRefresh = true;
-//                        } else if ((scrollY + height) == scrollViewMeasuredHeight) {
-//                            //滑动到了底部
-//                            isCanRefresh = false;
-//                        } else {
-//                            isCanRefresh = false;
-//                        }
-//                        break;
-//                }
-//                return false;
-//            }
-//        });
         initLoadingView();
         initPieCharts();
         initChart();
@@ -286,7 +266,7 @@ public class HomeFragment extends BaseFragment {
         lineChart.setDragEnabled(true);
         //设置x,y是否可以缩放
         lineChart.setScaleXEnabled(true);
-        lineChart.setScaleYEnabled(true);
+        lineChart.setScaleYEnabled(false);
         //设置是否能扩大扩小
         lineChart.setPinchZoom(false);
         lineChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
@@ -477,5 +457,13 @@ public class HomeFragment extends BaseFragment {
         // 最终将全部完整的数据喂给PieChart
         pieChart.setData(data);
         pieChart.invalidate();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)//在ui线程执行 操作ui必须在此线程
+    public void onEvent(BaseEvent event) {
+        if (!isFirstLoad)
+            if (event.eventType == EventType.homeRefresh.getType()) {
+                refresh();
+            }
     }
 }
