@@ -25,14 +25,14 @@ import com.flipboard.bottomsheet.BottomSheetLayout;
 import com.google.gson.Gson;
 import com.handu.poweroperational.R;
 import com.handu.poweroperational.base.BaseActivity;
-import com.handu.poweroperational.callback.StringDialogCallback;
 import com.handu.poweroperational.main.activity.QRCodeScanActivity;
 import com.handu.poweroperational.main.activity.QrCodeScanResultActivity;
 import com.handu.poweroperational.main.adapter.materials.MaterialsSelectAdapter;
 import com.handu.poweroperational.main.application.PowerOperationalApplication;
 import com.handu.poweroperational.main.bean.MaterialsModel;
 import com.handu.poweroperational.main.bean.results.WorkOrderResult;
-import com.handu.poweroperational.request.OkHttpRequest;
+import com.handu.poweroperational.request.RequestServer;
+import com.handu.poweroperational.request.callback.StringDialogCallback;
 import com.handu.poweroperational.ui.AndroidTree.TreeNodeUtils;
 import com.handu.poweroperational.ui.AndroidTree.holder.IconTreeItemHolder;
 import com.handu.poweroperational.utils.AnimationUtil;
@@ -329,7 +329,7 @@ public class MaterialsSelectActivity extends BaseActivity {
             return;
         }
         loadingView.showLoading();
-        OkHttpRequest.post(this, ServiceUrl.GetM_CategoryTree, "", new StringDialogCallback(this) {
+        RequestServer.post(this, ServiceUrl.GetM_CategoryTree, "", new StringDialogCallback(this) {
 
             @Override
             public void onBefore(BaseRequest request) {

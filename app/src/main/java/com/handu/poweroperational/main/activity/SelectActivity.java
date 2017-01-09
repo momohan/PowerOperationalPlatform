@@ -14,8 +14,8 @@ import android.widget.LinearLayout;
 
 import com.handu.poweroperational.R;
 import com.handu.poweroperational.base.BaseActivity;
-import com.handu.poweroperational.callback.StringDialogCallback;
-import com.handu.poweroperational.request.OkHttpRequest;
+import com.handu.poweroperational.request.callback.StringDialogCallback;
+import com.handu.poweroperational.request.RequestServer;
 import com.handu.poweroperational.ui.AndroidTree.TreeNodeUtils;
 import com.handu.poweroperational.ui.AndroidTree.holder.IconTreeItemHolder;
 import com.handu.poweroperational.utils.JsonUtils;
@@ -244,7 +244,7 @@ public class SelectActivity extends BaseActivity implements TreeNode.TreeNodeCli
             return;
         }
         if (map != null) {
-            OkHttpRequest.post(this, method, map, new StringDialogCallback(this) {
+            RequestServer.post(this, method, map, new StringDialogCallback(this) {
                 @Override
                 public void onBefore(BaseRequest request) {
 

@@ -13,7 +13,7 @@ import android.view.animation.AnimationSet;
 import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
 
-import com.handu.poweroperational.ui.FloatingDraftButton;
+import com.handu.poweroperational.ui.widget.view.FloatingDraftButton;
 
 import java.util.ArrayList;
 import java.util.Random;

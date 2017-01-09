@@ -15,7 +15,7 @@ import com.handu.poweroperational.main.fragment.operaton.AnalyzeFragment;
 import com.handu.poweroperational.main.fragment.operaton.CurrentFragment;
 import com.handu.poweroperational.main.fragment.operaton.DeviceAlarmFragment;
 import com.handu.poweroperational.main.fragment.operaton.StatisticsFragment;
-import com.handu.poweroperational.ui.ScrollViewPager;
+import com.handu.poweroperational.ui.viewpager.ScrollViewPager;
 
 import java.util.ArrayList;
 import java.util.List;

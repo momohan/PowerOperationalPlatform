@@ -25,11 +25,11 @@ import com.github.johnkil.print.PrintButton;
 import com.github.johnkil.print.PrintView;
 import com.handu.poweroperational.R;
 import com.handu.poweroperational.base.BaseActivity;
-import com.handu.poweroperational.callback.JsonDialogCallback;
+import com.handu.poweroperational.request.callback.JsonDialogCallback;
 import com.handu.poweroperational.db.DBConstants;
 import com.handu.poweroperational.db.model.User;
 import com.handu.poweroperational.main.bean.results.LoginResult;
-import com.handu.poweroperational.request.OkHttpRequest;
+import com.handu.poweroperational.request.RequestServer;
 import com.handu.poweroperational.utils.AESUtils;
 import com.handu.poweroperational.utils.AppConstant;
 import com.handu.poweroperational.utils.AppLogger;
@@ -233,7 +233,7 @@ public class LoginActivity extends BaseActivity {
         Map<String, String> map = new HashMap<>();
         map.put("RealName", username);
         map.put("Password", AESUtils.MD5(password));
-        OkHttpRequest.post(this, ServiceUrl.Login, map, new JsonDialogCallback<LoginResult>(this, LoginResult.class) {
+        RequestServer.post(this, ServiceUrl.Login, map, new JsonDialogCallback<LoginResult>(this, LoginResult.class) {
 
             @Override
             public void onBefore(BaseRequest request) {

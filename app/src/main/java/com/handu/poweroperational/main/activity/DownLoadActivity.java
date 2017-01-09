@@ -22,7 +22,7 @@ import com.bumptech.glide.Glide;
 import com.handu.poweroperational.R;
 import com.handu.poweroperational.base.BaseActivity;
 import com.handu.poweroperational.main.bean.FileModel;
-import com.handu.poweroperational.ui.NumberProgressBar;
+import com.handu.poweroperational.ui.progress.NumberProgressBar;
 import com.handu.poweroperational.utils.ApkUtils;
 import com.handu.poweroperational.utils.AppCacheUtils;
 import com.handu.poweroperational.utils.Tools;

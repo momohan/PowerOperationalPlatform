@@ -8,9 +8,9 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.Looper;
 
-
 import com.handu.poweroperational.main.application.PowerOperationalApplication;
 import com.handu.poweroperational.utils.AppLogger;
+import com.orhanobut.logger.Logger;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -32,32 +32,29 @@ import java.util.Map;
  */
 public class CrashHandler implements UncaughtExceptionHandler {
 
-    public static final String path = "/sdcard/HanDu_App/App_error_log/PowerOperationalPlatform";
-    private static CrashHandler INSTANCE = new CrashHandler();
-    private Context mContext;
+    public static final String path = Environment.getExternalStorageDirectory().getPath() + "/HanDu_App/App_error_log/PowerOperationalPlatform";
+    private static CrashHandler crashHandler;
     private UncaughtExceptionHandler mDefaultHandler;
-    private Map<String, String> infos = new HashMap<String, String>();
+    private Map<String, String> info = new HashMap<>();
     private DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 
 
-    /**
-     *
-     */
     private CrashHandler() {
     }
 
-    /**
-     *
-     */
+
     public static CrashHandler getInstance() {
-        return INSTANCE;
+        if (crashHandler == null) {
+            synchronized (CrashHandler.class) {
+                if (crashHandler == null) {
+                    crashHandler = new CrashHandler();
+                }
+            }
+        }
+        return crashHandler;
     }
 
-    /**
-     * @param context
-     */
-    public void init(Context context) {
-        mContext = context;
+    public void init() {
         mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(this);
     }
@@ -81,7 +78,6 @@ public class CrashHandler implements UncaughtExceptionHandler {
         }
     }
 
-
     private boolean handleException(Throwable ex) {
         if (ex == null) {
             return false;
@@ -93,7 +89,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
                 Looper.loop();
             }
         }.start();
-        collectDeviceInfo(mContext);
+        collectDeviceInfo(PowerOperationalApplication.getContext());
         saveCrashInfo2File(ex);
         return true;
     }
@@ -101,7 +97,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
     /**
      * @param ctx
      */
-    public void collectDeviceInfo(Context ctx) {
+    private void collectDeviceInfo(Context ctx) {
         try {
             PackageManager pm = ctx.getPackageManager();
             PackageInfo pi = pm.getPackageInfo(ctx.getPackageName(), PackageManager.GET_ACTIVITIES);
@@ -109,8 +105,8 @@ public class CrashHandler implements UncaughtExceptionHandler {
             if (pi != null) {
                 String versionName = pi.versionName == null ? "null" : pi.versionName;
                 String versionCode = pi.versionCode + "";
-                infos.put("versionName", versionName);
-                infos.put("versionCode", versionCode);
+                info.put("versionName", versionName);
+                info.put("versionCode", versionCode);
             }
         } catch (NameNotFoundException e) {
             AppLogger.e("an error occured when collect package info", e);
@@ -120,12 +116,13 @@ public class CrashHandler implements UncaughtExceptionHandler {
         for (Field field : fields) {
             try {
                 field.setAccessible(true);
-                infos.put(field.getName(), field.get(null).toString());
+                info.put(field.getName(), field.toString());
                 AppLogger.e(field.getName() + " : " + field.get(null));
             } catch (Exception e) {
                 AppLogger.e("an error occured when collect crash info", e);
             }
         }
+        Logger.e("报错信息", info);
     }
 
     /**
@@ -133,7 +130,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
      */
     private String saveCrashInfo2File(Throwable ex) {
         StringBuffer sb = new StringBuffer();
-        for (Map.Entry<String, String> entry : infos.entrySet()) {
+        for (Map.Entry<String, String> entry : info.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
             sb.append(key + "=" + value + "\n");
@@ -155,9 +152,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
             long timestamp = System.currentTimeMillis();
             String time = formatter.format(new Date());
             String fileName = "crash-" + time + "-" + timestamp + ".log";
-
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-
                 File dir = new File(path);
                 if (!dir.exists()) {
                     dir.mkdirs();

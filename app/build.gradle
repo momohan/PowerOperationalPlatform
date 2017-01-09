@@ -48,6 +48,12 @@ android {
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']
+            jni.srcDirs = []
+        }
+    }
+    externalNativeBuild {
+        ndkBuild {
+            path file("jni\\Android.mk")
         }
     }
 }
@@ -105,6 +111,7 @@ dependencies {
     compile 'com.haozhang.libary:android-slanted-textview:1.2'
     compile 'com.github.JayFang1993:DropDownMenu:v0.9'
     compile 'com.github.czy1121:loadinglayout:1.0.1'
+    compile 'com.orhanobut:logger:1.15'
     compile 'com.github.ybq:Android-SpinKit:1.1.0'
     testCompile 'junit:junit:4.12'
 }

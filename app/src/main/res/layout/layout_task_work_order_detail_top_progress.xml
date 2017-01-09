@@ -76,7 +76,7 @@
 
     </LinearLayout>
 
-    <com.handu.poweroperational.ui.StepperIndicator
+    <com.handu.poweroperational.ui.widget.view.StepperIndicator
         android:id="@+id/si_step"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -39,7 +39,6 @@
         android:persistent="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
@@ -129,7 +128,8 @@
             android:name=".main.activity.QrCodeScanResultActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <activity android:name=".main.activity.OperationActivity"></activity>
+        <activity android:name=".main.activity.OperationActivity" />
+        <activity android:name=".main.activity.NdkTestActivity"></activity>
     </application>
 
 </manifest>

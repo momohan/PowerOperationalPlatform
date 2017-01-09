@@ -10,7 +10,7 @@ import com.handu.poweroperational.BuildConfig;
  */
 public class AppLogger {
 
-    protected static final String TAG = "柳梦";
+    private static final String TAG = "柳梦";
 
     private AppLogger() {
     }
@@ -136,9 +136,12 @@ public class AppLogger {
      * @param msg The message you would like logged.
      * @return Message String
      */
-    protected static String buildMessage(String msg) {
+    private static String buildMessage(String msg) {
         StackTraceElement caller = new Throwable().fillInStackTrace().getStackTrace()[2];
 
-        return new StringBuilder().append(caller.getClassName()).append(".").append(caller.getMethodName()).append("(): ").append(msg).toString();
+        StringBuilder builder = new StringBuilder();
+        builder.append(caller.getClassName()).append(".").append(caller.getMethodName()).append("(): ").append(msg);
+
+        return builder.toString();
     }
 }

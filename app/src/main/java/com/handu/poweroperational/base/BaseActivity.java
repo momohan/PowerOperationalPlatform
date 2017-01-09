@@ -27,7 +27,6 @@ import com.flyco.dialog.widget.MaterialDialog;
 import com.handu.poweroperational.R;
 import com.handu.poweroperational.main.application.PowerOperationalApplication;
 import com.lzy.imagepicker.ImagePicker;
-import com.lzy.imagepicker.loader.ImageLoader;
 import com.lzy.imagepicker.view.SystemBarTintManager;
 import com.lzy.okhttputils.OkHttpUtils;
 
@@ -275,12 +274,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     /**
-     * @param imageLoader
-     * @param selectLimit
+     * @param selectLimit 选中数量
      */
-    protected void initImagePicker(ImageLoader imageLoader, int selectLimit) {
+    protected void initImagePicker(int selectLimit) {
         ImagePicker imagePicker = ImagePicker.getInstance();
-        imagePicker.setImageLoader(imageLoader);   //设置图片加载器
         imagePicker.setShowCamera(true);  //显示拍照按钮
         imagePicker.setMultiMode(true); //允许多选
         imagePicker.setCrop(false); //允许裁剪
@@ -288,12 +285,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     /**
-     * @param imageLoader
-     * @param crop
+     * @param crop 允许裁剪
      */
-    protected void initImagePicker(ImageLoader imageLoader, boolean crop) {
+    protected void initImagePicker(boolean crop) {
         ImagePicker imagePicker = ImagePicker.getInstance();
-        imagePicker.setImageLoader(imageLoader);   //设置图片加载器
         imagePicker.setShowCamera(true);  //显示拍照按钮
         imagePicker.setMultiMode(false); //允许多选
         imagePicker.setCrop(crop); //允许裁剪

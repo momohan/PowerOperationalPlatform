@@ -32,23 +32,29 @@ import com.flyco.dialog.widget.MaterialDialog;
 import com.handu.poweroperational.R;
 import com.handu.poweroperational.base.BaseActivity;
 import com.handu.poweroperational.base.BaseEvent;
-import com.handu.poweroperational.callback.JsonDialogCallback;
 import com.handu.poweroperational.main.bean.constants.EventType;
 import com.handu.poweroperational.main.fragment.AlarmListFragment;
 import com.handu.poweroperational.main.fragment.HomeFragment;
 import com.handu.poweroperational.main.fragment.workorder.WorkOrderFragment;
 import com.handu.poweroperational.main.receiver.RestartLocationUploadReceiver;
 import com.handu.poweroperational.main.service.LocationUploadService;
-import com.handu.poweroperational.request.OkHttpRequest;
+import com.handu.poweroperational.request.RequestServer;
+import com.handu.poweroperational.request.callback.JsonDialogCallback;
 import com.handu.poweroperational.ui.dialog.MainTopMenuDialog;
+import com.handu.poweroperational.ui.widget.imageloader.ImageLoader;
+import com.handu.poweroperational.ui.widget.imageloader.ImageLoaderUtil;
 import com.handu.poweroperational.utils.AppConstant;
 import com.handu.poweroperational.utils.DataCleanManager;
 import com.handu.poweroperational.utils.PreferencesUtils;
 import com.handu.poweroperational.utils.ServiceUrl;
 import com.handu.poweroperational.utils.Tools;
 import com.igexin.sdk.PushManager;
+import com.lzy.imagepicker.ImagePicker;
+import com.lzy.imagepicker.bean.ImageItem;
+import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.okhttputils.OkHttpUtils;
 import com.lzy.okhttputils.request.BaseRequest;
+import com.lzy.widget.CircleImageView;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.PermissionListener;
 
@@ -56,6 +62,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -70,6 +77,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private static final int REQUEST_READ_PHONE_STATE_PERMISSION = 0;
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION = 1;
     private static final int REQUEST_LOCATION_PERMISSION = 2;
+    private static final int SELECT_IMAGE = 100;
+    private CircleImageView circleImageView;
     @Bind(R.id.bottom_navigation_bar)
     BottomNavigationBar bottomNavigationBar;
     PackageManager pkgManager;
@@ -247,6 +256,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         View view = navigationView.getHeaderView(0);
         TextView tv = (TextView) view.findViewById(R.id.tv_user);
         tv.setText(getString(R.string.current_user) + PreferencesUtils.get(mContext, AppConstant.realName, "") + "");
+        circleImageView = (CircleImageView) view.findViewById(R.id.iv_app_icon);
+        circleImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initImagePicker(true);
+                gotoActivityForResult(ImageGridActivity.class, null, SELECT_IMAGE);
+            }
+        });
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -265,7 +282,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         Map<String, String> map = new HashMap<>();
         map.put("ClientId", cid);
         map.put("UserId", PreferencesUtils.get(mContext, AppConstant.userId, "") + "");
-        OkHttpRequest.post(this, ServiceUrl.RegisterClientId, map, new JsonDialogCallback<String>(this, String.class) {
+        RequestServer.post(this, ServiceUrl.RegisterClientId, map, new JsonDialogCallback<String>(this, String.class) {
             @Override
             public void onBefore(BaseRequest request) {
 
@@ -422,6 +439,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             case R.id.nav_qr_code_scan:
                 gotoActivityForResult(QRCodeScanActivity.class, null, QRCodeScanActivity.REQUEST_CODE);
                 break;
+            case R.id.nav_ndk:
+                gotoActivity(NdkTestActivity.class, false);
+                break;
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -534,11 +554,26 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == QRCodeScanActivity.REQUEST_CODE) {
-            if (data != null) {
+        if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
+            if (requestCode == SELECT_IMAGE && data != null) {
+                ArrayList<ImageItem> imageItems = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
+                if (imageItems != null && imageItems.size() > 0) {
+                    for (int i = 0; i < imageItems.size(); i++) {
+                        setUserImage("file://" + imageItems.get(i).path);
+                    }
+                }
+            }
+        } else {
+            if (requestCode == QRCodeScanActivity.REQUEST_CODE && data != null) {
                 gotoActivity(QrCodeScanResultActivity.class, data.getExtras(), false);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void setUserImage(String url) {
+        ImageLoader.Builder builder = new ImageLoader.Builder();
+        builder.url(url).strategy(ImageLoaderUtil.LOAD_STRATEGY_NORMAL).imgView(circleImageView);
+        ImageLoaderUtil.getInstance().loadImage(mContext, builder.build());
     }
 }

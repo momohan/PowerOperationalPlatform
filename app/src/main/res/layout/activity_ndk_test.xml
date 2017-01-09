@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/intbutton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="传给JNI一个整数1" />
+
+    <TextView
+        android:id="@+id/inttextview"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="接收到的整数：" />
+
+    <Button
+        android:id="@+id/stringbutton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="传给JNI一个字符A" />
+
+    <TextView
+        android:id="@+id/stringtextview"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="接收到的字符：" />
+
+    <Button
+        android:id="@+id/arraybutton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="传给JNI一个数组12345" />
+
+    <TextView
+        android:id="@+id/arraytextview"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="接收到的数组：" />
+
+    <Button
+        android:id="@+id/bt_clear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="清除" />
+
+</LinearLayout>

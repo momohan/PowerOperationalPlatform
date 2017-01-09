@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.handu.poweroperational.R;
 import com.handu.poweroperational.base.BaseFragment;
-import com.handu.poweroperational.ui.ScrollViewPager;
+import com.handu.poweroperational.ui.viewpager.ScrollViewPager;
 
 import java.util.ArrayList;
 import java.util.List;

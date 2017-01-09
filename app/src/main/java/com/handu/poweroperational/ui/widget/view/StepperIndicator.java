@@ -1,4 +1,4 @@
-package com.handu.poweroperational.ui;
+package com.handu.poweroperational.ui.widget.view;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;

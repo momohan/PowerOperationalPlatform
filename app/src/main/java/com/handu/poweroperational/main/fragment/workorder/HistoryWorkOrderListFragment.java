@@ -25,14 +25,14 @@ import com.chanven.lib.cptr.recyclerview.RecyclerAdapterWithHF;
 import com.google.gson.reflect.TypeToken;
 import com.handu.poweroperational.R;
 import com.handu.poweroperational.base.BaseFragment;
-import com.handu.poweroperational.callback.JsonDialogCallback;
+import com.handu.poweroperational.request.callback.JsonDialogCallback;
 import com.handu.poweroperational.main.activity.workorder.AddWorkOrderActivity;
 import com.handu.poweroperational.main.activity.workorder.HistoryWorkOrderDetailActivity;
 import com.handu.poweroperational.main.bean.constants.WorkOrderPriority;
 import com.handu.poweroperational.main.bean.constants.WorkOrderState;
 import com.handu.poweroperational.main.bean.constants.WorkOrderType;
 import com.handu.poweroperational.main.bean.results.WorkOrderResult;
-import com.handu.poweroperational.request.OkHttpRequest;
+import com.handu.poweroperational.request.RequestServer;
 import com.handu.poweroperational.ui.RecyclerView.ItemClickListener;
 import com.handu.poweroperational.ui.RecyclerView.adapter.BaseRecyclerViewHolder;
 import com.handu.poweroperational.ui.RecyclerView.adapter.CommonRecyclerViewAdapter;
@@ -380,7 +380,7 @@ public class HistoryWorkOrderListFragment extends BaseFragment {
         map.put("userId", PreferencesUtils.get(mContext, AppConstant.userId, "") + "");
         switch (type) {
             case 0:
-                OkHttpRequest.post(getActivity(), ServiceUrl.GetHistoryList, map,
+                RequestServer.post(getActivity(), ServiceUrl.GetHistoryList, map,
                         new JsonDialogCallback<List<WorkOrderResult>>(getActivity(), new TypeToken<List<WorkOrderResult>>() {
                         }.getType()) {
 
@@ -407,7 +407,7 @@ public class HistoryWorkOrderListFragment extends BaseFragment {
                         });
                 break;
             case 1:
-                OkHttpRequest.post(getActivity(), ServiceUrl.GetHistoryList, map,
+                RequestServer.post(getActivity(), ServiceUrl.GetHistoryList, map,
                         new JsonDialogCallback<List<WorkOrderResult>>(getActivity(), new TypeToken<List<WorkOrderResult>>() {
                         }.getType()) {
 

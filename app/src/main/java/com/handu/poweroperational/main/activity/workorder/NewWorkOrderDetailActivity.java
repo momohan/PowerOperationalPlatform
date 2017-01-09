@@ -13,7 +13,6 @@ import com.handu.poweroperational.base.BaseActivity;
 import com.handu.poweroperational.main.bean.constants.WorkOrderType;
 import com.handu.poweroperational.main.bean.results.WorkOrderResult;
 import com.handu.poweroperational.main.fragment.workorder.TaskNewWorkOrderDetailFragment;
-import com.handu.poweroperational.utils.GlideImageLoader;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -45,7 +44,7 @@ public class NewWorkOrderDetailActivity extends BaseActivity {
                 finish();
             }
         });
-        initImagePicker(new GlideImageLoader(), 9);
+        initImagePicker(9);
     }
 
     @Override

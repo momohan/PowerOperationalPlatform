@@ -1,4 +1,4 @@
-package com.handu.poweroperational.ui;
+package com.handu.poweroperational.ui.progress;
 
 import android.content.Context;
 import android.content.res.AssetManager;

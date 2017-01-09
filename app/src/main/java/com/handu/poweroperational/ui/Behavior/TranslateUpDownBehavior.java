@@ -1,4 +1,4 @@
-package com.handu.poweroperational.ui;
+package com.handu.poweroperational.ui.Behavior;
 
 import android.content.Context;
 import android.support.design.widget.CoordinatorLayout;

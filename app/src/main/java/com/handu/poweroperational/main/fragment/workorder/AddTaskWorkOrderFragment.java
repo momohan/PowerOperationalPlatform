@@ -15,10 +15,10 @@ import android.view.ViewGroup;
 
 import com.handu.poweroperational.R;
 import com.handu.poweroperational.base.BaseFragment;
-import com.handu.poweroperational.callback.JsonDialogCallback;
+import com.handu.poweroperational.request.callback.JsonDialogCallback;
 import com.handu.poweroperational.main.activity.SelectActivity;
 import com.handu.poweroperational.main.bean.constants.WorkOrderPriority;
-import com.handu.poweroperational.request.OkHttpRequest;
+import com.handu.poweroperational.request.RequestServer;
 import com.handu.poweroperational.utils.AppConstant;
 import com.handu.poweroperational.utils.PreferencesUtils;
 import com.handu.poweroperational.utils.ServiceUrl;
@@ -179,7 +179,7 @@ public class AddTaskWorkOrderFragment extends BaseFragment {
         map.put("ResponseUserName", fzrName);
         map.put("CreateUserId", fzrId);
         map.put("CreateUserName", fzrName);
-        OkHttpRequest.post(getActivity(), ServiceUrl.SaveWorkOrder, map, new JsonDialogCallback<String>(getActivity(), String.class) {
+        RequestServer.post(getActivity(), ServiceUrl.SaveWorkOrder, map, new JsonDialogCallback<String>(getActivity(), String.class) {
             @Override
             public void onSuccess(String s, Call call, Response response) {
                 msgHandler.sendEmptyMessage(1);

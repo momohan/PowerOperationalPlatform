@@ -19,7 +19,7 @@ import android.widget.TextView;
 import com.google.gson.reflect.TypeToken;
 import com.handu.poweroperational.R;
 import com.handu.poweroperational.base.BaseFragment;
-import com.handu.poweroperational.callback.JsonDialogCallback;
+import com.handu.poweroperational.request.callback.JsonDialogCallback;
 import com.handu.poweroperational.main.bean.constants.WorkOrderPriority;
 import com.handu.poweroperational.main.bean.constants.WorkOrderState;
 import com.handu.poweroperational.main.bean.constants.WorkOrderType;
@@ -27,10 +27,10 @@ import com.handu.poweroperational.main.bean.results.DataDictionaryResult;
 import com.handu.poweroperational.main.bean.results.ImageResult;
 import com.handu.poweroperational.main.bean.results.NodeTimeResult;
 import com.handu.poweroperational.main.bean.results.WorkOrderResult;
-import com.handu.poweroperational.request.OkHttpRequest;
+import com.handu.poweroperational.request.RequestServer;
 import com.handu.poweroperational.ui.RecyclerView.adapter.BaseRecyclerViewHolder;
 import com.handu.poweroperational.ui.RecyclerView.adapter.CommonRecyclerViewAdapter;
-import com.handu.poweroperational.ui.StepperIndicator;
+import com.handu.poweroperational.ui.widget.view.StepperIndicator;
 import com.handu.poweroperational.utils.AppLogger;
 import com.handu.poweroperational.utils.ServiceUrl;
 import com.handu.poweroperational.utils.Tools;
@@ -253,7 +253,7 @@ public class TaskHistoryWorkOrderDetailFragment extends BaseFragment {
     private void getUploadImageList() {
         Map<String, String> map = new HashMap<>();
         map.put("DetailId", workOrderResult.getDetailId());
-        OkHttpRequest.post(getActivity(), ServiceUrl.GetImageList, map, new JsonDialogCallback<List<ImageResult>>(getActivity(), new TypeToken<List<ImageResult>>() {
+        RequestServer.post(getActivity(), ServiceUrl.GetImageList, map, new JsonDialogCallback<List<ImageResult>>(getActivity(), new TypeToken<List<ImageResult>>() {
         }.getType(), getString(R.string.request_upload_image)) {
 
             @Override
@@ -286,7 +286,7 @@ public class TaskHistoryWorkOrderDetailFragment extends BaseFragment {
     //获取问题类型
     private void getWorkOrderTroubleGenre() {
 
-        OkHttpRequest.post(getActivity(), ServiceUrl.GetDictionaryData, "QuestionType",
+        RequestServer.post(getActivity(), ServiceUrl.GetDictionaryData, "QuestionType",
                 new JsonDialogCallback<List<DataDictionaryResult>>(getActivity(), new TypeToken<List<DataDictionaryResult>>() {
                 }.getType()) {
 
@@ -314,7 +314,7 @@ public class TaskHistoryWorkOrderDetailFragment extends BaseFragment {
 
     //获取节点时间
     private void getNodeTime() {
-        OkHttpRequest.post(getActivity(), ServiceUrl.GetWorkOrderNodeTime, workOrderResult.getDetailId(),
+        RequestServer.post(getActivity(), ServiceUrl.GetWorkOrderNodeTime, workOrderResult.getDetailId(),
                 new JsonDialogCallback<NodeTimeResult>(getActivity(), NodeTimeResult.class) {
                     @Override
                     public void onBefore(BaseRequest request) {

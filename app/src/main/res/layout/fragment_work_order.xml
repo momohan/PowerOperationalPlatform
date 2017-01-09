@@ -13,7 +13,7 @@
         app:tabSelectedTextColor="@color/red_light"
         app:tabTextColor="@color/black" />
 
-    <com.handu.poweroperational.ui.ScrollViewPager
+    <com.handu.poweroperational.ui.viewpager.ScrollViewPager
         android:id="@+id/svp_work_order_container"
         style="@style/MatchMatch" />
 

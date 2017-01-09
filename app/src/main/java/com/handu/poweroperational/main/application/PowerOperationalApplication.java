@@ -17,8 +17,11 @@ import com.handu.poweroperational.main.service.LocationService;
 import com.handu.poweroperational.utils.AppLogger;
 import com.handu.poweroperational.utils.GlideImageLoader;
 import com.igexin.sdk.PushManager;
+import com.lzy.imagepicker.ImagePicker;
 import com.lzy.ninegrid.NineGridView;
 import com.lzy.okhttputils.OkHttpUtils;
+import com.orhanobut.logger.LogLevel;
+import com.orhanobut.logger.Logger;
 
 import se.emilsjolander.sprinkles.Migration;
 import se.emilsjolander.sprinkles.Sprinkles;
@@ -44,31 +47,13 @@ public class PowerOperationalApplication extends Application {
             StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
             StrictMode.setVmPolicy(builder.build());
         }
-        CrashHandler.getInstance().init(getApplicationContext());
         initLocation();
         initOkHttpUtils();
-        NineGridView.setImageLoader(new GlideImageLoader());//设置默认图片加载器
-        Sprinkles sprinkles = Sprinkles.init(getApplicationContext(), DBConstants.DB_NAME, DBConstants.DB_VERSION);
-        sprinkles.addMigration(new Migration() {
-            @Override
-            protected void doMigration(SQLiteDatabase db) {
-                db.execSQL("create table " +
-                        DBConstants.USER_TABLE_NAME + " (" +
-                        User.ID + " integer primary key autoincrement, " +
-                        User.USERNAME + " text, " +
-                        User.PASSWORD + " text)");
-                AppLogger.e(getApplicationContext().getString(R.string.database_create_success));
-            }
-        });
-    }
+        initCash();
+        initImageLoader();
+        initLogger();
+        initSprinkles();
 
-    private void initLocation() {
-        /***
-         * 初始化定位sdk，建议在Application中创建
-         */
-        locationService = new LocationService(getApplicationContext());
-        mVibrator = (Vibrator) getApplicationContext().getSystemService(Service.VIBRATOR_SERVICE);
-        SDKInitializer.initialize(getApplicationContext());
     }
 
     public static Context getContext() {
@@ -85,6 +70,57 @@ public class PowerOperationalApplication extends Application {
         PushManager.getInstance().turnOffPush(getApplicationContext());
         PushManager.getInstance().stopService(getApplicationContext());
         System.exit(0);
+    }
+
+    //配置数据库框架
+    private void initSprinkles() {
+        Sprinkles sprinkles = Sprinkles.init(getApplicationContext(), DBConstants.DB_NAME, DBConstants.DB_VERSION);
+        sprinkles.addMigration(new Migration() {
+            @Override
+            protected void doMigration(SQLiteDatabase db) {
+                db.execSQL("create table " +
+                        DBConstants.USER_TABLE_NAME + " (" +
+                        User.ID + " integer primary key autoincrement, " +
+                        User.USERNAME + " text, " +
+                        User.PASSWORD + " text)");
+                AppLogger.e(getApplicationContext().getString(R.string.database_create_success));
+            }
+        });
+    }
+
+    //配置图片加载
+    private void initImageLoader() {
+        ImagePicker imagePicker = ImagePicker.getInstance();
+        imagePicker.setImageLoader(new GlideImageLoader());   //设置图片加载器
+        imagePicker.setSelectLimit(9);    //选中数量限制
+        imagePicker.setShowCamera(true);  //显示拍照按钮
+        imagePicker.setMultiMode(true); //允许多选
+        imagePicker.setCrop(false); //允许裁剪
+        NineGridView.setImageLoader(new GlideImageLoader());//设置默认图片加载器
+    }
+
+    //配置打印日志
+    private void initLogger() {
+        Logger
+                .init("柳梦")
+                .methodCount(3)
+                .logLevel(LogLevel.FULL)
+                .methodOffset(2);
+    }
+
+    //配置报错信息
+    private void initCash() {
+        CrashHandler.getInstance().init();
+    }
+
+    //配置位置信息
+    private void initLocation() {
+        /***
+         * 初始化定位sdk，建议在Application中创建
+         */
+        locationService = new LocationService(getApplicationContext());
+        mVibrator = (Vibrator) getApplicationContext().getSystemService(Service.VIBRATOR_SERVICE);
+        SDKInitializer.initialize(getApplicationContext());
     }
 
     //配置OkHttpUtils

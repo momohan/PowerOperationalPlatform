@@ -28,7 +28,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <com.handu.poweroperational.ui.ScrollViewPager
+    <com.handu.poweroperational.ui.viewpager.ScrollViewPager
         android:id="@+id/svg_operation_container"
         style="@style/MatchMatch"
         android:background="@color/white"

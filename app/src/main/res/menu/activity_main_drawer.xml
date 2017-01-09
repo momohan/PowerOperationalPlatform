@@ -21,6 +21,10 @@
                     android:id="@+id/nav_qr_code_scan"
                     android:icon="@drawable/ic_vector_qr_code"
                     android:title="扫一扫" />
+                <item
+                    android:id="@+id/nav_ndk"
+                    android:icon="@drawable/ic_vector_right_menu"
+                    android:title="ndk测试" />
             </group>
         </menu>
     </item>
