@@ -20,12 +20,10 @@ import android.widget.TextView;
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
 import com.chanven.lib.cptr.PtrDefaultHandler;
 import com.chanven.lib.cptr.PtrFrameLayout;
-import com.chanven.lib.cptr.loadmore.OnLoadMoreListener;
 import com.chanven.lib.cptr.recyclerview.RecyclerAdapterWithHF;
 import com.google.gson.reflect.TypeToken;
 import com.handu.poweroperational.R;
 import com.handu.poweroperational.base.BaseFragment;
-import com.handu.poweroperational.request.callback.JsonDialogCallback;
 import com.handu.poweroperational.main.activity.workorder.AddWorkOrderActivity;
 import com.handu.poweroperational.main.activity.workorder.HistoryWorkOrderDetailActivity;
 import com.handu.poweroperational.main.bean.constants.WorkOrderPriority;
@@ -33,8 +31,9 @@ import com.handu.poweroperational.main.bean.constants.WorkOrderState;
 import com.handu.poweroperational.main.bean.constants.WorkOrderType;
 import com.handu.poweroperational.main.bean.results.WorkOrderResult;
 import com.handu.poweroperational.request.RequestServer;
-import com.handu.poweroperational.ui.RecyclerView.ItemClickListener;
-import com.handu.poweroperational.ui.RecyclerView.adapter.BaseRecyclerViewHolder;
+import com.handu.poweroperational.request.callback.JsonDialogCallback;
+import com.handu.poweroperational.ui.RecyclerView.click.ItemClickListener;
+import com.handu.poweroperational.ui.RecyclerView.holder.BaseRecyclerViewHolder;
 import com.handu.poweroperational.ui.RecyclerView.adapter.CommonRecyclerViewAdapter;
 import com.handu.poweroperational.utils.AnimationUtil;
 import com.handu.poweroperational.utils.AppConstant;
@@ -43,7 +42,6 @@ import com.handu.poweroperational.utils.ServiceUrl;
 import com.handu.poweroperational.utils.Tools;
 import com.haozhang.lib.SlantedTextView;
 import com.jayfang.dropdownmenu.DropDownMenu;
-import com.jayfang.dropdownmenu.OnMenuSelectedListener;
 import com.lzy.okhttputils.OkHttpUtils;
 import com.lzy.okhttputils.request.BaseRequest;
 
@@ -140,8 +138,8 @@ public class HistoryWorkOrderListFragment extends BaseFragment {
     @Override
     protected void initView() {
         initLoadingView();
-        initDropDownMenu();
         initRefreshLayout();
+        initDropDownMenu();
         fabAdd.setVisibility(View.VISIBLE);
         recyclerView.addOnItemTouchListener(new ItemClickListener(recyclerView,
                 new ItemClickListener.OnItemClickListener() {
@@ -203,13 +201,7 @@ public class HistoryWorkOrderListFragment extends BaseFragment {
 
     private void initLoadingView() {
         loadingView.showLoading();
-        loadingView.setRetryListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadingView.showContent();
-                refresh();
-            }
-        });
+        loadingView.setRetryListener(v -> refresh());
     }
 
     private void initRefreshLayout() {
@@ -223,25 +215,12 @@ public class HistoryWorkOrderListFragment extends BaseFragment {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
                 page = 1;
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        setData(0);
-                    }
-                }, 1000);
+                handler.postDelayed(() -> setData(0), 1000);
             }
         });
-        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void loadMore() {
-                page++;
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        setData(1);
-                    }
-                }, 1000);
-            }
+        refreshLayout.setOnLoadMoreListener(() -> {
+            page++;
+            handler.postDelayed(() -> setData(1), 1000);
         });
     }
 
@@ -291,22 +270,19 @@ public class HistoryWorkOrderListFragment extends BaseFragment {
         dropDownMenu.setmMenuListBackColor(ContextCompat.getColor(mContext, R.color.white));
         dropDownMenu.setmMenuListSelectorRes(R.color.white);
         dropDownMenu.setmArrowMarginTitle(20);
-        dropDownMenu.setMenuSelectedListener(new OnMenuSelectedListener() {
-            @Override
-            public void onSelected(View view, int RowIndex, int ColumnIndex) {
-                switch (ColumnIndex) {
-                    case 0://类型
-                        workType = typeValues[RowIndex];
-                        break;
-                    case 1://状态
-                        workState = stateValues[RowIndex];
-                        break;
-                    case 2://优先级
-                        workPriority = priorityValues[RowIndex];
-                        break;
-                }
-                refresh();
+        dropDownMenu.setMenuSelectedListener((view, RowIndex, ColumnIndex) -> {
+            switch (ColumnIndex) {
+                case 0://类型
+                    workType = typeValues[RowIndex];
+                    break;
+                case 1://状态
+                    workState = stateValues[RowIndex];
+                    break;
+                case 2://优先级
+                    workPriority = priorityValues[RowIndex];
+                    break;
             }
+            refresh();
         });
         List<String[]> items = new ArrayList<>();
         items.add(typeTitles);
@@ -334,12 +310,11 @@ public class HistoryWorkOrderListFragment extends BaseFragment {
     }
 
     private void refresh() {
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (refreshLayout != null) {
-                    refreshLayout.autoRefresh(true);
-                }
+        if (!isFirstLoad)
+            loadingView.showContent();
+        handler.postDelayed(() -> {
+            if (refreshLayout != null) {
+                refreshLayout.autoRefresh(true);
             }
         }, 1);
     }

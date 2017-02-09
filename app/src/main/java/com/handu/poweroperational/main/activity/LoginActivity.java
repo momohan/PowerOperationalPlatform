@@ -9,7 +9,6 @@ import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,11 +24,11 @@ import com.github.johnkil.print.PrintButton;
 import com.github.johnkil.print.PrintView;
 import com.handu.poweroperational.R;
 import com.handu.poweroperational.base.BaseActivity;
-import com.handu.poweroperational.request.callback.JsonDialogCallback;
 import com.handu.poweroperational.db.DBConstants;
 import com.handu.poweroperational.db.model.User;
 import com.handu.poweroperational.main.bean.results.LoginResult;
 import com.handu.poweroperational.request.RequestServer;
+import com.handu.poweroperational.request.callback.JsonDialogCallback;
 import com.handu.poweroperational.utils.AESUtils;
 import com.handu.poweroperational.utils.AppConstant;
 import com.handu.poweroperational.utils.AppLogger;
@@ -84,42 +83,31 @@ public class LoginActivity extends BaseActivity {
     protected void initView() {
         mUserNameView = (AutoCompleteTextView) findViewById(R.id.username);
         mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                attemptLogin();
-                return true;
-            }
+        mPasswordView.setOnEditorActionListener((textView, id, keyEvent) -> {
+            attemptLogin();
+            return true;
         });
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
-        ibtSelectUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (popView != null) {
+        mEmailSignInButton.setOnClickListener(view -> attemptLogin());
+        ibtSelectUser.setOnClickListener(v -> {
+            if (popView != null) {
+                if (!popView.isShowing()) {
+                    popView.showAsDropDown(mUserNameView);
+                } else {
+                    popView.dismiss();
+                }
+            } else {
+                // 如果有已经登录过账号
+                CursorList<User> users = Query.all(User.class).get();
+                if (users.size() > 0) {
+                    initPopView(users);
                     if (!popView.isShowing()) {
                         popView.showAsDropDown(mUserNameView);
                     } else {
                         popView.dismiss();
                     }
                 } else {
-                    // 如果有已经登录过账号
-                    CursorList<User> users = Query.all(User.class).get();
-                    if (users.size() > 0) {
-                        initPopView(users);
-                        if (!popView.isShowing()) {
-                            popView.showAsDropDown(mUserNameView);
-                        } else {
-                            popView.dismiss();
-                        }
-                    } else {
-                        Tools.showToast(getString(R.string.no_user_info));
-                    }
+                    Tools.showToast(getString(R.string.no_user_info));
                 }
             }
         });

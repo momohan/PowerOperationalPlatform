@@ -18,6 +18,11 @@ public class DeviceResult implements Parcelable {
         this.deviceName = deviceName;
     }
 
+    public DeviceResult(String deviceName, int deviceId) {
+        this.deviceId = deviceId;
+        this.deviceName = deviceName;
+    }
+
     public DeviceResult(int deviceId, String deviceName, int deviceType) {
         this.deviceId = deviceId;
         this.deviceName = deviceName;

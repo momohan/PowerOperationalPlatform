@@ -4,7 +4,7 @@
     android:id="@+id/activity_qr_code_scan_result"
     style="@style/MatchMatch.Vertical"
     android:background="@color/white"
-    tools:context="com.handu.poweroperational.main.activity.QrCodeScanResultActivity">
+    tools:context="com.handu.poweroperational.main.activity.QRCodeScanResultActivity">
 
     <include layout="@layout/layout_title_bar" />
 

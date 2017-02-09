@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/MatchMatch.Vertical"
     android:background="@color/white"
-    tools:context="com.handu.poweroperational.main.activity.OperationActivity">
+    tools:context="com.handu.poweroperational.main.activity.operation.OperationActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"

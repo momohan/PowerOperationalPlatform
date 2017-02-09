@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/MatchMatch.Vertical"
     android:background="@color/white"
-    tools:context="com.handu.poweroperational.main.fragment.operaton.OperationFragment">
+    tools:context="com.handu.poweroperational.main.fragment.operation.OperationFragment">
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tabs"

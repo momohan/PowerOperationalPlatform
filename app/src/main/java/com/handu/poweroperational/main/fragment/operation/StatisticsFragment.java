@@ -1,35 +1,31 @@
-package com.handu.poweroperational.main.fragment.operaton;
+package com.handu.poweroperational.main.fragment.operation;
 
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
-import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
 import com.chanven.lib.cptr.PtrDefaultHandler;
 import com.chanven.lib.cptr.PtrFrameLayout;
 import com.chanven.lib.cptr.recyclerview.RecyclerAdapterWithHF;
-import com.flyco.dialog.listener.OnOperItemClickL;
-import com.flyco.dialog.widget.NormalListDialog;
 import com.handu.poweroperational.R;
 import com.handu.poweroperational.base.BaseEvent;
 import com.handu.poweroperational.base.BaseFragment;
+import com.handu.poweroperational.main.activity.operation.OperationActivity;
 import com.handu.poweroperational.main.bean.constants.EventType;
-import com.handu.poweroperational.ui.DateTimePicker.TimePickerDialog;
-import com.handu.poweroperational.ui.DateTimePicker.listener.OnDateSetListener;
+import com.handu.poweroperational.main.bean.results.DeviceResult;
 import com.handu.poweroperational.ui.DateTimePicker.utils.DateTimePicker;
-import com.handu.poweroperational.ui.RecyclerView.adapter.BaseRecyclerViewHolder;
 import com.handu.poweroperational.ui.RecyclerView.adapter.CommonRecyclerViewAdapter;
+import com.handu.poweroperational.ui.RecyclerView.holder.BaseRecyclerViewHolder;
 import com.handu.poweroperational.ui.RecyclerView.utils.SwipyAppBarScrollListener;
 import com.handu.poweroperational.utils.Tools;
 
@@ -153,29 +149,27 @@ public class StatisticsFragment extends BaseFragment {
 
     @Override
     protected void initData() {
-        tvDeviceName.setText("奥克斯广场总漏保");
         Calendar calendar = Calendar.getInstance();
         tvEndTime.setText(Tools.ConvertDateToString(calendar.getTime(), "yyyy-MM-dd"));
         calendar.add(Calendar.DATE, -6);
         tvStartTime.setText(Tools.ConvertDateToString(calendar.getTime(), "yyyy-MM-dd"));
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
+        if (OperationActivity.deviceResult != null) {
+            tvDeviceName.setText(OperationActivity.deviceResult.getDeviceName());
+            mHandler.postDelayed(() -> {
                 if (refreshLayout != null)
                     refreshLayout.autoRefresh(true);
-            }
-        }, 100);
+            }, 100);
+        } else {
+            loadingView.showEmpty();
+        }
     }
 
     private void initLoadingView() {
         loadingView.showLoading();
+        loadingView.setEmptyImage(R.drawable.ic_vector_no_data);
+        loadingView.setEmptyText(getString(R.string.please_select_device));
         loadingView.setRetryText(getString(R.string.action_retry));
-        loadingView.setRetryListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                refresh();
-            }
-        });
+        loadingView.setRetryListener(v -> refresh());
     }
 
     private void initRefreshLayout() {
@@ -185,24 +179,16 @@ public class StatisticsFragment extends BaseFragment {
 
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                mHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        setData();
-                    }
-                }, 1000);
+                mHandler.postDelayed(() -> setData(), 1000);
             }
         });
     }
 
     public void refresh() {
         loadingView.showLoading();
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                manager.scrollToPosition(0);
-                setData();
-            }
+        mHandler.postDelayed(() -> {
+            manager.scrollToPosition(0);
+            setData();
         }, 1000);
     }
 
@@ -236,45 +222,13 @@ public class StatisticsFragment extends BaseFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_change_device:
-                final String item[] = new String[]{"奥克斯广场总漏保", "环球中心总漏保", "德商国际总漏保"};
-                final NormalListDialog dialog = new NormalListDialog(mContext, item);
-                dialog.title(getString(R.string.please_select_device))
-                        .titleTextColor(ContextCompat.getColor(mContext, R.color.white))
-                        .titleBgColor(ContextCompat.getColor(mContext, R.color.colorPrimary))
-                        .itemPressColor(ContextCompat.getColor(mContext, R.color.gray_light))
-                        .itemTextColor(ContextCompat.getColor(mContext, R.color.black))
-                        .cornerRadius(1f)
-                        .widthScale(0.8f)
-                        .isTitleShow(true)
-                        .setCanceledOnTouchOutside(true);
-                dialog.show();
-                dialog.setOnOperItemClickL(new OnOperItemClickL() {
-                    @Override
-                    public void onOperItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        switch (position) {
-                            default:
-                                dialog.dismiss();
-                                EventBus.getDefault().post(new BaseEvent(EventType.selectOperationDevice.getType(), item[position]));
-                                break;
-                        }
-                    }
-                });
+                EventBus.getDefault().post(new BaseEvent(EventType.requestOperationDevice.getType()));
                 break;
             case R.id.tv_start_time:
-                DateTimePicker.show(mContext, getFragmentManager(), DateTimePicker.YEAR_MONTH_DAY, new OnDateSetListener() {
-                    @Override
-                    public void onDateSet(TimePickerDialog timePickerView, long millSeconds, String result) {
-                        tvStartTime.setText(result);
-                    }
-                }, tvStartTime.getText().toString() + " 00:00:00");
+                DateTimePicker.show(mContext, getFragmentManager(), DateTimePicker.YEAR_MONTH_DAY, (timePickerView, millSeconds, result) -> tvStartTime.setText(result), tvStartTime.getText().toString() + " 00:00:00");
                 break;
             case R.id.tv_end_time:
-                DateTimePicker.show(mContext, getFragmentManager(), DateTimePicker.YEAR_MONTH_DAY, new OnDateSetListener() {
-                    @Override
-                    public void onDateSet(TimePickerDialog timePickerView, long millSeconds, String result) {
-                        tvEndTime.setText(result);
-                    }
-                }, tvEndTime.getText().toString() + " 23:59:59");
+                DateTimePicker.show(mContext, getFragmentManager(), DateTimePicker.YEAR_MONTH_DAY, (timePickerView, millSeconds, result) -> tvEndTime.setText(result), tvEndTime.getText().toString() + " 23:59:59");
                 break;
             case R.id.bt_search:
                 refresh();
@@ -285,9 +239,10 @@ public class StatisticsFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)//在ui线程执行 操作ui必须在此线程
     public void onEvent(BaseEvent event) {
         if (!isFirstLoad)
-        if (event.eventType == EventType.selectOperationDevice.getType()) {
-            tvDeviceName.setText((String) event.data);
-            refresh();
-        }
+            if (event.eventType == EventType.selectOperationDevice.getType()) {
+                DeviceResult deviceResult = (DeviceResult) event.data;
+                tvDeviceName.setText(deviceResult.getDeviceName());
+                refresh();
+            }
     }
 }

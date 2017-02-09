@@ -28,7 +28,7 @@ import com.handu.poweroperational.main.bean.results.ImageResult;
 import com.handu.poweroperational.main.bean.results.NodeTimeResult;
 import com.handu.poweroperational.main.bean.results.WorkOrderResult;
 import com.handu.poweroperational.request.RequestServer;
-import com.handu.poweroperational.ui.RecyclerView.adapter.BaseRecyclerViewHolder;
+import com.handu.poweroperational.ui.RecyclerView.holder.BaseRecyclerViewHolder;
 import com.handu.poweroperational.ui.RecyclerView.adapter.CommonRecyclerViewAdapter;
 import com.handu.poweroperational.ui.widget.view.StepperIndicator;
 import com.handu.poweroperational.utils.AppLogger;

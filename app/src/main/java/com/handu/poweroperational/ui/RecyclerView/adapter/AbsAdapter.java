@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.handu.poweroperational.ui.RecyclerView.holder.BaseRecyclerViewHolder;
+
 /**
  * @ 作者:柳梦
  * @ 创建时间:2016/8/26 10:35
@@ -16,7 +18,7 @@ import android.view.ViewGroup;
 
 public abstract class AbsAdapter<M, VH extends BaseRecyclerViewHolder> extends RecyclerView.Adapter<BaseRecyclerViewHolder> {
 
-    private static final String TAG = "AbsAdapter";
+    private static final String TAG = "柳梦";
 
     public static final int VIEW_TYPE_HEADER = 1024;
     public static final int VIEW_TYPE_FOOTER = 1025;

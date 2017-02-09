@@ -1,6 +1,5 @@
 package com.handu.poweroperational.main.activity;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -128,12 +127,7 @@ public class DownLoadActivity extends BaseActivity implements ExecutorWithListen
         targetFolder.append(fileDir);
         autoInstall = intent.getBooleanExtra("autoInstall", false);
         restartDownload = intent.getBooleanExtra("restartDownload", false);
-        initToolBar(toolbar, title, true, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        }, false, null, null);
+        initToolBar(toolbar, title, true, v -> finish(), false, null, null);
     }
 
     @Override
@@ -179,14 +173,8 @@ public class DownLoadActivity extends BaseActivity implements ExecutorWithListen
         if (shouldShowRequestPermissionRationale(READ_EXTERNAL_STORAGE) &&
                 shouldShowRequestPermissionRationale(WRITE_EXTERNAL_STORAGE)) {
             Snackbar.make(toolbar, R.string.permission_storage, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(android.R.string.ok, new View.OnClickListener() {
-                        @Override
-                        @TargetApi(Build.VERSION_CODES.M)
-                        public void onClick(View v) {
-                            requestPermissions(new String[]{
-                                    READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE}, REQUEST_READ_STORAGE);
-                        }
-                    });
+                    .setAction(android.R.string.ok, v -> requestPermissions(new String[]{
+                            READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE}, REQUEST_READ_STORAGE));
         } else {
             requestPermissions(new String[]{READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE}, REQUEST_READ_STORAGE);
         }

@@ -9,13 +9,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
 import com.handu.poweroperational.R;
 import com.handu.poweroperational.base.BaseActivity;
-import com.handu.poweroperational.request.callback.StringDialogCallback;
 import com.handu.poweroperational.request.RequestServer;
+import com.handu.poweroperational.request.callback.StringDialogCallback;
 import com.handu.poweroperational.ui.AndroidTree.TreeNodeUtils;
 import com.handu.poweroperational.ui.AndroidTree.holder.IconTreeItemHolder;
 import com.handu.poweroperational.utils.JsonUtils;
@@ -120,45 +119,32 @@ public class SelectActivity extends BaseActivity implements TreeNode.TreeNodeCli
         childName = dataIntent.getStringExtra(CHILD_NAME);
         params = (Map<String, String>) dataIntent.getSerializableExtra(PARAMS);
         others = dataIntent.getStringArrayExtra(OTHERS);
-        initToolBar(toolbar, title, true, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        }, false, null, null);
+        initToolBar(toolbar, title, true, v -> finish(), false, null, null);
         boolean singleSelection = dataIntent.getBooleanExtra(SINGLE_SELECTION, true);
         if (singleSelection) {
             btnToggleSelection.setEnabled(false);
             btnCheckSelection.setClickable(false);
         }
         selectList = new ArrayList<>();
-        btnToggleSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    selectionModeEnabled = true;
-                    btnCheckSelection.setEnabled(true);
-                    btnDeselectAll.setEnabled(true);
-                    btnSelectAll.setEnabled(true);
-                } else {
-                    selectionModeEnabled = false;
-                    btnCheckSelection.setEnabled(false);
-                    btnDeselectAll.setEnabled(false);
-                    btnSelectAll.setEnabled(false);
-                }
-                tView.setSelectionModeEnabled(selectionModeEnabled);
+        btnToggleSelection.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                selectionModeEnabled = true;
+                btnCheckSelection.setEnabled(true);
+                btnDeselectAll.setEnabled(true);
+                btnSelectAll.setEnabled(true);
+            } else {
+                selectionModeEnabled = false;
+                btnCheckSelection.setEnabled(false);
+                btnDeselectAll.setEnabled(false);
+                btnSelectAll.setEnabled(false);
             }
+            tView.setSelectionModeEnabled(selectionModeEnabled);
         });
     }
 
     private void initLoadingView() {
         loadingView.showLoading();
-        loadingView.setRetryListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getTreeJsonData(params);
-            }
-        });
+        loadingView.setRetryListener(v -> getTreeJsonData(params));
         loadingView.setEmptyText(getString(R.string.query_data_is_null));
     }
 

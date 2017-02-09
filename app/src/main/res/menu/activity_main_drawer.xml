@@ -25,6 +25,14 @@
                     android:id="@+id/nav_ndk"
                     android:icon="@drawable/ic_vector_right_menu"
                     android:title="ndk测试" />
+                <item
+                    android:id="@+id/nav_percent"
+                    android:icon="@drawable/ic_vector_right_menu"
+                    android:title="百分比布局测试" />
+                <item
+                    android:id="@+id/nav_map"
+                    android:icon="@drawable/ic_vector_map"
+                    android:title="地图" />
             </group>
         </menu>
     </item>

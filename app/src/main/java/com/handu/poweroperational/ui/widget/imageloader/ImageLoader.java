@@ -11,7 +11,16 @@ import com.handu.poweroperational.R;
 public class ImageLoader {
 
     private int type;  //类型 (大图，中图，小图)
-    private String url; //需要解析的url
+    /**
+     * 需要解析的url可以为以下类型
+     * String string：       string可以为一个文件路径、uri或者url
+     * Uri uri：             uri类型
+     * File file：           文件
+     * Integer resourceId：  资源Id,R.drawable.xxx或者R.mipmap.xxx
+     * byte[] model：        byte[]类型
+     * T model：             自定义类型
+     */
+    private Object url;
     private int placeHolder; //当没有成功加载或加载出错的时候显示的图片
     private ImageView imgView; //ImageView的实例
     private int strategy;//加载策略，是否在wifi下才加载
@@ -28,7 +37,7 @@ public class ImageLoader {
         return type;
     }
 
-    public String getUrl() {
+    public Object getUrl() {
         return url;
     }
 
@@ -46,15 +55,15 @@ public class ImageLoader {
 
     public static class Builder {
         private int type;
-        private String url;
+        private Object url;
         private int placeHolder;
         private ImageView imgView;
         private int strategy;
 
         public Builder() {
             this.type = ImageLoaderUtil.PIC_SMALL;
-            this.url = "";
-            this.placeHolder = R.drawable.ic_default_image;
+            this.url = null;
+            this.placeHolder = R.drawable.ic_vector_normal_image;
             this.imgView = null;
             this.strategy = ImageLoaderUtil.LOAD_STRATEGY_NORMAL;
         }
@@ -64,7 +73,7 @@ public class ImageLoader {
             return this;
         }
 
-        public Builder url(String url) {
+        public Builder url(Object url) {
             this.url = url;
             return this;
         }

@@ -53,13 +53,7 @@ public class LocationUploadService extends Service {
     /**
      * 定位结果回调，重写onReceiveLocation方法
      */
-    private BDLocationListener mListener = new BDLocationListener() {
-
-        @Override
-        public void onReceiveLocation(BDLocation location) {
-            getLocationInfo(location);
-        }
-    };
+    private BDLocationListener mListener = location -> getLocationInfo(location);
 
     /**
      * 获取定位详细信息

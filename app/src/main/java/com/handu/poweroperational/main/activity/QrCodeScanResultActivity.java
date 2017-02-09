@@ -3,7 +3,6 @@ package com.handu.poweroperational.main.activity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.TextView;
 
 import com.handu.poweroperational.R;
@@ -12,7 +11,7 @@ import com.handu.poweroperational.base.BaseActivity;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class QrCodeScanResultActivity extends BaseActivity {
+public class QRCodeScanResultActivity extends BaseActivity {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -30,12 +29,7 @@ public class QrCodeScanResultActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        initToolBar(toolbar, "扫描结果", true, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        initToolBar(toolbar, getString(R.string.title_qr_scan_result), true, v -> finish());
     }
 
     @Override

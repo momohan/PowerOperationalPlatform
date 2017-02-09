@@ -36,7 +36,6 @@ public class ImageLoaderUtil {
         return mInstance;
     }
 
-
     public void loadImage(Context context, ImageLoader loader) {
         mStrategy.loadImage(context, loader);
     }

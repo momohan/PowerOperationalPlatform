@@ -23,13 +23,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bigkoo.alertview.AlertView;
-import com.bigkoo.alertview.OnItemClickListener;
 import com.google.gson.reflect.TypeToken;
 import com.handu.poweroperational.R;
 import com.handu.poweroperational.base.BaseEvent;
 import com.handu.poweroperational.base.BaseFragment;
-import com.handu.poweroperational.request.callback.JsonDialogCallback;
-import com.handu.poweroperational.request.callback.StringDialogCallback;
 import com.handu.poweroperational.main.activity.SelectActivity;
 import com.handu.poweroperational.main.activity.materials.MaterialsSelectActivity;
 import com.handu.poweroperational.main.bean.constants.EventType;
@@ -41,7 +38,9 @@ import com.handu.poweroperational.main.bean.results.ImageResult;
 import com.handu.poweroperational.main.bean.results.NodeTimeResult;
 import com.handu.poweroperational.main.bean.results.WorkOrderResult;
 import com.handu.poweroperational.request.RequestServer;
-import com.handu.poweroperational.ui.RecyclerView.adapter.BaseRecyclerViewHolder;
+import com.handu.poweroperational.request.callback.JsonDialogCallback;
+import com.handu.poweroperational.request.callback.StringDialogCallback;
+import com.handu.poweroperational.ui.RecyclerView.holder.BaseRecyclerViewHolder;
 import com.handu.poweroperational.ui.RecyclerView.adapter.CommonRecyclerViewAdapter;
 import com.handu.poweroperational.ui.widget.view.StepperIndicator;
 import com.handu.poweroperational.utils.AppConstant;
@@ -248,12 +247,7 @@ public class TaskNewWorkOrderDetailFragment extends BaseFragment {
         imageAfterInfo = new ArrayList<>();
         troubleText = new ArrayList<>();
         troubleValue = new ArrayList<>();
-        spWorkTroubleGenre.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(MaterialSpinner view, int position, long i, Object item) {
-                troubleGenreId = troubleValue.get(position);
-            }
-        });
+        spWorkTroubleGenre.setOnItemSelectedListener((view, position1, i, item) -> troubleGenreId = troubleValue.get(position1));
     }
 
     @Override
@@ -473,27 +467,24 @@ public class TaskNewWorkOrderDetailFragment extends BaseFragment {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.layout_new_work_order_detail_refuse, null);
         final EditText et = (EditText) view.findViewById(R.id.et_refuse_reason);
         AlertView alertView = new AlertView(getResources().getString(R.string.sweet_warn), getResources().getString(R.string.hint_refuse_content), getResources().getString(R.string.bt_cancel), null, new String[]{"确认"},
-                mContext, AlertView.Style.Alert, new OnItemClickListener() {
-            @Override
-            public void onItemClick(Object o, int position) {
-                if (position != AlertView.CANCELPOSITION) {
-                    String str = et.getText().toString();
-                    if (!TextUtils.isEmpty(str)) {
-                        int nextState = WorkOrderState.refuse.getState();
-                        Map<String, String> map = new HashMap<>();
-                        map.put("DetailId", workOrderResult.getDetailId());
-                        map.put("CurrentState", nextState + "");
-                        map.put("ModifyUserName", PreferencesUtils.get(mContext, AppConstant.username, "") + "");
-                        map.put("ModifyUserId", PreferencesUtils.get(mContext, AppConstant.userId, "") + "");
-                        map.put("Type", workOrderResult.getType() + "");
-                        map.put("Description", str);
-                        submit(map, nextState);
-                    } else {
-                        Tools.showToast(getResources().getString(R.string.refuse_reason_is_null));
+                mContext, AlertView.Style.Alert, (o, position1) -> {
+                    if (position1 != AlertView.CANCELPOSITION) {
+                        String str = et.getText().toString();
+                        if (!TextUtils.isEmpty(str)) {
+                            int nextState = WorkOrderState.refuse.getState();
+                            Map<String, String> map = new HashMap<>();
+                            map.put("DetailId", workOrderResult.getDetailId());
+                            map.put("CurrentState", nextState + "");
+                            map.put("ModifyUserName", PreferencesUtils.get(mContext, AppConstant.username, "") + "");
+                            map.put("ModifyUserId", PreferencesUtils.get(mContext, AppConstant.userId, "") + "");
+                            map.put("Type", workOrderResult.getType() + "");
+                            map.put("Description", str);
+                            submit(map, nextState);
+                        } else {
+                            Tools.showToast(getResources().getString(R.string.refuse_reason_is_null));
+                        }
                     }
-                }
-            }
-        });
+                });
         alertView.addExtView(view);
         alertView.show();
     }

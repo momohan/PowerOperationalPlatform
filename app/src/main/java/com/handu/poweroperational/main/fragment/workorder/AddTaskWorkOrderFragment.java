@@ -227,7 +227,7 @@ public class AddTaskWorkOrderFragment extends BaseFragment {
 
         private WeakReference<Fragment> reference;
 
-        public MsgHandler(Fragment fragment) {
+        MsgHandler(Fragment fragment) {
             reference = new WeakReference<>(fragment);
         }
 

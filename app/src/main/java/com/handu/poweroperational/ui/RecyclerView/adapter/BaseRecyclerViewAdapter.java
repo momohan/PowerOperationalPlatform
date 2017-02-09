@@ -2,6 +2,8 @@ package com.handu.poweroperational.ui.RecyclerView.adapter;
 
 import android.content.Context;
 
+import com.handu.poweroperational.ui.RecyclerView.holder.BaseRecyclerViewHolder;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,12 +19,12 @@ public abstract class BaseRecyclerViewAdapter<M, VH extends BaseRecyclerViewHold
 
     private List<M> dataList;
 
-    public BaseRecyclerViewAdapter(Context context) {
+    BaseRecyclerViewAdapter(Context context) {
         super(context);
         this.dataList = new ArrayList<>();
     }
 
-    public BaseRecyclerViewAdapter(Context context, List<M> list) {
+    BaseRecyclerViewAdapter(Context context, List<M> list) {
         super(context);
         this.dataList = new ArrayList<>();
         this.dataList.addAll(list);

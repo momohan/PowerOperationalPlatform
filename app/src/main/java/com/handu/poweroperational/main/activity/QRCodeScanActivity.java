@@ -70,12 +70,7 @@ public class QRCodeScanActivity extends BaseActivity implements QRCodeView.Deleg
 
     @Override
     protected void initView() {
-        initToolBar(toolbar, "二维码扫描", true, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        initToolBar(toolbar, getString(R.string.title_qr_scan), true, v -> finish());
         mQRCodeView.setDelegate(this);
     }
 
@@ -108,11 +103,8 @@ public class QRCodeScanActivity extends BaseActivity implements QRCodeView.Deleg
             @Override
             public void onFailed(int requestCode) {
                 if (requestCode == REQUEST_CODE_QRCODE_PERMISSIONS) {
-                    showSnackbar(toolbar, "扫描二维码权限被禁止，扫描功能将受影响!", "关闭", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
+                    showSnackbar(toolbar, "扫描二维码权限被禁止，扫描功能将受影响!", "关闭", v -> {
 
-                        }
                     }, false);
                 }
             }
@@ -131,12 +123,7 @@ public class QRCodeScanActivity extends BaseActivity implements QRCodeView.Deleg
             setVolumeControlStream(AudioManager.STREAM_MUSIC);
             mediaPlayer = new MediaPlayer();
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    mediaPlayer.seekTo(0);
-                }
-            });
+            mediaPlayer.setOnCompletionListener(mp -> mediaPlayer.seekTo(0));
             AssetFileDescriptor file = getResources().openRawResourceFd(R.raw.beep);
             try {
                 mediaPlayer.setDataSource(file.getFileDescriptor(),

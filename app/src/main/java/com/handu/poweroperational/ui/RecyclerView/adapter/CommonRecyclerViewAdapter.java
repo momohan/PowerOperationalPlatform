@@ -3,9 +3,7 @@ package com.handu.poweroperational.ui.RecyclerView.adapter;
 import android.content.Context;
 import android.view.ViewGroup;
 
-
-import com.handu.poweroperational.ui.RecyclerView.adapter.BaseRecyclerViewAdapter;
-import com.handu.poweroperational.ui.RecyclerView.adapter.BaseRecyclerViewHolder;
+import com.handu.poweroperational.ui.RecyclerView.holder.BaseRecyclerViewHolder;
 
 import java.util.List;
 
@@ -16,7 +14,7 @@ import java.util.List;
  */
 public abstract class CommonRecyclerViewAdapter<T> extends BaseRecyclerViewAdapter<T, BaseRecyclerViewHolder> {
 
-    protected final int mItemLayoutId;
+    private final int mItemLayoutId;
 
     public CommonRecyclerViewAdapter(Context context, int itemLayoutId) {
         super(context);
@@ -43,6 +41,5 @@ public abstract class CommonRecyclerViewAdapter<T> extends BaseRecyclerViewAdapt
         return 0;
     }
 
-    public abstract void convert(BaseRecyclerViewHolder helper, T item, int position);
-
+    public abstract void convert(BaseRecyclerViewHolder holder, T item, int position);
 }

@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@id/action_device"
+        android:title="@string/menu_device"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@id/action_tenement"
-        android:icon="@drawable/ic_vector_search"
         android:title="@string/menu_tenement"
         app:showAsAction="ifRoom" />
-
-    <!--<item-->
-    <!--android:id="@id/action_more"-->
-    <!--android:icon="@drawable/ic_vector_right_menu"-->
-    <!--android:title="@string/menu_more"-->
-    <!--app:showAsAction="ifRoom" />-->
-
 </menu>

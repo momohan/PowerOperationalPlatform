@@ -5,7 +5,7 @@
     android:id="@+id/loading_view"
     style="@style/MatchMatch"
     app:llLoadingResId="@layout/layout_loading"
-    tools:context="com.handu.poweroperational.main.fragment.operaton.CurrentFragment">
+    tools:context="com.handu.poweroperational.main.fragment.operation.CurrentFragment">
 
     <android.support.design.widget.CoordinatorLayout
         style="@style/MatchMatch"

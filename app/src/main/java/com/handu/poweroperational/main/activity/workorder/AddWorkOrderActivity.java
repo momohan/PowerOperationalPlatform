@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 
 import com.handu.poweroperational.R;
 import com.handu.poweroperational.base.BaseActivity;
@@ -39,12 +38,7 @@ public class AddWorkOrderActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        initToolBar(toolbar, "新建工单", true, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        initToolBar(toolbar, getString(R.string.title_add_new_work_order), true, v -> finish());
     }
 
     @Override
@@ -58,12 +52,7 @@ public class AddWorkOrderActivity extends BaseActivity {
         }
         if (list.size() > 0) {
             spWorkType.setItems(list);
-            spWorkType.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<Object>() {
-                @Override
-                public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
-                    switchFragment(types, position);
-                }
-            });
+            spWorkType.setOnItemSelectedListener((view, position, id, item) -> switchFragment(types, position));
             switchFragment(types, 0);
         }
     }

@@ -11,8 +11,8 @@ public class ServiceUrl {
      * ip地址
      */
     private static String[] Ips = {
-            "http://192.168.1.47:19433",//0
-            "http://192.168.1.59:19433"//1
+            "http://192.168.1.47:2062",//0
+            "http://192.168.1.59:2062"//1
     };
     private static String Ip = Ips[1];
     private static String Api = "/api/AndroidApi/";

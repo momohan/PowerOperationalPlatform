@@ -453,6 +453,7 @@
     <string name="scale_down_show_behavior">com.handu.poweroperational.ui.Behavior.ScaleDownShowBehavior</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="search_view_text_id">android:id/search_src_text</string>
 
     <!--登录相关-->
     <string name="prompt_email">账号</string>
@@ -491,6 +492,7 @@
 
     <!--菜单相关-->
     <string name="menu_search">查找</string>
+    <string name="menu_select_device">设备</string>
     <string name="menu_tenement">查找楼宇</string>
     <string name="menu_device">设备选择</string>
     <string name="menu_notifications">通知</string>
@@ -551,8 +553,6 @@
     <string name="hint_refuse_content">请填写拒绝理由或相关描述</string>
     <string name="before_handle_image">处理前图片</string>
     <string name="after_handle_image">处理后图片</string>
-    <string name="work_order_handle_detail">工单处理详情</string>
-    <string name="work_order_finish_detail">工单完成详情</string>
     <string name="work_order_num">工单编号:</string>
     <string name="work_order_type">工单类型:</string>
     <string name="work_order_content">工单内容:</string>
@@ -575,8 +575,9 @@
     <string name="get_upload_materials_failure">获取已选择物资失败</string>
     <string name="create_work_order_qrcode_failure">生成工单二维码失败</string>
 
-    <!--实时数据相关-->
+    <!--运维界面数据相关-->
     <string name="table_current_header_name">名称</string>
+    <string name="no_charts_data">未查询到数据</string>
     <string name="please_select_device">请选择设备</string>
     <string name="tips_to">到</string>
     <string name="table_current_header_value">实时值</string>
@@ -587,4 +588,13 @@
     <string name="hint_search_content">请输入设备名称</string>
     <string name="search_content_is_null">搜索内容不能为空</string>
 
+
+    <!--activity title相关-->
+    <string name="title_work_order_handle_detail">工单处理详情</string>
+    <string name="title_work_order_finish_detail">工单完成详情</string>
+    <string name="title_operation">运维</string>
+    <string name="title_add_new_work_order">新建工单</string>
+    <string name="title_tools_select">工器具选择</string>
+    <string name="title_qr_scan">二维码扫描</string>
+    <string name="title_qr_scan_result">扫描结果</string>
 </resources>

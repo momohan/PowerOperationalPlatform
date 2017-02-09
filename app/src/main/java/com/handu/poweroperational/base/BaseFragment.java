@@ -145,9 +145,9 @@ public abstract class BaseFragment extends Fragment {
         if (!isPrepared || !isVisible || !isFirstLoad) {
             return;
         }
-        isFirstLoad = false;
         initView();
         initData();
+        isFirstLoad = false;
     }
 
     /**

@@ -27,12 +27,10 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.formatter.PercentFormatter;
-import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.handu.poweroperational.R;
 import com.handu.poweroperational.base.BaseEvent;
 import com.handu.poweroperational.base.BaseFragment;
@@ -125,9 +123,14 @@ public class HomeFragment extends BaseFragment {
     @Override
     protected void initView() {
         initLoadingView();
+        initRefreshLayout();
         initPieCharts();
         initChart();
-        initRefreshLayout();
+    }
+
+    @Override
+    protected void initData() {
+        refresh();
     }
 
     private void initRefreshLayout() {
@@ -141,41 +144,25 @@ public class HomeFragment extends BaseFragment {
 
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        setData();
-                    }
-                }, 1000);
+                handler.postDelayed(() -> setData(), 1000);
             }
         });
     }
 
     public void refresh() {
-        loadingView.showContent();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (refreshLayout != null)
-                    refreshLayout.autoRefresh(true);
-            }
+        if (!isFirstLoad)
+            loadingView.showContent();
+        handler.postDelayed(() -> {
+            if (refreshLayout != null)
+                refreshLayout.autoRefresh(true);
         }, 100);
     }
 
     //初始化loadingView
     private void initLoadingView() {
+        loadingView.showLoading();
         loadingView.setRetryText(getString(R.string.action_retry));
-        loadingView.setRetryListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                refresh();
-            }
-        });
-    }
-
-    @Override
-    protected void initData() {
-        refresh();
+        loadingView.setRetryListener(v -> refresh());
     }
 
     private void setData() {
@@ -192,7 +179,7 @@ public class HomeFragment extends BaseFragment {
             if (refreshLayout.isRefreshing())
                 refreshLayout.refreshComplete();
         }
-
+        loadingView.showContent();
         List<ILineDataSet> iLineDataSets = new ArrayList<>();//线集合
         List<Float> list = new ArrayList<>();//y值
         list.add(15f);
@@ -265,7 +252,7 @@ public class HomeFragment extends BaseFragment {
         //设置是否可以拖拽
         lineChart.setDragEnabled(true);
         //设置x,y是否可以缩放
-        lineChart.setScaleXEnabled(true);
+        lineChart.setScaleXEnabled(false);
         lineChart.setScaleYEnabled(false);
         //设置是否能扩大扩小
         lineChart.setPinchZoom(false);
@@ -344,12 +331,7 @@ public class HomeFragment extends BaseFragment {
         set.setLineWidth(2f);
         set.setCubicIntensity(2f);
         set.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
-        set.setValueFormatter(new ValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-                return String.format("%.2f", value);
-            }
-        });
+        set.setValueFormatter((value, entry, dataSetIndex, viewPortHandler) -> String.format("%.2f", value));
         return set;
     }
 
@@ -388,7 +370,7 @@ public class HomeFragment extends BaseFragment {
         pieChart.setTransparentCircleRadius(61f);
         pieChart.setDrawCenterText(true);
         pieChart.setRotationAngle(0);
-        pieChart.setRotationEnabled(true);
+        pieChart.setRotationEnabled(false);
         pieChart.setHighlightPerTapEnabled(true);
         pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override

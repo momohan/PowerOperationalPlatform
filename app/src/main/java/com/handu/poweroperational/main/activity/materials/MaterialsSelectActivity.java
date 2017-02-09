@@ -26,7 +26,7 @@ import com.google.gson.Gson;
 import com.handu.poweroperational.R;
 import com.handu.poweroperational.base.BaseActivity;
 import com.handu.poweroperational.main.activity.QRCodeScanActivity;
-import com.handu.poweroperational.main.activity.QrCodeScanResultActivity;
+import com.handu.poweroperational.main.activity.QRCodeScanResultActivity;
 import com.handu.poweroperational.main.adapter.materials.MaterialsSelectAdapter;
 import com.handu.poweroperational.main.application.PowerOperationalApplication;
 import com.handu.poweroperational.main.bean.MaterialsModel;
@@ -114,24 +114,14 @@ public class MaterialsSelectActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        initToolBar(toolbar, "工器具选择", true, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        initToolBar(toolbar, getString(R.string.title_tools_select), true, v -> finish());
         initLoadingView();
     }
 
     private void initLoadingView() {
         loadingView.showLoading();
         loadingView.setErrorText(getString(R.string.action_retry));
-        loadingView.setRetryListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getMaterials();
-            }
-        });
+        loadingView.setRetryListener(v -> getMaterials());
     }
 
     @Override
@@ -196,12 +186,7 @@ public class MaterialsSelectActivity extends BaseActivity {
         rvSelected = (RecyclerView) view.findViewById(R.id.selectRecyclerView);
         rvSelected.setLayoutManager(new LinearLayoutManager(this));
         TextView clear = (TextView) view.findViewById(R.id.clear);
-        clear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearCart();
-            }
-        });
+        clear.setOnClickListener(v -> clearCart());
         materialsSelectAdapter = new MaterialsSelectAdapter(this, selectedList);
         rvSelected.setAdapter(materialsSelectAdapter);
         return view;
@@ -368,7 +353,7 @@ public class MaterialsSelectActivity extends BaseActivity {
                     add(model);
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    gotoActivity(QrCodeScanResultActivity.class, data.getExtras(), false);
+                    gotoActivity(QRCodeScanResultActivity.class, data.getExtras(), false);
                 }
             }
         }
@@ -409,18 +394,15 @@ public class MaterialsSelectActivity extends BaseActivity {
                                 tView.setDefaultAnimation(true);
                                 tView.setDefaultContainerStyle(R.style.TreeNodeStyleCustom);
                                 tView.setUse2dScroll(true);
-                                tView.setDefaultNodeClickListener(new TreeNode.TreeNodeClickListener() {
-                                    @Override
-                                    public void onClick(TreeNode node, Object value) {
-                                        if (node.size() == 0) {
-                                            IconTreeItemHolder.IconTreeItem iconTreeItem = (IconTreeItemHolder.IconTreeItem) value;
-                                            if (iconTreeItem.others.get("Sort") != null
-                                                    && iconTreeItem.others.get("Sort").toString().equals("detail")) {
-                                                MaterialsModel model = new MaterialsModel(iconTreeItem.value, iconTreeItem.text);
-                                                activity.add(model);
-                                            } else {
-                                                Tools.showToast("请选择正确的工器具");
-                                            }
+                                tView.setDefaultNodeClickListener((node, value) -> {
+                                    if (node.size() == 0) {
+                                        IconTreeItemHolder.IconTreeItem iconTreeItem = (IconTreeItemHolder.IconTreeItem) value;
+                                        if (iconTreeItem.others.get("Sort") != null
+                                                && iconTreeItem.others.get("Sort").toString().equals("detail")) {
+                                            MaterialsModel model = new MaterialsModel(iconTreeItem.value, iconTreeItem.text);
+                                            activity.add(model);
+                                        } else {
+                                            Tools.showToast("请选择正确的工器具");
                                         }
                                     }
                                 });

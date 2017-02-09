@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_analyze_charts_max"
+    style="@style/MatchMatch.Vertical"
+    tools:context="com.handu.poweroperational.main.activity.operation.AnalyzeChartsMaxActivity">
+
+    <include layout="@layout/layout_title_bar" />
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/lineChart"
+        style="@style/MatchMatch"
+        android:layout_margin="5dp" />
+
+</LinearLayout>

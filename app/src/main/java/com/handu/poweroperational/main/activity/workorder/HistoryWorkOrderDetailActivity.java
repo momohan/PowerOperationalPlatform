@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 
 import com.handu.poweroperational.R;
 import com.handu.poweroperational.base.BaseActivity;
@@ -43,12 +42,7 @@ public class HistoryWorkOrderDetailActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        initToolBar(toolbar, getString(R.string.work_order_finish_detail), true, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        initToolBar(toolbar, getString(R.string.title_work_order_finish_detail), true, v -> finish());
         initImagePicker(9);
     }
 

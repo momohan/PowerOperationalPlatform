@@ -1,68 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:gravity="center">
 
-    <RelativeLayout
+    <TextView
+        android:id="@+id/tv_top"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@null"
-        android:gravity="center">
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:text="@string/app_name"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/system_size_32"
+        android:textStyle="bold"
+        android:visibility="visible" />
 
+
+    <LinearLayout
+        android:id="@+id/ll_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tv_top"
+            android:id="@+id/tv_company"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginBottom="50dp"
-            android:layout_marginTop="100dp"
             android:gravity="center"
-            android:text="@string/app_name"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/system_size_32"
-            android:textStyle="bold"
-            android:visibility="visible" />
+            android:text="@string/company"
+            android:textColor="@color/black"
+            android:textSize="@dimen/system_size_16" />
 
-
-        <LinearLayout
-            android:id="@+id/ll_bottom"
+        <TextView
+            android:id="@+id/tv_version"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:orientation="vertical">
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/version"
+            android:textColor="@color/black"
+            android:textSize="@dimen/system_size_14" />
+    </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_company"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/company"
-                android:textColor="@color/black"
-                android:textSize="@dimen/system_size_16" />
+    <ImageView
+        android:id="@+id/iv_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/ll_bottom"
+        android:layout_below="@+id/tv_top"
+        android:layout_marginBottom="30dp"
+        android:src="@drawable/welcome"
+        android:background="@null"
+        android:contentDescription="@null"
+        android:scaleType="centerCrop" />
 
-            <TextView
-                android:id="@+id/tv_version"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="50dp"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:text="@string/version"
-                android:textColor="@color/black"
-                android:textSize="@dimen/system_size_14" />
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/iv_image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/ll_bottom"
-            android:layout_below="@+id/tv_top"
-            android:layout_marginBottom="30dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/welcome" />
-
-    </RelativeLayout>
-
-</FrameLayout>
+</RelativeLayout>

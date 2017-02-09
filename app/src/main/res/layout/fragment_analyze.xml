@@ -1,13 +1,93 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ezy.ui.layout.LoadingLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/loading_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.handu.poweroperational.main.fragment.operaton.AnalyzeFragment">
+    app:llLoadingResId="@layout/layout_loading"
+    tools:context="com.handu.poweroperational.main.fragment.operation.AnalyzeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <RelativeLayout style="@style/MatchMatch">
 
-</FrameLayout>
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
+            style="@style/MatchWrap"
+            android:layout_alignParentTop="true"
+            android:orientation="vertical"
+            app:theme="@style/AppTheme.AppBarOverlay">
+
+            <LinearLayout
+                style="@style/MatchWrap.Vertical"
+                android:background="@color/white"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                <LinearLayout
+                    style="@style/MatchWrap.Horizontal"
+                    android:layout_margin="1dp"
+                    android:gravity="center_vertical"
+                    android:minHeight="40dp">
+
+                    <TextView
+                        android:id="@+id/tv_device_name"
+                        style="@style/AutoWrap"
+                        android:gravity="start|center_vertical"
+                        android:paddingEnd="10dp"
+                        android:paddingStart="10dp"
+                        android:textColor="@color/black" />
+
+                    <Button
+                        android:id="@+id/bt_change_device"
+                        style="@style/WrapWrap"
+                        android:layout_marginEnd="10dp"
+                        android:background="@null"
+                        android:gravity="center_vertical|end"
+                        android:text="@string/action_change"
+                        android:textColor="@color/colorAccent" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/MatchWrap.Horizontal"
+                    android:layout_margin="1dp"
+                    android:gravity="center_vertical"
+                    android:minHeight="40dp">
+
+                    <TextView
+                        android:id="@+id/tv_time"
+                        style="@style/AutoWrap"
+                        android:drawableStart="@drawable/ic_vector_date_time"
+                        android:gravity="center_vertical|start"
+                        android:paddingEnd="10dp"
+                        android:paddingStart="10dp"
+                        android:textColor="@color/black" />
+
+                    <Button
+                        android:id="@+id/bt_search"
+                        style="@style/WrapWrap"
+                        android:layout_marginEnd="10dp"
+                        android:background="@null"
+                        android:gravity="center_vertical|end"
+                        android:text="@string/action_query"
+                        android:textColor="@color/colorAccent" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/lineChart"
+            style="@style/MatchMatch"
+            android:layout_above="@+id/recyclerView"
+            android:layout_below="@+id/appbar"
+            android:layout_margin="5dp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            style="@style/MatchWrap"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
+
+</ezy.ui.layout.LoadingLayout>

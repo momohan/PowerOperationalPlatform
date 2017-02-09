@@ -1,9 +1,11 @@
 <ezy.ui.layout.LoadingLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/loading_view"
     style="@style/MatchMatch"
     android:background="@color/white"
+    app:llLoadingResId="@layout/layout_loading"
     tools:context="com.handu.poweroperational.main.fragment.HomeFragment">
 
     <com.chanven.lib.cptr.PtrClassicFrameLayout

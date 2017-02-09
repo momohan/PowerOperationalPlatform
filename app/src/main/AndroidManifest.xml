@@ -125,11 +125,25 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".main.activity.QrCodeScanResultActivity"
+            android:name=".main.activity.QRCodeScanResultActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <activity android:name=".main.activity.OperationActivity" />
-        <activity android:name=".main.activity.NdkTestActivity"></activity>
+        <activity
+            android:name=".main.activity.operation.OperationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".main.activity.NdkTestActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".main.activity.PercentTestActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".main.activity.LuckyExtractActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".main.activity.operation.AnalyzeChartsMaxActivity"
+            android:screenOrientation="landscape" />
+        <activity android:name=".main.activity.map.MapActivity"></activity>
     </application>
 
 </manifest>

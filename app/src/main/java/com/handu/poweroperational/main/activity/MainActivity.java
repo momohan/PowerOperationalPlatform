@@ -27,11 +27,12 @@ import android.widget.TextView;
 import com.ashokvarma.bottomnavigation.BadgeItem;
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
-import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.widget.MaterialDialog;
 import com.handu.poweroperational.R;
 import com.handu.poweroperational.base.BaseActivity;
 import com.handu.poweroperational.base.BaseEvent;
+import com.handu.poweroperational.main.activity.map.MapActivity;
+import com.handu.poweroperational.main.activity.operation.OperationActivity;
 import com.handu.poweroperational.main.bean.constants.EventType;
 import com.handu.poweroperational.main.fragment.AlarmListFragment;
 import com.handu.poweroperational.main.fragment.HomeFragment;
@@ -187,26 +188,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             public void onFailed(int requestCode) {
                 if (requestCode == REQUEST_READ_PHONE_STATE_PERMISSION) {
                     requestLocationPermission();
-                    showSnackbar(toolbar, "设备信息权限申请被禁止，推送功能未启动!", "关闭", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                        }
+                    showSnackbar(toolbar, "设备信息权限申请被禁止，推送功能未启动!", "关闭", v -> {
                     }, false);
                 } else if (requestCode == REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION) {
                     requestLocationPermission();
-                    showSnackbar(toolbar, "内存卡读写权限申请被禁止，推送功能未启动!", "关闭", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                        }
+                    showSnackbar(toolbar, "内存卡读写权限申请被禁止，推送功能未启动!", "关闭", v -> {
                     }, false);
                 } else if (requestCode == REQUEST_LOCATION_PERMISSION) {
-                    showSnackbar(toolbar, "位置权限申请被禁止，定位功能未启动!", "关闭", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                        }
+                    showSnackbar(toolbar, "位置权限申请被禁止，定位功能未启动!", "关闭", v -> {
                     }, false);
                 }
             }
@@ -228,23 +217,20 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     protected void initView() {
         initToolBar(toolbar, getResources().getString(R.string.app_name), false, null, true, R.menu.main,
-                new Toolbar.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.action_device:
-                                gotoActivity(SearchActivity.class, false);
-                                break;
-                            case R.id.action_more:
-                                MainTopMenuDialog dialog = new MainTopMenuDialog(mContext, flContainer);
-                                dialog.show();
-                                break;
-                            case R.id.action_refresh:
-                                EventBus.getDefault().post(new BaseEvent(EventType.homeRefresh.getType()));
-                                break;
-                        }
-                        return false;
+                item -> {
+                    switch (item.getItemId()) {
+                        case R.id.action_device:
+                            gotoActivity(SearchActivity.class, false);
+                            break;
+                        case R.id.action_more:
+                            MainTopMenuDialog dialog = new MainTopMenuDialog(mContext, flContainer);
+                            dialog.show();
+                            break;
+                        case R.id.action_refresh:
+                            EventBus.getDefault().post(new BaseEvent(EventType.homeRefresh.getType()));
+                            break;
                     }
+                    return false;
                 });
         menuItem = toolbar.getMenu().findItem(R.id.action_refresh);
         menuItem.setVisible(true);
@@ -257,12 +243,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         TextView tv = (TextView) view.findViewById(R.id.tv_user);
         tv.setText(getString(R.string.current_user) + PreferencesUtils.get(mContext, AppConstant.realName, "") + "");
         circleImageView = (CircleImageView) view.findViewById(R.id.iv_app_icon);
-        circleImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                initImagePicker(true);
-                gotoActivityForResult(ImageGridActivity.class, null, SELECT_IMAGE);
-            }
+        circleImageView.setOnClickListener(v -> {
+            initImagePicker(true);
+            gotoActivityForResult(ImageGridActivity.class, null, SELECT_IMAGE);
         });
         navigationView.setNavigationItemSelectedListener(this);
     }
@@ -271,6 +254,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     protected void initData() {
         pkgManager = getPackageManager();
         fm = getSupportFragmentManager();
+        setUserImage("http://pics.sc.chinaz.com/Files/pic/faces/3848/00.gif");
     }
 
     /**
@@ -394,17 +378,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                         .showAnim(mBasIn)
                         .dismissAnim(mBasOut)
                         .show();
-                dialog.setOnBtnClickL(new OnBtnClickL() {
-                    @Override
-                    public void onBtnClick() {
-                        dialog.dismiss();
-                    }
-                }, new OnBtnClickL() {
-                    @Override
-                    public void onBtnClick() {
-                        dialog.dismiss();
-                        DataCleanManager.clearAllCache(mContext);
-                    }
+                dialog.setOnBtnClickL(dialog::dismiss, () -> {
+                    dialog.dismiss();
+                    DataCleanManager.clearAllCache(mContext);
                 });
                 break;
             case R.id.nav_check_version:
@@ -419,21 +395,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                         .showAnim(mBasIn)
                         .dismissAnim(mBasOut)
                         .show();
-                dialog.setOnBtnClickL(new OnBtnClickL() {
-                    @Override
-                    public void onBtnClick() {
-                        dialog.dismiss();
-                    }
-                }, new OnBtnClickL() {
-                    @Override
-                    public void onBtnClick() {
-                        String username = PreferencesUtils.get(mContext, AppConstant.username, "") + "";
-                        //清除所有数据
-                        PreferencesUtils.clear(mContext);
-                        //再保存用户名用于查找数据库最后一个登录的用户
-                        PreferencesUtils.put(mContext, AppConstant.username, username);
-                        gotoActivity(LoginActivity.class, true);
-                    }
+                dialog.setOnBtnClickL(() -> dialog.dismiss(), () -> {
+                    String username = PreferencesUtils.get(mContext, AppConstant.username, "") + "";
+                    //清除所有数据
+                    PreferencesUtils.clear(mContext);
+                    //再保存用户名用于查找数据库最后一个登录的用户
+                    PreferencesUtils.put(mContext, AppConstant.username, username);
+                    gotoActivity(LoginActivity.class, true);
                 });
                 break;
             case R.id.nav_qr_code_scan:
@@ -441,6 +409,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 break;
             case R.id.nav_ndk:
                 gotoActivity(NdkTestActivity.class, false);
+                break;
+            case R.id.nav_percent:
+                gotoActivity(LuckyExtractActivity.class, false);
+                break;
+            case R.id.nav_map:
+                gotoActivity(MapActivity.class, false);
                 break;
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -565,7 +539,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         } else {
             if (requestCode == QRCodeScanActivity.REQUEST_CODE && data != null) {
-                gotoActivity(QrCodeScanResultActivity.class, data.getExtras(), false);
+                gotoActivity(QRCodeScanResultActivity.class, data.getExtras(), false);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -573,7 +547,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     private void setUserImage(String url) {
         ImageLoader.Builder builder = new ImageLoader.Builder();
-        builder.url(url).strategy(ImageLoaderUtil.LOAD_STRATEGY_NORMAL).imgView(circleImageView);
+        builder.url(url).imgView(circleImageView);
         ImageLoaderUtil.getInstance().loadImage(mContext, builder.build());
     }
 }

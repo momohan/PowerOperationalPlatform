@@ -11,8 +11,9 @@ public enum EventType {
     homeRefresh(1),//主界面刷新
     newWorkOrderUpdate(2),//新工单界面数据更新
     alarmNumUpdate(3),//告警数量更新
-    selectOperationDevice(4),//选择设备事件
-    addWorkOrderSubmit(5);//添加工单提交
+    selectOperationDevice(4),//选择设备后更新数据
+    addWorkOrderSubmit(5),//添加工单提交
+    requestOperationDevice(6);//运维请求设备数据
 
     private int type;
 

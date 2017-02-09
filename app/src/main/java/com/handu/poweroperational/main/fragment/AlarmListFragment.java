@@ -15,15 +15,14 @@ import android.widget.TextView;
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
 import com.chanven.lib.cptr.PtrDefaultHandler;
 import com.chanven.lib.cptr.PtrFrameLayout;
-import com.chanven.lib.cptr.loadmore.OnLoadMoreListener;
 import com.chanven.lib.cptr.recyclerview.RecyclerAdapterWithHF;
 import com.handu.poweroperational.R;
 import com.handu.poweroperational.base.BaseEvent;
 import com.handu.poweroperational.base.BaseFragment;
 import com.handu.poweroperational.main.bean.constants.EventType;
-import com.handu.poweroperational.ui.RecyclerView.ItemClickListener;
-import com.handu.poweroperational.ui.RecyclerView.adapter.BaseRecyclerViewHolder;
 import com.handu.poweroperational.ui.RecyclerView.adapter.CommonRecyclerViewAdapter;
+import com.handu.poweroperational.ui.RecyclerView.click.ItemClickListener;
+import com.handu.poweroperational.ui.RecyclerView.holder.BaseRecyclerViewHolder;
 import com.haozhang.lib.SlantedTextView;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -104,11 +103,8 @@ public class AlarmListFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)//在ui线程执行 操作ui必须在此线程
     public void onEvent(BaseEvent event) {
         if (event.eventType == EventType.alarmNumUpdate.getType()) {
-            showSnackbar(recyclerView, getString(R.string.has_new_alarm_do_you_refresh), getString(R.string.action_refresh), new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    refresh();
-                }
+            showSnackbar(recyclerView, getString(R.string.has_new_alarm_do_you_refresh), getString(R.string.action_refresh), v -> {
+                refresh();
             }, false);
         }
     }
@@ -160,35 +156,19 @@ public class AlarmListFragment extends BaseFragment {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
                 page = 1;
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        setData(0);
-                    }
-                }, 1000);
+                handler.postDelayed(() -> setData(0), 1000);
             }
         });
-        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void loadMore() {
-                page++;
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        setData(1);
-                    }
-                }, 1000);
-            }
+        refreshLayout.setOnLoadMoreListener(() -> {
+            page++;
+            handler.postDelayed(() -> setData(1), 1000);
         });
     }
 
     public void refresh() {
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (refreshLayout != null)
-                    refreshLayout.autoRefresh(true);
-            }
+        handler.postDelayed(() -> {
+            if (refreshLayout != null)
+                refreshLayout.autoRefresh(true);
         }, 100);
     }
 
