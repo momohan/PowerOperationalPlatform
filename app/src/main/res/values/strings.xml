@@ -446,35 +446,51 @@
     <!--DateTimePicker-->
 
     <!--app名称-->
-    <string name="app_name">电力运维平台</string>
-
+    <!--<string name="app_name">电力运维平台</string>-->
 
     <string name="scale_up_show_behavior">com.handu.poweroperational.ui.Behavior.ScaleUpShowBehavior</string>
     <string name="scale_down_show_behavior">com.handu.poweroperational.ui.Behavior.ScaleDownShowBehavior</string>
+    <string name="simple_view_behavior">com.handu.poweroperational.ui.Behavior.SimpleViewBehavior</string>
+    <string name="translate_up_down_behavior">com.handu.poweroperational.ui.Behavior.TranslateUpDownBehavior</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="search_view_text_id">android:id/search_src_text</string>
 
-    <!--登录相关-->
     <string name="prompt_email">账号</string>
     <string name="prompt_password">密码</string>
     <string name="action_sign_in">登&#160;&#160;&#160;&#160;录</string>
+    <string name="action_search">搜索</string>
     <string name="error_invalid_email">用户名格式不正确</string>
     <string name="error_invalid_password">密码不能为空</string>
     <string name="action_sign_in_short">登录</string>
     <string name="error_incorrect_password">用户或密码不正确</string>
     <string name="error_field_required">用户名不能为空</string>
     <string name="login_failure">登陆失败</string>
+    <string name="login_success">登陆成功</string>
     <string name="title_activity_login">登录</string>
     <string name="no_user_info">未查询到用户信息</string>
-
-    <!--主页相关-->
     <string name="action_sign_exit">退出当前用户</string>
+    <string name="multiple_choice">多选</string>
+    <string name="all_choice">全选</string>
+    <string name="all_choice_cancle">取消全选</string>
+    <string name="select_confirm">确定</string>
+    <string name="go_to_place">到这里去</string>
+    <string name="map_search_hint">如地名，建筑，公交，线路等等</string>
+    <string name="is_location_please_wait">正在定位中，请稍后再试&#8230;</string>
+    <string name="has_new_app_version_do_update">检测到有新版本，确定要下载吗？</string>
+    <string name="no_item_select">您没有选择任何选项</string>
+    <string name="cache_clear_success">清除缓存成功&#8230;</string>
+    <string name="file_not_find_please_restart_down_load">文件不存在，请重新下载&#8230;</string>
+    <string name="no_app_to_open_file">没有可打开该文件的App，请下载相关App后再试&#8230;</string>
+    <string name="params_size_not_equal_to_file">参数个数与文件个数不一致&#8230;</string>
+    <string name="location_info_is_close_please_open_location_info">网络或位置信息未打开，请打开网络和位置信息</string>
     <string name="action_retry">重试</string>
     <string name="action_change">更换</string>
     <string name="action_query">查询</string>
     <string name="action_refresh">刷新</string>
     <string name="current_user">当前用户：</string>
+    <string name="action_pre">上一步</string>
+    <string name="action_next">下一步</string>
     <string name="bt_sure">确定</string>
     <string name="bt_cancel">取消</string>
     <string name="database_create_success">数据库创建成功</string>
@@ -484,25 +500,37 @@
     <string name="permission_storage">需要请求内存卡读写权限</string>
     <string name="permission_error">权限申请失败，请重试</string>
     <string name="cache_clear">缓存清理</string>
+    <string name="check_new_version">检查更新</string>
     <string name="current_version_is_new">当前已经是最新版本</string>
     <string name="change_user">更换用户</string>
     <string name="confirm_exit_current_user">确定要退出当前用户吗?</string>
+    <string name="confirm_download_not_in_wifi">当前网络为非wifi网络，确定要下载吗?</string>
+    <string name="confirm_delete_da_or_building">确定要删除当前常用楼宇或者台区吗?</string>
+    <string name="confirm_clear_search_content">确定清除历史搜索吗?</string>
     <string name="company">成都汉度科技有限公司</string>
     <string name="version">版本号：</string>
 
     <!--菜单相关-->
     <string name="menu_search">查找</string>
+    <string name="menu_add">添加</string>
     <string name="menu_select_device">设备</string>
-    <string name="menu_tenement">查找楼宇</string>
-    <string name="menu_device">设备选择</string>
+    <string name="menu_tenement">楼宇、台区</string>
+    <string name="menu_device">设备列表</string>
+    <string name="menu_setting">设置</string>
     <string name="menu_notifications">通知</string>
     <string name="menu_exit">退出</string>
     <string name="menu_refresh">刷新</string>
     <string name="menu_more">菜单</string>
-    <string name="home_page">首页</string>
+    <string name="navigation_home_page">首页</string>
+    <string name="navigation_operation">运维</string>
+    <string name="navigation_alarm">告警</string>
+    <string name="navigation_work_order">工单</string>
+    <string name="navigation_message">消息</string>
 
-    <!--网络相关-->
     <string name="loading">正在努力请求中&#8230;</string>
+    <string name="download_finish">下载完成</string>
+    <string name="start_download">开始下载</string>
+    <string name="downloading">正在下载中&#8230;</string>
     <string name="current_network_is_not_available">当前网络不可用&#8230;</string>
     <string name="requesting">正在努力请求中&#8230;</string>
     <string name="data_parse_error">数据解析错误&#8230;</string>
@@ -511,16 +539,12 @@
     <string name="data_null">返回数据为空&#8230;</string>
     <string name="query_data_is_null">未查询到数据&#8230;</string>
     <string name="query_no_more_data">没有更多数据&#8230;</string>
-    <string name="cid_register_failure">Cid注册失败，推送功能将受影响!</string>
-    <string name="cid_register_success">Cid注册成功</string>
+    <string name="cid_register_failure">cid注册失败，推送功能将受影响!</string>
+    <string name="cid_register_success">cid注册成功</string>
     <string name="operation_failure">操作失败,请重试&#8230;</string>
     <string name="operation_success">操作成功&#8230;</string>
     <string name="has_new_alarm_do_you_refresh">有新的告警，是否立即刷新?</string>
-
-    <!-- TODO: Remove or change this placeholder name -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
-    <!--工单相关-->
     <string name="taskWorkOrder">工作任务单</string>
     <string name="is_others">其它</string>
     <string name="is_accept">已接单</string>
@@ -574,22 +598,16 @@
     <string name="request_upload_materials">正在请求已选择物资&#8230;</string>
     <string name="get_upload_materials_failure">获取已选择物资失败</string>
     <string name="create_work_order_qrcode_failure">生成工单二维码失败</string>
-
-    <!--运维界面数据相关-->
     <string name="table_current_header_name">名称</string>
     <string name="no_charts_data">未查询到数据</string>
     <string name="please_select_device">请选择设备</string>
     <string name="tips_to">到</string>
     <string name="table_current_header_value">实时值</string>
     <string name="table_current_header_update_time">更新时间</string>
-
-    <!--设备搜索相关-->
-    <string name="device_search">设备搜索</string>
-    <string name="hint_search_content">请输入设备名称</string>
+    <string name="da_or_building_search">台区、楼宇搜索</string>
+    <string name="hint_da_building_search_content">请输入楼宇名称，台区名称</string>
+    <string name="hint_search_content">请输入要搜索的内容</string>
     <string name="search_content_is_null">搜索内容不能为空</string>
-
-
-    <!--activity title相关-->
     <string name="title_work_order_handle_detail">工单处理详情</string>
     <string name="title_work_order_finish_detail">工单完成详情</string>
     <string name="title_operation">运维</string>
@@ -597,4 +615,31 @@
     <string name="title_tools_select">工器具选择</string>
     <string name="title_qr_scan">二维码扫描</string>
     <string name="title_qr_scan_result">扫描结果</string>
+    <string name="title_down_load_info">下载中心</string>
+    <string name="title_system_function">系统功能</string>
+    <string name="title_cache_clear">缓存清理</string>
+    <string name="title_speech">语音输入</string>
+    <string name="title_check_version">检查更新</string>
+    <string name="title_download_manager">下载管理</string>
+    <string name="title_qr_code_scan">扫一扫</string>
+    <string name="title_location_info">位置</string>
+    <string name="title_user_info">用户中心</string>
+    <string name="title_change_user">更换用户</string>
+    <string name="title_search">搜索</string>
+    <string name="title_message">消息</string>
+    <string name="title_setting">设置</string>
+    <string name="action_clear_history_search">清空历史搜索</string>
+    <string name="history_search">历史搜索</string>
+    <string name="speech_app_id">58bcc869</string>
+    <string name="rb_text_online">在线</string>
+    <string name="rb_text_off_line">离线</string>
+    <string name="tv_text_down_load_path">下载路径文件夹：</string>
+    <string name="bt_text_delete">删除</string>
+    <string name="bt_text_pause">暂停</string>
+    <string name="bt_text_stop">停止</string>
+    <string name="bt_text_start">开始</string>
+    <string name="bt_text_download">下载</string>
+    <string name="bt_text_restart_download">重试</string>
+
+
 </resources>

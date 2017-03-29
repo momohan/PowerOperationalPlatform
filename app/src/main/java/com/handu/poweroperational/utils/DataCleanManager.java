@@ -7,6 +7,8 @@ package com.handu.poweroperational.utils;
 import android.content.Context;
 import android.os.Environment;
 
+import com.handu.poweroperational.R;
+
 import java.io.File;
 import java.math.BigDecimal;
 
@@ -130,7 +132,7 @@ public class DataCleanManager {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             try {
                 deleteDir(context.getExternalCacheDir());
-                Tools.showToast("清除缓存成功...");
+                Tools.toastSuccess(context.getString(R.string.cache_clear_success));
             } catch (Exception e) {
                 e.printStackTrace();
             }

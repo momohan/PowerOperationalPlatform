@@ -6,6 +6,8 @@ import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
+import com.handu.poweroperational.R;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -415,7 +417,7 @@ public class FileUtils {
             context.startActivity(intent);
         } catch (Exception e) {
             e.printStackTrace();
-            Tools.showToast("没有可打开该文件的App，请下载相关App后再试...");
+            Tools.toastError(context.getString(R.string.no_app_to_open_file));
         }
     }
 

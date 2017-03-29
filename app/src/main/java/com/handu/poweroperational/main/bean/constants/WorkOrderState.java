@@ -7,7 +7,7 @@ import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 
 import com.handu.poweroperational.R;
-import com.handu.poweroperational.main.application.PowerOperationalApplication;
+import com.handu.poweroperational.main.application.PowerOperationalApplicationLike;
 
 /**
  * Created by 柳梦 on 2016/11/18.
@@ -16,24 +16,24 @@ import com.handu.poweroperational.main.application.PowerOperationalApplication;
 
 public enum WorkOrderState {
 
-    refuse(-1, PowerOperationalApplication.getContext().getString(R.string.is_refuse), getColorName(PowerOperationalApplication.getContext().getString(R.string.is_refuse),
-            ContextCompat.getColor(PowerOperationalApplication.getContext(), R.color.black)),
-            ContextCompat.getColor(PowerOperationalApplication.getContext(), R.color.black)),//拒绝
-    unAccept(1, PowerOperationalApplication.getContext().getString(R.string.is_not_accept), getColorName(PowerOperationalApplication.getContext().getString(R.string.is_not_accept),
-            ContextCompat.getColor(PowerOperationalApplication.getContext(), R.color.red_light)),
-            ContextCompat.getColor(PowerOperationalApplication.getContext(), R.color.red_light)),//未接收
-    unArrive(2, PowerOperationalApplication.getContext().getString(R.string.is_accept), getColorName(PowerOperationalApplication.getContext().getString(R.string.is_accept),
-            ContextCompat.getColor(PowerOperationalApplication.getContext(), R.color.blue_dark)),
-            ContextCompat.getColor(PowerOperationalApplication.getContext(), R.color.blue_dark)),//未到达
-    unFinish(3, PowerOperationalApplication.getContext().getString(R.string.is_doing), getColorName(PowerOperationalApplication.getContext().getString(R.string.is_doing),
-            ContextCompat.getColor(PowerOperationalApplication.getContext(), R.color.green_dark)),
-            ContextCompat.getColor(PowerOperationalApplication.getContext(), R.color.green_dark)),//未完成
-    finished(4, PowerOperationalApplication.getContext().getString(R.string.is_finish), getColorName(PowerOperationalApplication.getContext().getString(R.string.is_finish),
-            ContextCompat.getColor(PowerOperationalApplication.getContext(), R.color.gray_dark)),
-            ContextCompat.getColor(PowerOperationalApplication.getContext(), R.color.gray_dark)),//完成
-    archived(5, PowerOperationalApplication.getContext().getString(R.string.is_archived), getColorName(PowerOperationalApplication.getContext().getString(R.string.is_archived),
-            ContextCompat.getColor(PowerOperationalApplication.getContext(), R.color.yellow_dark)),
-            ContextCompat.getColor(PowerOperationalApplication.getContext(), R.color.yellow_dark));//已归档
+    refuse(-1, PowerOperationalApplicationLike.getContext().getString(R.string.is_refuse), getColorName(PowerOperationalApplicationLike.getContext().getString(R.string.is_refuse),
+            ContextCompat.getColor(PowerOperationalApplicationLike.getContext(), R.color.black)),
+            ContextCompat.getColor(PowerOperationalApplicationLike.getContext(), R.color.black)),//拒绝
+    unAccept(1, PowerOperationalApplicationLike.getContext().getString(R.string.is_not_accept), getColorName(PowerOperationalApplicationLike.getContext().getString(R.string.is_not_accept),
+            ContextCompat.getColor(PowerOperationalApplicationLike.getContext(), R.color.red_light)),
+            ContextCompat.getColor(PowerOperationalApplicationLike.getContext(), R.color.red_light)),//未接收
+    unArrive(2, PowerOperationalApplicationLike.getContext().getString(R.string.is_accept), getColorName(PowerOperationalApplicationLike.getContext().getString(R.string.is_accept),
+            ContextCompat.getColor(PowerOperationalApplicationLike.getContext(), R.color.blue_dark)),
+            ContextCompat.getColor(PowerOperationalApplicationLike.getContext(), R.color.blue_dark)),//未到达
+    unFinish(3, PowerOperationalApplicationLike.getContext().getString(R.string.is_doing), getColorName(PowerOperationalApplicationLike.getContext().getString(R.string.is_doing),
+            ContextCompat.getColor(PowerOperationalApplicationLike.getContext(), R.color.green_dark)),
+            ContextCompat.getColor(PowerOperationalApplicationLike.getContext(), R.color.green_dark)),//未完成
+    finished(4, PowerOperationalApplicationLike.getContext().getString(R.string.is_finish), getColorName(PowerOperationalApplicationLike.getContext().getString(R.string.is_finish),
+            ContextCompat.getColor(PowerOperationalApplicationLike.getContext(), R.color.gray_dark)),
+            ContextCompat.getColor(PowerOperationalApplicationLike.getContext(), R.color.gray_dark)),//完成
+    archived(5, PowerOperationalApplicationLike.getContext().getString(R.string.is_archived), getColorName(PowerOperationalApplicationLike.getContext().getString(R.string.is_archived),
+            ContextCompat.getColor(PowerOperationalApplicationLike.getContext(), R.color.yellow_dark)),
+            ContextCompat.getColor(PowerOperationalApplicationLike.getContext(), R.color.yellow_dark));//已归档
 
     private int state;
     private CharSequence colorName;

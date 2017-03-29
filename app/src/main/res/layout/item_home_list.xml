@@ -27,30 +27,14 @@
             android:layout_marginStart="10dp"
             android:orientation="vertical">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/tv_device_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_marginStart="5dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="@dimen/system_list_item_title"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:text="设备名称:"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/system_default_size" />
-
-                <TextView
-                    android:id="@+id/tv_device_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:gravity="center_vertical"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/system_default_size" />
-            </LinearLayout>
+                android:textColor="@color/black"
+                android:textSize="@dimen/system_default_size" />
 
         </LinearLayout>
 

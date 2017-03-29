@@ -18,6 +18,7 @@ import java.lang.reflect.Method;
  * @author zhy
  */
 public class ScreenUtils {
+
     private ScreenUtils() {
         /* cannot be instantiated */
         throw new UnsupportedOperationException("cannot be instantiated");
@@ -157,7 +158,7 @@ public class ScreenUtils {
         Bitmap bmp = view.getDrawingCache();
         int width = getScreenWidth(activity);
         int height = getScreenHeight(activity);
-        Bitmap bp = null;
+        Bitmap bp;
         bp = Bitmap.createBitmap(bmp, 0, 0, width, height);
         view.destroyDrawingCache();
         return bp;

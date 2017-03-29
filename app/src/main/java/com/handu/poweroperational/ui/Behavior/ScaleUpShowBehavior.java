@@ -27,7 +27,7 @@ import com.handu.poweroperational.utils.AnimationUtil;
 
 
 /**
- * <p>上拉时显示FAB。</p>
+ * 上拉时显示，下拉隐藏 FAB
  * Created on 2016/7/14.
  *
  * @author 柳梦

@@ -1,10 +1,12 @@
 package com.handu.poweroperational.main.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -24,8 +26,9 @@ import com.github.johnkil.print.PrintButton;
 import com.github.johnkil.print.PrintView;
 import com.handu.poweroperational.R;
 import com.handu.poweroperational.base.BaseActivity;
-import com.handu.poweroperational.db.DBConstants;
-import com.handu.poweroperational.db.model.User;
+import com.handu.poweroperational.db.dao.UserInfoDao;
+import com.handu.poweroperational.db.entity.UserInfo;
+import com.handu.poweroperational.db.manager.GreenDaoManager;
 import com.handu.poweroperational.main.bean.results.LoginResult;
 import com.handu.poweroperational.request.RequestServer;
 import com.handu.poweroperational.request.callback.JsonDialogCallback;
@@ -37,6 +40,10 @@ import com.handu.poweroperational.utils.ServiceUrl;
 import com.handu.poweroperational.utils.Tools;
 import com.lzy.okhttputils.OkHttpUtils;
 import com.lzy.okhttputils.request.BaseRequest;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.PermissionListener;
+
+import org.greenrobot.greendao.query.Query;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -48,10 +55,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import okhttp3.Call;
 import okhttp3.Response;
-import se.emilsjolander.sprinkles.CursorList;
-import se.emilsjolander.sprinkles.Query;
 
 public class LoginActivity extends BaseActivity {
+
+    private static final int REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION = 1;
 
     @Bind(R.id.ibt_select_user)
     PrintView ibtSelectUser;
@@ -61,15 +68,16 @@ public class LoginActivity extends BaseActivity {
     private String username;
     private String password;
     private MsgHandler msgHandler = new MsgHandler(this);
+    private UserInfoDao userInfoDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        userInfoDao = GreenDaoManager.getInstance().getSession().getUserInfoDao();
         initView();
         initData();
-        initLoginUserName();
     }
 
     @Override
@@ -77,6 +85,37 @@ public class LoginActivity extends BaseActivity {
         OkHttpUtils.getInstance().cancelTag(this);
         msgHandler.removeCallbacksAndMessages(null);
         super.onDestroy();
+    }
+
+    //内存卡读写权限
+    private void requestStoragePermission() {
+        //读写sdcard权限非常重要
+        AndPermission.with(this)
+                .requestCode(REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION)
+                .permission(
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE
+                ).send();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        AndPermission.onRequestPermissionsResult(this, requestCode, permissions, grantResults, new PermissionListener() {
+            @Override
+            public void onSucceed(int requestCode) {
+                if (requestCode == REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION) {
+                    initLoginUserName();
+                }
+            }
+
+            @Override
+            public void onFailed(int requestCode) {
+                if (requestCode == REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION) {
+                    showSnackbar(mUserNameView, "内存卡读写权限申请被禁止，相关下载存储功能未启动", "关闭", v -> {
+                    }, false);
+                }
+            }
+        });
     }
 
     @Override
@@ -98,7 +137,7 @@ public class LoginActivity extends BaseActivity {
                 }
             } else {
                 // 如果有已经登录过账号
-                CursorList<User> users = Query.all(User.class).get();
+                List<UserInfo> users = userInfoDao.loadAll();
                 if (users.size() > 0) {
                     initPopView(users);
                     if (!popView.isShowing()) {
@@ -107,7 +146,7 @@ public class LoginActivity extends BaseActivity {
                         popView.dismiss();
                     }
                 } else {
-                    Tools.showToast(getString(R.string.no_user_info));
+                    Tools.toastError(getString(R.string.no_user_info));
                 }
             }
         });
@@ -139,7 +178,7 @@ public class LoginActivity extends BaseActivity {
             mPasswordView.setText(lastPassWord);
             attemptLogin();
         } else {
-            CursorList<User> users = Query.all(User.class).get();
+            List<UserInfo> users = userInfoDao.loadAll();
             if (users.size() > 0) {
                 String tempName = users.get(users.size() - 1).username;
                 String tempPwd = users.get(users.size() - 1).password;
@@ -152,7 +191,7 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    private void initPopView(CursorList<User> users) {
+    private void initPopView(List<UserInfo> users) {
 
         List<HashMap<String, Object>> list = new ArrayList<>();
         for (int i = 0; i < users.size(); i++) {
@@ -174,6 +213,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        requestStoragePermission();
     }
 
     private void attemptLogin() {
@@ -204,15 +244,21 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void onlineLogin(String username, String password) {
-        PreferencesUtils.put(mContext, username, username);
+        PreferencesUtils.put(mContext, AppConstant.username, username);
         PreferencesUtils.put(mContext, AppConstant.realName, username);
-        PreferencesUtils.put(mContext, password, password);
-        User user = Query.one(User.class, "select " + User.ID + " from " + DBConstants.USER_TABLE_NAME + " where " + User.USERNAME + " =? ", username).get();
-        if (user != null) user.delete();//先删除
-        user = new User();
-        user.username = username;
-        user.password = password;
-        user.save();//再保存
+        PreferencesUtils.put(mContext, AppConstant.password, password);
+        Query<UserInfo> query = userInfoDao.queryBuilder().where(UserInfoDao.Properties.Username.eq(username)).build();
+        List<UserInfo> users = query.list();
+        if (users.size() > 0) {
+            UserInfo userInfo = users.get(0);
+            userInfo.setPassword(password);
+            userInfoDao.update(userInfo);
+        } else {
+            UserInfo userInfo = new UserInfo();
+            userInfo.setUsername(username);
+            userInfo.setPassword(password);
+            userInfoDao.insert(userInfo);
+        }
         gotoActivity(MainActivity.class, true);
     }
 
@@ -251,8 +297,8 @@ public class LoginActivity extends BaseActivity {
 
         private List<HashMap<String, Object>> data;
 
-        public MyAdapter(Context context, List<HashMap<String, Object>> data,
-                         int resource, String[] from, int[] to) {
+        MyAdapter(Context context, List<HashMap<String, Object>> data,
+                  int resource, String[] from, int[] to) {
             super(context, data, resource, from, to);
             this.data = data;
         }
@@ -287,36 +333,28 @@ public class LoginActivity extends BaseActivity {
                 holder = (ViewHolder) convertView.getTag();
             }
             holder.tv.setText(data.get(position).get("text").toString());
-            holder.tv.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    CursorList<User> users = Query.all(User.class).get();
-                    mUserNameView.setText(users.get(position).username);
-                    mPasswordView.setText(users.get(position).password);
-                    popView.dismiss();
-                }
+            holder.tv.setOnClickListener(v -> {
+                List<UserInfo> users = userInfoDao.loadAll();
+                mUserNameView.setText(users.get(position).username);
+                mPasswordView.setText(users.get(position).password);
+                popView.dismiss();
             });
-            holder.btn.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    mUserNameView.setText("");
-                    mPasswordView.setText("");
-                    CursorList<User> users = Query.all(User.class).get();
-                    if (users.size() > 0) {
-                        User user = users.get(position);
-                        user.delete();
-                    }
-                    users = Query.all(User.class).get();
-                    if (users.size() > 0) {
-                        popView.dismiss();
-                        initPopView(users);
-                        popView.showAsDropDown(mUserNameView);
-                    } else {
-                        popView.dismiss();
-                        popView = null;
-                    }
+            holder.btn.setOnClickListener(v -> {
+                mUserNameView.setText("");
+                mPasswordView.setText("");
+                List<UserInfo> users = userInfoDao.loadAll();
+                if (users.size() > 0) {
+                    UserInfo user = users.get(position);
+                    userInfoDao.delete(user);
+                }
+                users = userInfoDao.loadAll();
+                if (users.size() > 0) {
+                    popView.dismiss();
+                    initPopView(users);
+                    popView.showAsDropDown(mUserNameView);
+                } else {
+                    popView.dismiss();
+                    popView = null;
                 }
             });
             return convertView;
@@ -351,22 +389,31 @@ public class LoginActivity extends BaseActivity {
                             PreferencesUtils.put(activity.mContext, AppConstant.password, activity.password);
                             PreferencesUtils.put(activity.mContext, AppConstant.organizeId, loginResult.getOrganizeId());
                             PreferencesUtils.put(activity.mContext, AppConstant.departmentId, loginResult.getDepartmentId());
-                            User user = Query.one(User.class, "select " + User.ID + " from " + DBConstants.USER_TABLE_NAME + " where " + User.USERNAME + " =? ", activity.username).get();
-                            if (user != null) user.delete();//先删除
-                            user = new User();
-                            user.username = activity.username;
-                            user.password = activity.password;
-                            user.save();//再保存
+                            Query<UserInfo> query = activity.userInfoDao.queryBuilder()
+                                    .where(UserInfoDao.Properties.Username.eq(activity.username))
+                                    .build();
+                            List<UserInfo> users = query.list();
+                            if (users.size() > 0) {
+                                UserInfo userInfo = users.get(0);
+                                userInfo.setPassword(activity.password);
+                                activity.userInfoDao.update(userInfo);
+                            } else {
+                                UserInfo userInfo = new UserInfo();
+                                userInfo.setUsername(activity.username);
+                                userInfo.setPassword(activity.password);
+                                activity.userInfoDao.insert(userInfo);
+                            }
                             activity.gotoActivity(MainActivity.class, true);
+//                            Tools.toastSuccess(activity.getString(R.string.login_success));
                         } else {
-                            Tools.showToast(activity.getString(R.string.login_failure));
+                            Tools.toastError(activity.getString(R.string.login_failure));
                         }
                         break;
 
                     case -1:
                         Exception e = (Exception) msg.obj;
                         AppLogger.e(e.getMessage());
-                        Tools.showToast(e.getMessage());
+                        Tools.toastError(e.getMessage());
                         break;
                 }
             }

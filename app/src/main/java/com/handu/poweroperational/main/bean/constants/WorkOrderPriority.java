@@ -7,7 +7,7 @@ import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 
 import com.handu.poweroperational.R;
-import com.handu.poweroperational.main.application.PowerOperationalApplication;
+import com.handu.poweroperational.main.application.PowerOperationalApplicationLike;
 
 /**
  * Created by 柳梦 on 2016/12/9.
@@ -16,9 +16,9 @@ import com.handu.poweroperational.main.application.PowerOperationalApplication;
 
 public enum WorkOrderPriority {
 
-    HIGH(1, getColorName("高", ContextCompat.getColor(PowerOperationalApplication.getContext(), R.color.red_dark)), "高"),
-    MIDDLE(2, getColorName("中", ContextCompat.getColor(PowerOperationalApplication.getContext(), R.color.blue_dark)), "中"),
-    LOW(3, getColorName("低", ContextCompat.getColor(PowerOperationalApplication.getContext(), R.color.green_dark)), "低");
+    HIGH(1, getColorName("高", ContextCompat.getColor(PowerOperationalApplicationLike.getContext(), R.color.red_dark)), "高"),
+    MIDDLE(2, getColorName("中", ContextCompat.getColor(PowerOperationalApplicationLike.getContext(), R.color.blue_dark)), "中"),
+    LOW(3, getColorName("低", ContextCompat.getColor(PowerOperationalApplicationLike.getContext(), R.color.green_dark)), "低");
 
     private int priority;
     private CharSequence colorName;

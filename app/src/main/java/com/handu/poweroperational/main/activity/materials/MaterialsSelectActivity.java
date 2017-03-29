@@ -28,7 +28,7 @@ import com.handu.poweroperational.base.BaseActivity;
 import com.handu.poweroperational.main.activity.QRCodeScanActivity;
 import com.handu.poweroperational.main.activity.QRCodeScanResultActivity;
 import com.handu.poweroperational.main.adapter.materials.MaterialsSelectAdapter;
-import com.handu.poweroperational.main.application.PowerOperationalApplication;
+import com.handu.poweroperational.main.application.PowerOperationalApplicationLike;
 import com.handu.poweroperational.main.bean.MaterialsModel;
 import com.handu.poweroperational.main.bean.results.WorkOrderResult;
 import com.handu.poweroperational.request.RequestServer;
@@ -39,7 +39,6 @@ import com.handu.poweroperational.utils.AnimationUtil;
 import com.handu.poweroperational.utils.AppLogger;
 import com.handu.poweroperational.utils.ServiceUrl;
 import com.handu.poweroperational.utils.Tools;
-import com.lzy.okhttputils.request.BaseRequest;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 
@@ -83,10 +82,8 @@ public class MaterialsSelectActivity extends BaseActivity {
     TextView tvSubmit;
     @Bind(R.id.loading_view)
     LoadingLayout loadingView;
-    private WorkOrderResult workOrderResult;
     @Bind(R.id.bottomSheetLayout)
     BottomSheetLayout bottomSheetLayout;
-    private RecyclerView rvSelected;
     private MaterialsSelectAdapter materialsSelectAdapter;
     private View bottomSheet;
     private ArrayMap<String, MaterialsModel> selectedList;
@@ -126,7 +123,7 @@ public class MaterialsSelectActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        workOrderResult = getIntent().getParcelableExtra("workOrderResult");
+        WorkOrderResult workOrderResult = getIntent().getParcelableExtra("workOrderResult");
         tvWorkOrderNum.setText("工单编号：" + workOrderResult.getNumber());
         selectedList = new ArrayMap<>();
         task = new CreateQRCodeTask(this);
@@ -183,7 +180,7 @@ public class MaterialsSelectActivity extends BaseActivity {
     //创建底部弹出窗
     private View createBottomSheetView() {
         View view = LayoutInflater.from(this).inflate(R.layout.layout_bottom_sheet, (ViewGroup) getWindow().getDecorView(), false);
-        rvSelected = (RecyclerView) view.findViewById(R.id.selectRecyclerView);
+        RecyclerView rvSelected = (RecyclerView) view.findViewById(R.id.selectRecyclerView);
         rvSelected.setLayoutManager(new LinearLayoutManager(this));
         TextView clear = (TextView) view.findViewById(R.id.clear);
         clear.setOnClickListener(v -> clearCart());
@@ -290,7 +287,7 @@ public class MaterialsSelectActivity extends BaseActivity {
         @Override
         protected Bitmap doInBackground(WorkOrderResult... params) {
             WorkOrderResult result = params[0];
-            return QRCodeEncoder.syncEncodeQRCode(result.getNumber(), BGAQRCodeUtil.dp2px(PowerOperationalApplication.getContext(), 150), Color.parseColor("#050505"));
+            return QRCodeEncoder.syncEncodeQRCode(result.getNumber(), BGAQRCodeUtil.dp2px(PowerOperationalApplicationLike.getContext(), 150), Color.parseColor("#050505"));
         }
 
         @Override
@@ -301,7 +298,7 @@ public class MaterialsSelectActivity extends BaseActivity {
                     activity.QRCodeBitmap = bitmap;
                     activity.workOrderQrCode.setImageBitmap(bitmap);
                 } else {
-                    Tools.showToast(activity.getString(R.string.create_work_order_qrcode_failure));
+                    Tools.toastError(activity.getString(R.string.create_work_order_qrcode_failure));
                 }
             }
         }
@@ -314,11 +311,7 @@ public class MaterialsSelectActivity extends BaseActivity {
             return;
         }
         loadingView.showLoading();
-        RequestServer.post(this, ServiceUrl.GetM_CategoryTree, "", new StringDialogCallback(this) {
-
-            @Override
-            public void onBefore(BaseRequest request) {
-            }
+        RequestServer.post(this, ServiceUrl.GetM_CategoryTree, "", new StringDialogCallback(this, false) {
 
             @Override
             public void onSuccess(String s, Call call, Response response) {
@@ -360,8 +353,7 @@ public class MaterialsSelectActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-
-    private static class MsgHandler extends Handler {
+    static class MsgHandler extends Handler {
 
         private WeakReference<Activity> reference;
 
@@ -402,7 +394,7 @@ public class MaterialsSelectActivity extends BaseActivity {
                                             MaterialsModel model = new MaterialsModel(iconTreeItem.value, iconTreeItem.text);
                                             activity.add(model);
                                         } else {
-                                            Tools.showToast("请选择正确的工器具");
+                                            Tools.toastWarning("请选择正确的工器具");
                                         }
                                     }
                                 });

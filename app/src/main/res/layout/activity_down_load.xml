@@ -8,7 +8,7 @@
 
     <include
         android:id="@+id/top_bar"
-        layout="@layout/layout_title_bar"></include>
+        layout="@layout/layout_title_bar" />
 
     <TextView
         android:id="@+id/targetFolder"
@@ -17,7 +17,8 @@
         android:layout_below="@+id/top_bar"
         android:layout_marginTop="5dp"
         android:padding="5dp"
-        android:text="下载路径文件夹：" />
+        android:text="@string/tv_text_down_load_path"
+        android:textSize="@dimen/system_size_16" />
 
 
     <ListView
@@ -32,40 +33,51 @@
         android:id="@+id/ll_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="10dp">
+        android:layout_alignParentBottom="true">
 
         <Button
             android:id="@+id/removeAll"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            style="@style/AutoWrap"
+            android:layout_height="40dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/btn_selector_color_primary_gray"
             android:onClick="onClick"
-            android:text="删除" />
+            android:text="@string/bt_text_delete"
+            android:textColor="@color/white"
+            android:textSize="@dimen/system_size_14" />
 
         <Button
             android:id="@+id/pauseAll"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            style="@style/AutoWrap"
+            android:layout_height="40dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/btn_selector_color_primary_gray"
             android:onClick="onClick"
-            android:text="暂停" />
+            android:text="@string/bt_text_pause"
+            android:textColor="@color/white"
+            android:textSize="@dimen/system_size_14" />
 
         <Button
             android:id="@+id/stopAll"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            style="@style/AutoWrap"
+            android:layout_height="40dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/btn_selector_color_primary_gray"
             android:onClick="onClick"
-            android:text="停止" />
+            android:text="@string/bt_text_stop"
+            android:textColor="@color/white"
+            android:textSize="@dimen/system_size_14" />
 
         <Button
             android:id="@+id/startAll"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            style="@style/AutoWrap"
+            android:layout_height="40dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/btn_selector_color_primary_gray"
             android:onClick="onClick"
-            android:text="开始" />
+            android:text="@string/bt_text_download"
+            android:textColor="@color/white"
+            android:textSize="@dimen/system_size_14" />
     </LinearLayout>
 
 </RelativeLayout>

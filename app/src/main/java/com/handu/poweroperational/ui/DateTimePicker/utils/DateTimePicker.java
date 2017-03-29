@@ -38,7 +38,7 @@ public class DateTimePicker {
                             String type, OnDateSetListener onDateSetListener, String currentDateTime) {
         long currentTimeMillis = System.currentTimeMillis();
         if (!TextUtils.isEmpty(currentDateTime))
-            currentTimeMillis = Tools.ConvertDateStrToMillis(currentDateTime);
+            currentTimeMillis = Tools.convertDateStrToMillis(currentDateTime);
         TimePickerDialog dialog;
         //20年的前后时间
         long twentyYears = 30L * 365 * 1000 * 60 * 60 * 24L;

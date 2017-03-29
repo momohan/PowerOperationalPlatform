@@ -20,7 +20,6 @@ import com.handu.poweroperational.ui.AndroidTree.holder.IconTreeItemHolder;
 import com.handu.poweroperational.utils.JsonUtils;
 import com.handu.poweroperational.utils.Tools;
 import com.lzy.okhttputils.OkHttpUtils;
-import com.lzy.okhttputils.request.BaseRequest;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 
@@ -195,7 +194,7 @@ public class SelectActivity extends BaseActivity implements TreeNode.TreeNodeCli
                 if (selectList.size() > 0) {
                     goBack();
                 } else {
-                    Tools.showToast("您没有选择任何选项");
+                    Tools.toastError(getString(R.string.no_item_select));
                 }
                 break;
         }
@@ -217,25 +216,21 @@ public class SelectActivity extends BaseActivity implements TreeNode.TreeNodeCli
                 if (selectList.size() > 0) {
                     goBack();
                 } else {
-                    Tools.showToast("您没有选择任何选项");
+                    Tools.toastError(getString(R.string.no_item_select));
                 }
             }
         }
     }
 
     private void getTreeJsonData(Map<String, String> map) {
+        loadingView.showLoading();
         if (!Tools.isNetworkAvailable()) {
             loadingView.setErrorText(getString(R.string.network_not_available));
             loadingView.showError();
             return;
         }
         if (map != null) {
-            RequestServer.post(this, method, map, new StringDialogCallback(this) {
-                @Override
-                public void onBefore(BaseRequest request) {
-
-                }
-
+            RequestServer.post(this, method, map, new StringDialogCallback(this, false) {
                 @Override
                 public void onSuccess(String s, Call call, Response response) {
                     Message msg = new Message();

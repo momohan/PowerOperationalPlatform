@@ -157,7 +157,7 @@ public class AnalyzeFragment extends BaseFragment {
     @Override
     protected void initData() {
         Calendar calendar = Calendar.getInstance();
-        tvTime.setText(Tools.ConvertDateToString(calendar.getTime(), "yyyy-MM-dd"));
+        tvTime.setText(Tools.convertDateToString(calendar.getTime(), "yyyy-MM-dd"));
         AnalyzeType types[] = AnalyzeType.getAllAnalyzeType();
         List<AnalyzeItem> list = new ArrayList<>();
         for (AnalyzeType analyzeType : types) {

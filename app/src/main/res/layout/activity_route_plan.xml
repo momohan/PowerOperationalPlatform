@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_route_plan"
+    style="@style/MatchMatch.Vertical"
+    android:background="@color/white"
+    tools:context="com.handu.poweroperational.main.activity.map.RoutePlanActivity">
+
+
+    <RadioGroup
+        android:id="@+id/rg_top"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/mass"
+            style="@style/AutoMatch"
+            android:button="@null"
+            android:gravity="center"
+            android:text="跨城"
+            android:textColor="@color/black"
+            android:textSize="@dimen/system_size_14" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/gray" />
+
+        <RadioButton
+            android:id="@+id/drive"
+            style="@style/AutoMatch"
+            android:button="@null"
+            android:gravity="center"
+            android:text="驾车"
+            android:textColor="@color/black"
+            android:textSize="@dimen/system_size_14" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/gray" />
+
+        <RadioButton
+            android:id="@+id/transit"
+            style="@style/AutoMatch"
+            android:button="@null"
+            android:gravity="center"
+            android:text="公交"
+            android:textColor="@color/black"
+            android:textSize="@dimen/system_size_14" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/gray" />
+
+        <RadioButton
+            android:id="@+id/walk"
+            style="@style/AutoMatch"
+            android:button="@null"
+            android:gravity="center"
+            android:text="步行"
+            android:textColor="@color/black"
+            android:textSize="@dimen/system_size_14" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/gray" />
+
+        <RadioButton
+            android:id="@+id/bike"
+            style="@style/AutoMatch"
+            android:button="@null"
+            android:gravity="center"
+            android:text="骑行"
+            android:textColor="@color/black"
+            android:textSize="@dimen/system_size_14" />
+
+    </RadioGroup>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rg_top">
+
+        <com.baidu.mapapi.map.MapView
+            android:id="@+id/map"
+            style="@style/MatchMatch"
+            android:clickable="true" />
+
+        <LinearLayout
+            style="@style/WrapWrap.Horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_alignWithParentIfMissing="false"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="false"
+            android:layout_marginBottom="10dp">
+
+            <Button
+                android:id="@+id/pre"
+                style="@style/WrapWrap"
+                android:layout_height="40dp"
+                android:layout_marginLeft="2dip"
+                android:layout_marginRight="2dip"
+                android:background="@drawable/btn_selector_white_gray"
+                android:onClick="nodeClick"
+                android:text="@string/action_pre"
+                android:textColor="@color/black" />
+
+            <Button
+                android:id="@+id/next"
+                style="@style/WrapWrap"
+                android:layout_height="40dp"
+                android:layout_marginLeft="2dip"
+                android:layout_marginRight="2dip"
+                android:background="@drawable/btn_selector_white_gray"
+                android:onClick="nodeClick"
+                android:text="@string/action_next"
+                android:textColor="@color/black" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

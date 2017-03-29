@@ -9,6 +9,8 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
 import com.chanven.lib.cptr.PtrDefaultHandler;
@@ -63,10 +65,23 @@ public class HomeFragment extends BaseFragment {
     LoadingLayout loadingView;
     @Bind(R.id.refreshLayout)
     PtrClassicFrameLayout refreshLayout;
+    @Bind(R.id.rg_time)
+    RadioGroup rgTime;
+    @Bind(R.id.rb_today)
+    RadioButton rbToday;
+    @Bind(R.id.rb_three)
+    RadioButton rbThree;
+    @Bind(R.id.rb_week)
+    RadioButton rbWeek;
+    @Bind(R.id.rb_half_month)
+    RadioButton rbHalfMonth;
+    @Bind(R.id.rb_month)
+    RadioButton rbMonth;
     private XAxis xAxis;//x轴
     private YAxis yAxis;//y轴
-    private boolean isCanRefresh = true;
+    private boolean isCanRefresh = false;
     private Handler handler = new Handler();
+    private int timeType = 0;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -126,11 +141,39 @@ public class HomeFragment extends BaseFragment {
         initRefreshLayout();
         initPieCharts();
         initChart();
+        initRadioGroup();
+    }
+
+    private void initRadioGroup() {
+        rgTime.setOnCheckedChangeListener((group, checkedId) -> {
+            for (int i = 0; i < rgTime.getChildCount(); i++) {
+                View view = rgTime.getChildAt(i);
+                if (view instanceof RadioButton) {
+                    RadioButton bt = (RadioButton) view;
+                    if (bt.getId() != checkedId)
+                        bt.setTextColor(ContextCompat.getColor(mContext, R.color.black));
+                    else
+                        bt.setTextColor(ContextCompat.getColor(mContext, R.color.red_light));
+                }
+            }
+            if (checkedId == rbToday.getId()) {
+                timeType = 0;
+            } else if (checkedId == rbThree.getId()) {
+                timeType = 1;
+            } else if (checkedId == rbWeek.getId()) {
+                timeType = 2;
+            } else if (checkedId == rbHalfMonth.getId()) {
+                timeType = 3;
+            } else if (checkedId == rbMonth.getId()) {
+                timeType = 4;
+            }
+            refresh();
+        });
     }
 
     @Override
     protected void initData() {
-        refresh();
+        rbToday.setChecked(true);
     }
 
     private void initRefreshLayout() {
@@ -216,7 +259,6 @@ public class HomeFragment extends BaseFragment {
         iLineDataSets.add(addLine(list, "告警数量", ContextCompat.getColor(mContext, R.color.blue_dark)));
         setLineData(xList, iLineDataSets, "");
 
-
         List<String> xPieList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             xPieList.add("故障" + (i + 1));
@@ -251,8 +293,8 @@ public class HomeFragment extends BaseFragment {
         lineChart.setTouchEnabled(true);
         //设置是否可以拖拽
         lineChart.setDragEnabled(true);
-        //设置x,y是否可以缩放
-        lineChart.setScaleXEnabled(false);
+        //设置x,是否可以缩放
+        lineChart.setScaleXEnabled(true);
         lineChart.setScaleYEnabled(false);
         //设置是否能扩大扩小
         lineChart.setPinchZoom(false);
@@ -271,7 +313,7 @@ public class HomeFragment extends BaseFragment {
          * ====================x，y动画效果===========================
          */
         //从X轴进入的动画
-        lineChart.animateXY(1000, 1000);//从XY轴一起进入的动画
+        //lineChart.animateXY(1000, 1000);//从XY轴一起进入的动画
         Legend l = lineChart.getLegend();
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
@@ -340,7 +382,6 @@ public class HomeFragment extends BaseFragment {
      * @param description   表格描述
      */
     private void setLineData(List<String> xList, List<ILineDataSet> iLineDataSets, String description) {
-
         LineData data = new LineData(xList, iLineDataSets);
         lineChart.clear();
         lineChart.setData(data);
@@ -370,7 +411,7 @@ public class HomeFragment extends BaseFragment {
         pieChart.setTransparentCircleRadius(61f);
         pieChart.setDrawCenterText(true);
         pieChart.setRotationAngle(0);
-        pieChart.setRotationEnabled(false);
+        pieChart.setRotationEnabled(true);
         pieChart.setHighlightPerTapEnabled(true);
         pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
@@ -425,7 +466,6 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void setPieData(List<String> xList, PieDataSet pieDataSet, String centerText) {
-
         // 将x轴和y轴设置给PieData作为数据源
         PieData data = new PieData(xList, pieDataSet);
         // 设置成PercentFormatter将追加%号

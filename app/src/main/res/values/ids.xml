@@ -4,6 +4,7 @@
     <item name="action_device" type="id" />
     <item name="action_tenement" type="id" />
     <item name="action_refresh" type="id" />
+    <item name="action_add" type="id" />
     <item name="action_notification" type="id" />
     <item name="action_more" type="id" />
     <item name="action_settings" type="id" />

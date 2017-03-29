@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.handu.poweroperational">
 
     <!-- 网络权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 读取日志 -->
     <uses-permission android:name="android.permission.READ_LOGS" />
+    <!-- 震动权限 -->
     <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- 唤醒权限 -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- 允许应用程序更改主屏幕中的设置和快捷方式 -->
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <!-- 主页键的处理 -->
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <!-- 允许挂载和反挂载文件系统可移动存储 -->
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <!-- 访问账户Gmail列表 -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <!-- 访问精确位置的权限 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -28,21 +36,27 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <!-- 个推3.0电子围栏功能所需权限 -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- 获取手机录音机使用权限，听写、识别、语义理解需要用到此权限 -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
-        android:name=".main.application.PowerOperationalApplication"
+        android:name="com.handu.poweroperational.main.application.PowerOperationalApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_app_icon"
         android:label="@string/app_name"
         android:persistent="true"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        <service
+            android:name=".main.service.PatchResultService"
+            android:exported="false" />
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
-            android:process=":remote">
+            android:process=":remote"
+            tools:ignore="ExportedService">
             <intent-filter>
                 <action android:name="com.baidu.location.service_v2.2" />
             </intent-filter>
@@ -52,11 +66,19 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="AwE9YhcYWMR2zMPR2a2bKgvnO1vgeq0j" />
+        <!-- 讯飞移动统计分析 -->
+        <meta-data
+            android:name="IFLYTEK_APPKEY"
+            android:value="58bcc869" />
+        <meta-data
+            android:name="IFLYTEK_CHANNEL"
+            android:value="@string/app_name" />
 
         <service
             android:name=".main.service.LocationUploadService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="true"
+            tools:ignore="ExportedService" />
 
         <receiver
             android:name=".main.receiver.RestartLocationUploadReceiver"
@@ -97,11 +119,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".main.activity.SelectActivity"
-            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
             android:name=".main.activity.DownLoadActivity"
-            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
             android:name=".main.activity.workorder.NewWorkOrderDetailActivity"
@@ -110,8 +130,7 @@
             android:name=".main.activity.workorder.HistoryWorkOrderDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".main.activity.SearchActivity"
-            android:launchMode="singleTop"
+            android:name=".main.activity.BuildingAndDaActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
@@ -122,11 +141,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".main.activity.QRCodeScanActivity"
-            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
             android:name=".main.activity.QRCodeScanResultActivity"
-            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
             android:name=".main.activity.operation.OperationActivity"
@@ -135,15 +152,28 @@
             android:name=".main.activity.NdkTestActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".main.activity.PercentTestActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".main.activity.LuckyExtractActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".main.activity.operation.AnalyzeChartsMaxActivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".main.activity.map.MapActivity"></activity>
+        <activity
+            android:name=".main.activity.map.MapActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".main.activity.map.RoutePlanActivity"
+            android:screenOrientation="portrait" />
+
+        <service
+            android:name=".main.service.UpdateService"
+            android:enabled="true" />
+
+        <activity
+            android:name=".main.activity.PushMessageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".main.activity.SearchActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".main.activity.SpeechActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

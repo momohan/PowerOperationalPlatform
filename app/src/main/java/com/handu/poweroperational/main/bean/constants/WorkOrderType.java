@@ -7,7 +7,7 @@ import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 
 import com.handu.poweroperational.R;
-import com.handu.poweroperational.main.application.PowerOperationalApplication;
+import com.handu.poweroperational.main.application.PowerOperationalApplicationLike;
 
 /**
  * Created by 柳梦 on 2016/11/30.
@@ -17,8 +17,8 @@ import com.handu.poweroperational.main.application.PowerOperationalApplication;
 public enum WorkOrderType {
 
     //工作任务单
-    taskWorkOrder(1, PowerOperationalApplication.getContext().getString(R.string.taskWorkOrder), getColorName(PowerOperationalApplication.getContext().getString(R.string.taskWorkOrder),
-            ContextCompat.getColor(PowerOperationalApplication.getContext(), R.color.black)));
+    taskWorkOrder(1, PowerOperationalApplicationLike.getContext().getString(R.string.taskWorkOrder), getColorName(PowerOperationalApplicationLike.getContext().getString(R.string.taskWorkOrder),
+            ContextCompat.getColor(PowerOperationalApplicationLike.getContext(), R.color.black)));
 
     private int type;
     private CharSequence colorName;

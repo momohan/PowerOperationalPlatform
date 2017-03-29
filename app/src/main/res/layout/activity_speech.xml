@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_speech"
+    style="@style/MatchMatch"
+    tools:context="com.handu.poweroperational.main.activity.SpeechActivity">
+
+    <include
+        android:id="@+id/layout_top"
+        layout="@layout/layout_title_bar" />
+
+    <RadioGroup
+        android:id="@+id/rg_engineType"
+        style="@style/WrapWrap.Horizontal"
+        android:layout_height="40dp"
+        android:layout_below="@+id/layout_top"
+        android:layout_centerHorizontal="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@android:drawable/editbox_background"
+        android:gravity="center">
+
+        <RadioButton
+            android:id="@+id/rb_online"
+            style="@style/WrapWrap"
+            android:layout_marginEnd="10dp"
+            android:button="@null"
+            android:gravity="center"
+            android:minWidth="100dp"
+            android:text="@string/rb_text_online"
+            android:textColor="@color/red_light"
+            android:textSize="@dimen/system_size_14" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="30dp"
+            android:background="@color/gray_dark" />
+
+        <RadioButton
+            android:id="@+id/rb_local"
+            style="@style/WrapWrap"
+            android:layout_marginStart="10dp"
+            android:button="@null"
+            android:gravity="center"
+            android:minWidth="100dp"
+            android:text="@string/rb_text_off_line"
+            android:textColor="@color/black"
+            android:textSize="@dimen/system_size_14" />
+    </RadioGroup>
+
+    <EditText
+        android:id="@+id/iat_text"
+        style="@style/MatchMatch"
+        android:layout_above="@+id/ll_bottom"
+        android:layout_below="@+id/rg_engineType"
+        android:layout_margin="10dp"
+        android:background="@android:drawable/editbox_background"
+        android:gravity="top"
+        android:hint="@null"
+        android:padding="10dp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/system_size_16" />
+
+    <LinearLayout
+        android:id="@+id/ll_bottom"
+        style="@style/MatchWrap.Horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40dp"
+        android:gravity="center">
+
+        <ImageButton
+            android:id="@+id/iat_recognize"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/btn_selector_color_primary_gray"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_vector_voice_white"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <ImageButton
+            android:id="@+id/iat_start_synthesizer"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/btn_selector_color_primary_gray"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_vector_play_voice"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <ImageButton
+            android:id="@+id/iat_confirm"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/btn_selector_color_primary_gray"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_vector_confirm"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:visibility="gone" />
+    </LinearLayout>
+
+</RelativeLayout>

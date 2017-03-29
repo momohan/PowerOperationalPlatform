@@ -1,49 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="系统功能">
+    <item android:title="@string/title_system_function">
         <menu>
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/nav_cache_clear"
                     android:icon="@drawable/ic_vector_cache_clear"
-                    android:title="缓存清理" />
+                    android:title="@string/title_cache_clear" />
                 <item
                     android:id="@+id/nav_check_version"
                     android:icon="@drawable/ic_vector_check_version"
-                    android:title="检查更新" />
+                    android:title="@string/title_check_version" />
+
+                <item
+                    android:id="@+id/nav_download_manager"
+                    android:icon="@drawable/ic_vector_download"
+                    android:title="@string/title_download_manager" />
             </group>
         </menu>
     </item>
-    <item android:title="其他功能">
+    <item android:title="特色功能">
         <menu>
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/nav_qr_code_scan"
                     android:icon="@drawable/ic_vector_qr_code"
-                    android:title="扫一扫" />
-                <item
-                    android:id="@+id/nav_ndk"
-                    android:icon="@drawable/ic_vector_right_menu"
-                    android:title="ndk测试" />
-                <item
-                    android:id="@+id/nav_percent"
-                    android:icon="@drawable/ic_vector_right_menu"
-                    android:title="百分比布局测试" />
+                    android:title="@string/title_qr_code_scan" />
+                <!--<item-->
+                <!--android:id="@+id/nav_ndk"-->
+                <!--android:icon="@drawable/ic_vector_right_menu"-->
+                <!--android:title="ndk测试" />-->
                 <item
                     android:id="@+id/nav_map"
                     android:icon="@drawable/ic_vector_map"
-                    android:title="地图" />
+                    android:title="@string/title_location_info" />
+                <item
+                    android:id="@+id/nav_speech"
+                    android:icon="@drawable/ic_vector_voice_black"
+                    android:title="@string/title_speech" />
             </group>
         </menu>
     </item>
-    <item android:title="用户中心">
+    <item android:title="@string/title_user_info">
         <menu>
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/nav_reset_login"
                     android:icon="@drawable/ic_vector_user_exit"
-                    android:title="更换用户" />
-
+                    android:title="@string/title_change_user" />
+                <item
+                    android:id="@+id/nav_setting"
+                    android:icon="@drawable/ic_vector_setting_white"
+                    android:title="@string/title_setting" />
             </group>
         </menu>
     </item>

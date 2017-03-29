@@ -1,79 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_search"
-    style="@style/MatchMatch"
-    android:background="@color/white"
+    style="@style/MatchMatch.Vertical"
     tools:context="com.handu.poweroperational.main.activity.SearchActivity">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar"
-        style="@style/MatchWrap"
-        android:orientation="vertical"
-        app:theme="@style/AppTheme.AppBarOverlay">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-    </android.support.design.widget.AppBarLayout>
-
+    <include
+        android:id="@+id/layout_top"
+        layout="@layout/layout_title_bar" />
 
     <LinearLayout
-        style="@style/MatchWrap.Vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        style="@style/MatchMatch.Vertical"
+        android:layout_above="@+id/ll_delete_history_search"
+        android:layout_below="@+id/layout_top"
+        android:layout_margin="5dp">
 
-        <SearchView
-            android:id="@+id/searchView"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@color/gray_light"
-            android:iconifiedByDefault="false"
-            android:padding="5dp"
-            android:queryBackground="@color/white"
-            android:queryHint="@string/hint_search_content"
-            android:submitBackground="@color/white"
-            app:layout_scrollFlags="scroll|enterAlways" />
+        <LinearLayout
+            style="@style/MatchWrap.Horizontal"
+            android:layout_margin="5dp"
+            android:background="@android:drawable/editbox_background"
+            android:gravity="center_vertical">
 
-        <com.chanven.lib.cptr.PtrClassicFrameLayout
-            android:id="@+id/refreshLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white"
-            cube_ptr:ptr_keep_header_when_refresh="true"
-            cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
-            cube_ptr:ptr_resistance="1.7">
+            <com.github.johnkil.print.PrintView
+                style="@style/WrapWrap"
+                android:padding="5dp"
+                android:visibility="visible"
+                app:iconColor="#ff4444"
+                app:iconFont="fonts/material-icon-font.ttf"
+                app:iconSize="20sp"
+                app:iconText="@string/ic_search" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_above="@+id/bt_exit_login"
-                android:layout_below="@+id/ll_top" />
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/et_search_content"
+                style="@style/AutoWrap"
+                android:layout_marginStart="10dp"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:hint="@string/hint_search_content"
+                android:minHeight="40dp"
+                android:textSize="@dimen/system_size_14" />
 
-        </com.chanven.lib.cptr.PtrClassicFrameLayout>
+            <ImageButton
+                android:id="@+id/ibt_speech_search"
+                style="@style/WrapWrap"
+                android:layout_margin="10dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_vector_voice_color_accent" />
+
+            <TextView
+                android:id="@+id/tv_search"
+                style="@style/WrapWrap"
+                android:padding="5dp"
+                android:text="@string/action_search"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/system_size_14" />
+
+        </LinearLayout>
+
+        <TextView
+            style="@style/MatchWrap"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/history_search"
+            android:textColor="@color/black"
+            android:textSize="@dimen/system_size_14" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            style="@style/MatchMatch"
+            android:layout_marginTop="10dp" />
+
+
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/ll_delete_history_search"
+        style="@style/WrapWrap.Horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_margin="10dp"
+        android:background="@android:drawable/editbox_background"
+        android:gravity="center"
+        android:minHeight="40dp"
+        android:minWidth="200dp"
+        android:visibility="visible">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_go_top"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_vector_go_top"
-        android:visibility="gone"
-        app:backgroundTint="@color/colorPrimary"
-        app:elevation="10dp"
-        app:fabSize="mini"
-        app:layout_behavior="@string/scale_up_show_behavior"
-        app:layout_scrollFlags="scroll|enterAlways|snap"
-        app:pressedTranslationZ="10dp"
-        app:rippleColor="@color/gray_dark" />
+        <com.github.johnkil.print.PrintView
+            style="@style/WrapWrap"
+            android:padding="5dp"
+            android:visibility="visible"
+            app:iconColor="#ff4444"
+            app:iconFont="fonts/material-icon-font.ttf"
+            app:iconSize="20sp"
+            app:iconText="@string/ic_delete" />
 
-</android.support.design.widget.CoordinatorLayout>
+        <TextView
+            style="@style/WrapWrap"
+            android:layout_marginStart="5dp"
+            android:gravity="center"
+            android:text="@string/action_clear_history_search"
+            android:textSize="@dimen/system_size_14" />
+
+    </LinearLayout>
+
+</RelativeLayout>

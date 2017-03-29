@@ -1,12 +1,11 @@
 package com.handu.poweroperational.main.activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.text.format.Formatter;
 import android.view.View;
@@ -18,12 +17,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.flyco.dialog.widget.MaterialDialog;
 import com.handu.poweroperational.R;
 import com.handu.poweroperational.base.BaseActivity;
 import com.handu.poweroperational.main.bean.FileModel;
 import com.handu.poweroperational.ui.progress.NumberProgressBar;
 import com.handu.poweroperational.utils.ApkUtils;
 import com.handu.poweroperational.utils.AppCacheUtils;
+import com.handu.poweroperational.utils.AppConstant;
 import com.handu.poweroperational.utils.Tools;
 import com.lzy.okhttpserver.download.DownloadInfo;
 import com.lzy.okhttpserver.download.DownloadManager;
@@ -32,26 +33,24 @@ import com.lzy.okhttpserver.listener.DownloadListener;
 import com.lzy.okhttpserver.task.ExecutorWithListener;
 import com.lzy.okhttputils.OkHttpUtils;
 import com.lzy.okhttputils.request.GetRequest;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.PermissionListener;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-
 public class DownLoadActivity extends BaseActivity implements ExecutorWithListener.OnAllTaskEndListener {
 
-    private static final int REQUEST_READ_STORAGE = 0;
+    private static final int REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION = 1;
     private List<FileModel> fileModels;
-    //默认标题
-    private static String title = "下载中心";
     //默认下载路径
-    private static String fileDir = "/sdcard/HanDu_App/App_download/";
+    private String fileDir;
     private List<DownloadInfo> allTask;
     private DownLoadAdapter adapter;
     private DownloadManager downloadManager;
@@ -84,7 +83,8 @@ public class DownLoadActivity extends BaseActivity implements ExecutorWithListen
     @Override
     protected void onResume() {
         super.onResume();
-        adapter.notifyDataSetChanged();
+        if (adapter != null)
+            adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -113,16 +113,41 @@ public class DownLoadActivity extends BaseActivity implements ExecutorWithListen
         bundle.putString("fileDir", fileDir);
         bundle.putBoolean("restartDownload", restartDownload);
         bundle.putBoolean("autoInstall", autoInstall);
-        bundle.putSerializable("models", (Serializable) models);
+        if (models == null) {
+            models = new ArrayList<>();
+            bundle.putSerializable("models", (Serializable) models);
+        }
+        intent.putExtras(bundle);
+        context.startActivity(intent);
+    }
+
+    /**
+     * @param context
+     * @param title
+     * @param models
+     */
+    public static void runActivity(Context context, String title, List<FileModel> models) {
+        Intent intent = new Intent(context, DownLoadActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("title", title);
+        bundle.putString("fileDir", null);
+        bundle.putBoolean("restartDownload", false);
+        bundle.putBoolean("autoInstall", false);
+        if (models == null) {
+            models = new ArrayList<>();
+            bundle.putSerializable("models", (Serializable) models);
+        }
         intent.putExtras(bundle);
         context.startActivity(intent);
     }
 
     @Override
     protected void initView() {
+        String title = mContext.getString(R.string.title_down_load_info);
         Intent intent = this.getIntent();
         title = intent.getStringExtra("title") == null ? title : intent.getStringExtra("title");
         fileModels = (List<FileModel>) intent.getSerializableExtra("models");
+        fileDir = AppConstant.APK_DOWNLOAD_PATH;
         fileDir = intent.getStringExtra("fileDir") == null ? fileDir : intent.getStringExtra("fileDir");
         targetFolder.append(fileDir);
         autoInstall = intent.getBooleanExtra("autoInstall", false);
@@ -133,76 +158,102 @@ public class DownLoadActivity extends BaseActivity implements ExecutorWithListen
     @Override
     protected void initData() {
         downloadManager = DownloadService.getDownloadManager();
-        downloadManager.setTargetFolder(fileDir);
         downloadManager.getThreadPool().getExecutor().addOnAllTaskEndListener(this);
-        if (restartDownload) downloadManager.removeAllTask();
         allTask = downloadManager.getAllTask();
+        if (restartDownload) downloadManager.removeAllTask();
+        requestStoragePermission();
+    }
+
+    //内存卡读写权限
+    private void requestStoragePermission() {
+        //读写sdcard权限非常重要
+        AndPermission.with(this)
+                .requestCode(REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION)
+                .permission(
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE
+                ).send();
+    }
+
+    //准备下载工作
+    private void populateDownload() {
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            File dir = new File(fileDir);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+        }
+        downloadManager.setTargetFolder(fileDir);
         adapter = new DownLoadAdapter();
         listView.setAdapter(adapter);
-        populateDownload();
+        if (fileModels != null) {
+            for (FileModel model : fileModels) {
+                GetRequest request = OkHttpUtils.get(model.getUrl());
+                downloadManager.addTask(model.getName(), model.getUrl(), request, null);
+                AppCacheUtils.getInstance(getApplicationContext()).put(model.getUrl(), model);
+            }
+            adapter.notifyDataSetChanged();
+        }
+        allTask = downloadManager.getAllTask();
+        if (allTask.size() > 0) {
+            startDownload();
+        } else {
+            Tools.toastInfo("您还没有下载任务哦...");
+        }
     }
 
-
-    private void populateDownload() {
-        if (!mayRequestStorage()) {
+    private void startDownload() {
+        if (!Tools.isNetworkAvailable()) {
+            downloadManager.stopAllTask();
             return;
         }
-        if (!Tools.isNetworkAvailable()) return;
-        for (FileModel model : fileModels) {
-            GetRequest request = OkHttpUtils.get(model.getUrl());
-            downloadManager.addTask(model.getName(), model.getUrl(), request, null);
-            AppCacheUtils.getInstance(getApplicationContext()).put(model.getUrl(), model);
-        }
-        adapter.notifyDataSetChanged();
-    }
-
-    /**
-     * @创建人 柳梦
-     * @时间 2016/9/20 9:39
-     * @说明 动态申请内存卡读写敏感权限
-     */
-    private boolean mayRequestStorage() {
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return true;
-        }
-        if (checkSelfPermission(READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-                && checkSelfPermission(WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        }
-        if (shouldShowRequestPermissionRationale(READ_EXTERNAL_STORAGE) &&
-                shouldShowRequestPermissionRationale(WRITE_EXTERNAL_STORAGE)) {
-            Snackbar.make(toolbar, R.string.permission_storage, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(android.R.string.ok, v -> requestPermissions(new String[]{
-                            READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE}, REQUEST_READ_STORAGE));
+        if (!Tools.isWiFiNetworkAvailable()) {
+            downloadManager.stopAllTask();
+            MaterialDialog dialog = new MaterialDialog(mContext);
+            dialog.setTitle(R.string.sweet_warn);
+            dialog.btnNum(2)
+                    .content(getString(R.string.confirm_download_not_in_wifi))
+                    .btnText(getString(R.string.bt_cancel), getString(R.string.bt_sure))
+                    .showAnim(mBasIn)
+                    .dismissAnim(mBasOut)
+                    .show();
+            dialog.setOnBtnClickL(() -> {
+                dialog.dismiss();
+                downloadManager.stopAllTask();
+            }, () -> {
+                dialog.dismiss();
+                downloadManager.startAllTask();
+            });
         } else {
-            requestPermissions(new String[]{READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE}, REQUEST_READ_STORAGE);
+            downloadManager.startAllTask();
         }
-        return false;
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_READ_STORAGE) {
-            if (grantResults.length == permissions.length) {
-                for (int result : grantResults) {
-                    if (result != PackageManager.PERMISSION_GRANTED) {
-                        Tools.showToast(getResources().getString(R.string.permission_error));
-                        return;
-                    }
+        AndPermission.onRequestPermissionsResult(this, requestCode, permissions, grantResults, new PermissionListener() {
+            @Override
+            public void onSucceed(int requestCode) {
+                if (requestCode == REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION) {
+                    populateDownload();
                 }
-                populateDownload();
-            } else {
-                Tools.showToast(getResources().getString(R.string.permission_error));
             }
-        }
+
+            @Override
+            public void onFailed(int requestCode) {
+                if (requestCode == REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION) {
+                    showSnackbar(toolbar, "内存卡读写权限申请被禁止，相关下载存储功能未启动", "关闭", v -> {
+                    }, false);
+                }
+            }
+        });
     }
 
     @Override
     public void onAllTaskEnd() {
         for (DownloadInfo downloadInfo : allTask) {
             if (downloadInfo.getState() != DownloadManager.FINISH) {
-                Tools.showToast("所有下载线程结束，部分下载未完成");
+                Tools.toastSuccess("所有下载线程结束，部分下载未完成");
                 return;
             }
         }
@@ -222,7 +273,7 @@ public class DownLoadActivity extends BaseActivity implements ExecutorWithListen
                 downloadManager.stopAllTask();
                 break;
             case R.id.startAll:
-                downloadManager.startAllTask();
+                startDownload();
                 break;
         }
     }
@@ -281,20 +332,20 @@ public class DownLoadActivity extends BaseActivity implements ExecutorWithListen
         private TextView tvProgress;
         private TextView netSpeed;
         private NumberProgressBar pbProgress;
-        private Button download;
-        private Button remove;
-        private Button restart;
+        private TextView download;
+        private TextView remove;
+        private TextView restart;
 
-        public ViewHolder(View convertView) {
+        ViewHolder(View convertView) {
             icon = (ImageView) convertView.findViewById(R.id.icon);
             name = (TextView) convertView.findViewById(R.id.text);
             downloadSize = (TextView) convertView.findViewById(R.id.downloadSize);
             tvProgress = (TextView) convertView.findViewById(R.id.tvProgress);
             netSpeed = (TextView) convertView.findViewById(R.id.netSpeed);
             pbProgress = (NumberProgressBar) convertView.findViewById(R.id.pbProgress);
-            download = (Button) convertView.findViewById(R.id.start);
-            remove = (Button) convertView.findViewById(R.id.remove);
-            restart = (Button) convertView.findViewById(R.id.restart);
+            download = (TextView) convertView.findViewById(R.id.start);
+            remove = (TextView) convertView.findViewById(R.id.remove);
+            restart = (TextView) convertView.findViewById(R.id.restart);
         }
 
         public void refresh(DownloadInfo downloadInfo) {
@@ -377,12 +428,12 @@ public class DownLoadActivity extends BaseActivity implements ExecutorWithListen
 
         @Override
         public void onFinish(DownloadInfo downloadInfo) {
-            Tools.showToast(downloadInfo.getFileName() + "：下载完成");
+            Tools.toastSuccess(downloadInfo.getFileName() + "：下载完成");
         }
 
         @Override
         public void onError(DownloadInfo downloadInfo, String errorMsg, Exception e) {
-            if (errorMsg != null) Tools.showToast(errorMsg);
+            if (errorMsg != null) Tools.toastError(errorMsg);
         }
     }
 }

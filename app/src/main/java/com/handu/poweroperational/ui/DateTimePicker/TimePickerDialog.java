@@ -15,7 +15,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.handu.poweroperational.R;
-import com.handu.poweroperational.main.application.PowerOperationalApplication;
+import com.handu.poweroperational.main.application.PowerOperationalApplicationLike;
 import com.handu.poweroperational.ui.DateTimePicker.config.PickerConfig;
 import com.handu.poweroperational.ui.DateTimePicker.data.Type;
 import com.handu.poweroperational.ui.DateTimePicker.data.WheelCalendar;
@@ -81,7 +81,7 @@ public class TimePickerDialog extends DialogFragment implements View.OnClickList
     }
 
     View initView() {
-        LayoutInflater inflater = LayoutInflater.from(PowerOperationalApplication.getContext());
+        LayoutInflater inflater = LayoutInflater.from(PowerOperationalApplicationLike.getContext());
         View view = inflater.inflate(R.layout.timepicker_layout, null, false);
         TextView cancel = (TextView) view.findViewById(R.id.tv_cancel);
         cancel.setOnClickListener(this);

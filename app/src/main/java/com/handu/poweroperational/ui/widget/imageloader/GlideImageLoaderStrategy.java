@@ -9,7 +9,7 @@ import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.data.DataFetcher;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.model.stream.StreamModelLoader;
-import com.handu.poweroperational.main.application.PowerOperationalApplication;
+import com.handu.poweroperational.main.application.PowerOperationalApplicationLike;
 import com.handu.poweroperational.utils.AppUtils;
 
 import java.io.IOException;
@@ -33,7 +33,7 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy {
                 loadNormal(ctx, loader);
             } else {
                 //如果是url地址先判断网络
-                Context context = PowerOperationalApplication.getContext();
+                Context context = PowerOperationalApplicationLike.getContext();
                 // 得到网络连接信息
                 ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo info = manager.getActiveNetworkInfo();
@@ -46,7 +46,7 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy {
                     //有网络判断加载策略
                     int strategy = loader.getStrategy();
                     if (strategy == ImageLoaderUtil.LOAD_STRATEGY_ONLY_WIFI) {
-                        int netType = AppUtils.getNetWorkType(PowerOperationalApplication.getContext());
+                        int netType = AppUtils.getNetWorkType(PowerOperationalApplicationLike.getContext());
                         //如果是在wifi下才加载图片，并且当前网络是wifi,直接加载
                         if (netType == AppUtils.NETWORKTYPE_WIFI) {
                             loadNormal(ctx, loader);

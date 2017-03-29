@@ -28,6 +28,7 @@ import com.handu.poweroperational.R;
 import com.handu.poweroperational.base.BaseEvent;
 import com.handu.poweroperational.base.BaseFragment;
 import com.handu.poweroperational.main.activity.SelectActivity;
+import com.handu.poweroperational.main.activity.map.MapActivity;
 import com.handu.poweroperational.main.activity.materials.MaterialsSelectActivity;
 import com.handu.poweroperational.main.bean.constants.EventType;
 import com.handu.poweroperational.main.bean.constants.WorkOrderPriority;
@@ -40,8 +41,8 @@ import com.handu.poweroperational.main.bean.results.WorkOrderResult;
 import com.handu.poweroperational.request.RequestServer;
 import com.handu.poweroperational.request.callback.JsonDialogCallback;
 import com.handu.poweroperational.request.callback.StringDialogCallback;
-import com.handu.poweroperational.ui.RecyclerView.holder.BaseRecyclerViewHolder;
 import com.handu.poweroperational.ui.RecyclerView.adapter.CommonRecyclerViewAdapter;
+import com.handu.poweroperational.ui.RecyclerView.holder.BaseRecyclerViewHolder;
 import com.handu.poweroperational.ui.widget.view.StepperIndicator;
 import com.handu.poweroperational.utils.AppConstant;
 import com.handu.poweroperational.utils.AppLogger;
@@ -57,7 +58,6 @@ import com.lzy.ninegrid.ImageInfo;
 import com.lzy.ninegrid.NineGridView;
 import com.lzy.ninegrid.preview.NineGridViewClickAdapter;
 import com.lzy.okhttputils.OkHttpUtils;
-import com.lzy.okhttputils.request.BaseRequest;
 import com.transitionseverywhere.ChangeText;
 import com.transitionseverywhere.Slide;
 import com.transitionseverywhere.TransitionManager;
@@ -357,8 +357,9 @@ public class TaskNewWorkOrderDetailFragment extends BaseFragment {
     }
 
     @OnClick({R.id.ibt_image_before_add, R.id.ibt_image_after_add, R.id.bt_action,
-            R.id.bt_refuse, R.id.ibt_materials_add, R.id.et_xz_ry})
+            R.id.bt_refuse, R.id.ibt_materials_add, R.id.et_xz_ry, R.id.tv_work_address})
     public void onClick(View view) {
+        Bundle bundle;
         switch (view.getId()) {
             case R.id.ibt_image_before_add:
                 gotoActivityForResult(ImageGridActivity.class, null, SELECT_BEFORE_IMAGE);
@@ -373,7 +374,7 @@ public class TaskNewWorkOrderDetailFragment extends BaseFragment {
                 actionRefuse();
                 break;
             case R.id.ibt_materials_add:
-                Bundle bundle = new Bundle();
+                bundle = new Bundle();
                 bundle.putParcelable("workOrderResult", workOrderResult);
                 gotoActivityForResult(MaterialsSelectActivity.class, bundle, MaterialsSelectActivity.REQUEST_CODE);
                 break;
@@ -382,6 +383,14 @@ public class TaskNewWorkOrderDetailFragment extends BaseFragment {
                 map.put("OrganizeId", PreferencesUtils.get(mContext, AppConstant.organizeId, "") + "");
                 SelectActivity.runSelectActivityForResult(getActivity(),
                         "协助人员", map, ServiceUrl.GetUserTreeJson, false, "id", "text", "ChildNodes");
+                break;
+            case R.id.tv_work_address:
+                String address = tvWorkAddress.getText().toString();
+                if (!TextUtils.isEmpty(address)) {
+                    bundle = new Bundle();
+                    bundle.putString(MapActivity.SEARCH_CONTENT, address);
+                    gotoActivity(MapActivity.class, bundle, false);
+                }
                 break;
         }
     }
@@ -468,23 +477,23 @@ public class TaskNewWorkOrderDetailFragment extends BaseFragment {
         final EditText et = (EditText) view.findViewById(R.id.et_refuse_reason);
         AlertView alertView = new AlertView(getResources().getString(R.string.sweet_warn), getResources().getString(R.string.hint_refuse_content), getResources().getString(R.string.bt_cancel), null, new String[]{"确认"},
                 mContext, AlertView.Style.Alert, (o, position1) -> {
-                    if (position1 != AlertView.CANCELPOSITION) {
-                        String str = et.getText().toString();
-                        if (!TextUtils.isEmpty(str)) {
-                            int nextState = WorkOrderState.refuse.getState();
-                            Map<String, String> map = new HashMap<>();
-                            map.put("DetailId", workOrderResult.getDetailId());
-                            map.put("CurrentState", nextState + "");
-                            map.put("ModifyUserName", PreferencesUtils.get(mContext, AppConstant.username, "") + "");
-                            map.put("ModifyUserId", PreferencesUtils.get(mContext, AppConstant.userId, "") + "");
-                            map.put("Type", workOrderResult.getType() + "");
-                            map.put("Description", str);
-                            submit(map, nextState);
-                        } else {
-                            Tools.showToast(getResources().getString(R.string.refuse_reason_is_null));
-                        }
-                    }
-                });
+            if (position1 != AlertView.CANCELPOSITION) {
+                String str = et.getText().toString();
+                if (!TextUtils.isEmpty(str)) {
+                    int nextState = WorkOrderState.refuse.getState();
+                    Map<String, String> map = new HashMap<>();
+                    map.put("DetailId", workOrderResult.getDetailId());
+                    map.put("CurrentState", nextState + "");
+                    map.put("ModifyUserName", PreferencesUtils.get(mContext, AppConstant.username, "") + "");
+                    map.put("ModifyUserId", PreferencesUtils.get(mContext, AppConstant.userId, "") + "");
+                    map.put("Type", workOrderResult.getType() + "");
+                    map.put("Description", str);
+                    submit(map, nextState);
+                } else {
+                    Tools.toastError(getResources().getString(R.string.refuse_reason_is_null));
+                }
+            }
+        });
         alertView.addExtView(view);
         alertView.show();
     }
@@ -654,12 +663,7 @@ public class TaskNewWorkOrderDetailFragment extends BaseFragment {
 
         RequestServer.post(getActivity(), ServiceUrl.GetDictionaryData, "QuestionType",
                 new JsonDialogCallback<List<DataDictionaryResult>>(getActivity(), new TypeToken<List<DataDictionaryResult>>() {
-                }.getType()) {
-
-                    @Override
-                    public void onBefore(BaseRequest request) {
-
-                    }
+                }.getType(),false) {
 
                     @Override
                     public void onSuccess(List<DataDictionaryResult> dataDictionaryResults, Call call, Response response) {
@@ -680,11 +684,7 @@ public class TaskNewWorkOrderDetailFragment extends BaseFragment {
     //获取节点时间
     private void getNodeTime() {
         RequestServer.post(getActivity(), ServiceUrl.GetWorkOrderNodeTime, workOrderResult.getDetailId(),
-                new JsonDialogCallback<NodeTimeResult>(getActivity(), NodeTimeResult.class) {
-                    @Override
-                    public void onBefore(BaseRequest request) {
-
-                    }
+                new JsonDialogCallback<NodeTimeResult>(getActivity(), NodeTimeResult.class, false) {
 
                     @Override
                     public void onSuccess(NodeTimeResult nodeTimeResult, Call call, Response response) {
@@ -824,7 +824,7 @@ public class TaskNewWorkOrderDetailFragment extends BaseFragment {
                         break;
                     case ERROR:
                         Exception e = (Exception) msg.obj;
-                        Tools.showToast(e.getMessage());
+                        Tools.toastError(e.getMessage());
                         AppLogger.e(e.getMessage());
                         break;
                 }

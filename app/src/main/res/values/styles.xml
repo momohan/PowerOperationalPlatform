@@ -1,6 +1,6 @@
 <resources>
 
-    <!-- Base application theme. -->
+    <!-- Base applicationLike theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -23,10 +23,27 @@
     <!--用于控制toolbar溢出菜单的样式-->
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <!-- toolbar标题样式 -->
+    <style name="ToolbarTitle" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">@dimen/system_size_18</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <!-- toolbar菜单样式 -->
+    <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+        <item name="actionMenuTextColor">@android:color/white</item>
+        <item name="actionMenuTextAppearance">@style/ToolbarMenuTextSize</item>
+    </style>
+
+    <!-- toolbar菜单文字尺寸 -->
+    <style name="ToolbarMenuTextSize" parent="@style/TextAppearance.AppCompat.Menu">
+        <item name="android:textSize">@dimen/system_size_12</item>
+    </style>
+
     <style name="TreeNodeStyleCustom">
         <item name="android:paddingLeft">20dp</item>
-        <!--<item name="android:showDividers">middle</item>-->
-        <!--<item name="android:divider">@android:drawable/divider_horizontal_bright</item>-->
+        <item name="android:showDividers">middle</item>
+        <item name="android:divider">@android:drawable/divider_horizontal_bright</item>
     </style>
 
     <style name="TreeNodeStyleDivided">
@@ -88,7 +105,7 @@
         <item name="android:layout_marginLeft">10dp</item>
         <item name="android:layout_marginRight">10dp</item>
         <item name="android:layout_marginTop">10dp</item>
-        <item name="android:background">@drawable/btn_selector</item>
+        <item name="android:background">@drawable/btn_selector_color_primary_gray</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/system_button_size</item>
         <item name="android:textStyle">bold</item>
@@ -100,7 +117,8 @@
     </style>
 
     <style name="LoadingLayoutStyle" parent="LoadingLayout.Style">
-        <item name="llEmptyImage">@drawable/ic_vector_error</item>
+        <item name="llEmptyImage">@drawable/ic_vector_no_data</item>
+        <item name="llLoadingResId">@layout/layout_loading</item>
         <item name="llErrorImage">@drawable/ic_vector_no_data</item>
     </style>
 </resources>

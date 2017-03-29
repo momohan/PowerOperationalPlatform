@@ -1,5 +1,6 @@
 package com.handu.poweroperational.main.activity.operation;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import com.flyco.dialog.widget.NormalListDialog;
 import com.handu.poweroperational.R;
 import com.handu.poweroperational.base.BaseActivity;
 import com.handu.poweroperational.base.BaseEvent;
+import com.handu.poweroperational.main.activity.BuildingAndDaActivity;
 import com.handu.poweroperational.main.bean.constants.EventType;
 import com.handu.poweroperational.main.bean.results.DeviceResult;
 import com.handu.poweroperational.main.fragment.operation.AnalyzeFragment;
@@ -51,11 +53,17 @@ public class OperationActivity extends BaseActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        deviceResult = null;
+    }
+
+    @Override
     protected void initView() {
-        initToolBar(toolbar, getString(R.string.title_operation), true, v -> finish(), true, R.menu.operation, item -> {
+        initToolBar(toolbar, getString(R.string.title_operation), true, v -> finish(), true, R.menu.menu_operation, item -> {
             switch (item.getItemId()) {
                 case R.id.action_tenement:
-//                    gotoActivity(SearchActivity.class, false);
+                    gotoActivityForResult(BuildingAndDaActivity.class, BuildingAndDaActivity.REQUEST_ACTION, null, BuildingAndDaActivity.REQUEST_CODE);
                     break;
                 case R.id.action_device:
                     showDeviceDialog();
@@ -151,10 +159,22 @@ public class OperationActivity extends BaseActivity {
 
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)//在ui线程执行 操作ui必须在此线程
+    //在ui线程执行 操作ui必须在此线程
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(BaseEvent event) {
         if (event.eventType == EventType.requestOperationDevice.getType()) {
             showDeviceDialog();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null && requestCode == BuildingAndDaActivity.REQUEST_CODE) {
+            DeviceResult result = data.getParcelableExtra(BuildingAndDaActivity.REQUEST_RESULT);
+            if (result != null) {
+                showDeviceDialog();
+            }
         }
     }
 }

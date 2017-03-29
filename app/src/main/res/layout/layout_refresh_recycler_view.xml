@@ -2,13 +2,11 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    style="@style/MatchMatch">
 
     <com.chanven.lib.cptr.PtrClassicFrameLayout
         android:id="@+id/refreshLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        style="@style/MatchMatch"
         android:background="@color/white"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         cube_ptr:ptr_keep_header_when_refresh="true"
@@ -17,33 +15,32 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
-            style="@style/MatchMatch" />
+            style="@style/MatchMatch"
+            android:layout_margin="5dp" />
     </com.chanven.lib.cptr.PtrClassicFrameLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_vector_add"
-        android:visibility="gone"
-        app:backgroundTint="@color/colorAccent"
-        app:elevation="10dp"
-        app:fabSize="mini"
-        app:layout_scrollFlags="scroll|enterAlways|snap"
-        app:pressedTranslationZ="10dp"
-        app:rippleColor="@color/gray_dark" />
+    <!--<android.support.design.widget.FloatingActionButton-->
+    <!--android:id="@+id/fab_add"-->
+    <!--style="@style/WrapWrap"-->
+    <!--android:layout_gravity="end|top"-->
+    <!--android:layout_margin="@dimen/fab_margin"-->
+    <!--android:src="@drawable/ic_vector_add"-->
+    <!--android:visibility="gone"-->
+    <!--app:backgroundTint="@color/colorAccent"-->
+    <!--app:elevation="10dp"-->
+    <!--app:fabSize="mini"-->
+    <!--app:layout_scrollFlags="scroll|enterAlways|snap"-->
+    <!--app:pressedTranslationZ="10dp"-->
+    <!--app:rippleColor="@color/gray_dark" />-->
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_go_top"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/WrapWrap"
         android:layout_gravity="end|bottom"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_vector_go_top"
         android:visibility="gone"
-        app:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@color/colorAccent"
         app:elevation="10dp"
         app:fabSize="mini"
         app:layout_behavior="@string/scale_up_show_behavior"

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ezy.ui.layout.LoadingLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/loading_view"
+    style="@style/MatchMatch"
+    app:llLoadingResId="@layout/layout_loading"
+    tools:context="com.handu.poweroperational.main.activity.PushMessageActivity">
+
+    <LinearLayout style="@style/MatchMatch.Vertical">
+
+        <include layout="@layout/layout_title_bar" />
+
+        <include layout="@layout/layout_refresh_recycler_view" />
+
+    </LinearLayout>
+
+</ezy.ui.layout.LoadingLayout>

@@ -19,7 +19,6 @@ import android.widget.TextView;
 import com.google.gson.reflect.TypeToken;
 import com.handu.poweroperational.R;
 import com.handu.poweroperational.base.BaseFragment;
-import com.handu.poweroperational.request.callback.JsonDialogCallback;
 import com.handu.poweroperational.main.bean.constants.WorkOrderPriority;
 import com.handu.poweroperational.main.bean.constants.WorkOrderState;
 import com.handu.poweroperational.main.bean.constants.WorkOrderType;
@@ -28,8 +27,9 @@ import com.handu.poweroperational.main.bean.results.ImageResult;
 import com.handu.poweroperational.main.bean.results.NodeTimeResult;
 import com.handu.poweroperational.main.bean.results.WorkOrderResult;
 import com.handu.poweroperational.request.RequestServer;
-import com.handu.poweroperational.ui.RecyclerView.holder.BaseRecyclerViewHolder;
+import com.handu.poweroperational.request.callback.JsonDialogCallback;
 import com.handu.poweroperational.ui.RecyclerView.adapter.CommonRecyclerViewAdapter;
+import com.handu.poweroperational.ui.RecyclerView.holder.BaseRecyclerViewHolder;
 import com.handu.poweroperational.ui.widget.view.StepperIndicator;
 import com.handu.poweroperational.utils.AppLogger;
 import com.handu.poweroperational.utils.ServiceUrl;
@@ -39,7 +39,6 @@ import com.lzy.ninegrid.ImageInfo;
 import com.lzy.ninegrid.NineGridView;
 import com.lzy.ninegrid.preview.NineGridViewClickAdapter;
 import com.lzy.okhttputils.OkHttpUtils;
-import com.lzy.okhttputils.request.BaseRequest;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -288,12 +287,7 @@ public class TaskHistoryWorkOrderDetailFragment extends BaseFragment {
 
         RequestServer.post(getActivity(), ServiceUrl.GetDictionaryData, "QuestionType",
                 new JsonDialogCallback<List<DataDictionaryResult>>(getActivity(), new TypeToken<List<DataDictionaryResult>>() {
-                }.getType()) {
-
-                    @Override
-                    public void onBefore(BaseRequest request) {
-
-                    }
+                }.getType(), false) {
 
                     @Override
                     public void onSuccess(List<DataDictionaryResult> dataDictionaryResults, Call call, Response response) {
@@ -315,11 +309,7 @@ public class TaskHistoryWorkOrderDetailFragment extends BaseFragment {
     //获取节点时间
     private void getNodeTime() {
         RequestServer.post(getActivity(), ServiceUrl.GetWorkOrderNodeTime, workOrderResult.getDetailId(),
-                new JsonDialogCallback<NodeTimeResult>(getActivity(), NodeTimeResult.class) {
-                    @Override
-                    public void onBefore(BaseRequest request) {
-
-                    }
+                new JsonDialogCallback<NodeTimeResult>(getActivity(), NodeTimeResult.class, false) {
 
                     @Override
                     public void onSuccess(NodeTimeResult nodeTimeResult, Call call, Response response) {
@@ -415,7 +405,7 @@ public class TaskHistoryWorkOrderDetailFragment extends BaseFragment {
                         break;
                     case ERROR:
                         Exception e = (Exception) msg.obj;
-                        Tools.showToast(e.getMessage());
+                        Tools.toastError(e.getMessage());
                         AppLogger.e(e.getMessage());
                         break;
                 }

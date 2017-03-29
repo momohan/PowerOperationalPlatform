@@ -28,7 +28,7 @@ import com.handu.poweroperational.utils.AnimationUtil;
 
 
 /**
- * <p>下拉时显示FAB，上拉隐藏，留出更多位置给用户。</p>
+ * 下拉时显示FAB，上拉隐藏，留出更多位置给用户。
  * Created on 2016/7/14.
  *
  * @author 柳梦

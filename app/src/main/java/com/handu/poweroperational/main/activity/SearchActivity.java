@@ -1,1 +1,185 @@
-package com.handu.poweroperational.main.activity;import android.os.Bundle;import android.os.Handler;import android.support.design.widget.AppBarLayout;import android.support.v4.content.ContextCompat;import android.support.v7.widget.RecyclerView;import android.support.v7.widget.StaggeredGridLayoutManager;import android.support.v7.widget.Toolbar;import android.text.TextUtils;import android.view.View;import android.view.ViewGroup;import android.view.animation.OvershootInterpolator;import android.widget.SearchView;import android.widget.TextView;import com.chanven.lib.cptr.PtrClassicFrameLayout;import com.chanven.lib.cptr.PtrDefaultHandler;import com.chanven.lib.cptr.PtrFrameLayout;import com.chanven.lib.cptr.recyclerview.RecyclerAdapterWithHF;import com.handu.poweroperational.R;import com.handu.poweroperational.base.BaseActivity;import com.handu.poweroperational.main.activity.operation.OperationActivity;import com.handu.poweroperational.main.bean.results.DeviceResult;import com.handu.poweroperational.ui.RecyclerView.adapter.CommonRecyclerViewAdapter;import com.handu.poweroperational.ui.RecyclerView.click.ItemClickListener;import com.handu.poweroperational.ui.RecyclerView.holder.BaseRecyclerViewHolder;import com.handu.poweroperational.ui.RecyclerView.utils.SwipyAppBarScrollListener;import com.handu.poweroperational.utils.Tools;import java.util.ArrayList;import java.util.List;import butterknife.Bind;import butterknife.ButterKnife;import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;public class SearchActivity extends BaseActivity implements SearchView.OnQueryTextListener {    public static final int REQUEST_CODE = 100;    @Bind(R.id.toolbar)    Toolbar toolbar;    @Bind(R.id.recyclerView)    RecyclerView recyclerView;    @Bind(R.id.refreshLayout)    PtrClassicFrameLayout refreshLayout;    @Bind(R.id.searchView)    SearchView searchView;    @Bind(R.id.appbar)    AppBarLayout appbar;    private ArrayList<DeviceResult> items;    private ArrayList<DeviceResult> newItems;    private CommonRecyclerViewAdapter<DeviceResult> mAdapter;    private int size = 80;    private int page = 1;    private Handler handler = new Handler();    private String searchText = "";    @Override    protected void onCreate(Bundle savedInstanceState) {        super.onCreate(savedInstanceState);        setContentView(R.layout.activity_search);        ButterKnife.bind(this);        initView();        initData();    }    @Override    protected void onDestroy() {        handler.removeCallbacksAndMessages(null);        super.onDestroy();    }    @Override    protected void initView() {        initToolBar(toolbar, getString(R.string.device_search), true, v -> finish());        searchView.setOnQueryTextListener(this);        searchView.setSubmitButtonEnabled(true);        int id = searchView.getContext().getResources().getIdentifier(getString(R.string.search_view_text_id), null, null);        TextView tv = (TextView) searchView.findViewById(id);        tv.setHintTextColor(ContextCompat.getColor(mContext, R.color.gray_light));        tv.setTextSize(14);        recyclerView.addOnItemTouchListener(new ItemClickListener(recyclerView,                new ItemClickListener.OnItemClickListener() {                    @Override                    public void onItemClick(View view, int position) {                        gotoActivity(OperationActivity.class, true);                    }                    @Override                    public void onItemLongClick(View view, int position) {                    }                }));        recyclerView.addOnScrollListener(new SwipyAppBarScrollListener(appbar, refreshLayout, recyclerView));        StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL);        recyclerView.setLayoutManager(manager);        mAdapter = new CommonRecyclerViewAdapter<DeviceResult>(mContext, R.layout.item_device_search_list) {            @Override            public void convert(BaseRecyclerViewHolder helper, DeviceResult item, int position) {                TextView tv = helper.getView(R.id.tv_device_name);                tv.setText(item.getDeviceName());                // 随机高度, 模拟瀑布效果.                ViewGroup.LayoutParams lp = tv.getLayoutParams();                lp.height = Tools.dp2px((int) (100 + Math.random() * 50));                tv.setLayoutParams(lp);            }        };        ScaleInAnimationAdapter alphaAdapter = new ScaleInAnimationAdapter(mAdapter);        alphaAdapter.setInterpolator(new OvershootInterpolator(0.5f));        alphaAdapter.setDuration(1000);        alphaAdapter.setFirstOnly(false);        RecyclerAdapterWithHF adapter = new RecyclerAdapterWithHF(alphaAdapter);        recyclerView.setAdapter(adapter);    }    private void initRefreshLayout() {        refreshLayout.setLoadMoreEnable(false);        refreshLayout.setPtrHandler(new PtrDefaultHandler() {            @Override            public void onRefreshBegin(PtrFrameLayout frame) {                page = 1;                handler.postDelayed(() -> setData(0), 1000);            }        });        refreshLayout.setOnLoadMoreListener(() -> {            page++;            handler.postDelayed(() -> setData(1), 1000);        });    }    @Override    protected void initData() {        items = new ArrayList<>();        newItems = new ArrayList<>();        searchView.setQuery("奥克斯广场总漏保", false);        initRefreshLayout();    }    private void refresh() {        handler.postDelayed(() -> {            if (refreshLayout != null)                refreshLayout.autoRefresh(true);        }, 100);    }    private void setData(int type) {        if (TextUtils.isEmpty(searchText)) {            refreshLayout.refreshComplete();            Tools.showToast(getString(R.string.search_content_is_null));            return;        }        switch (type) {            case 0:                items.clear();                for (int i = 0; i < size; i++) {                    items.add(new DeviceResult(searchText + (i + 1)));                }                mAdapter.fillList(items);                if (refreshLayout != null) {                    refreshLayout.refreshComplete();                    refreshLayout.setLoadMoreEnable(true);                }                break;            case 1:                List<DeviceResult> list = new ArrayList<>();                for (int i = (page - 1) * size; i < page * size; i++) {                    list.add(new DeviceResult("设备" + (i + 1)));                }                items.addAll(list);                mAdapter.fillList(items);                if (refreshLayout != null) {                    refreshLayout.loadMoreComplete(true);                }                break;        }    }    @Override    public boolean onQueryTextSubmit(String query) {        if (!TextUtils.isEmpty(query)) {            searchText = query;            refresh();        }        return false;    }    @Override    public boolean onQueryTextChange(String newText) {        searchText = newText;        if (refreshLayout != null) refreshLayout.setLoadMoreEnable(false);        if (!TextUtils.isEmpty(newText)) {            mAdapter.fillList(getFilterData(newText));        } else {            mAdapter.fillList(items);        }        return false;    }    private List<DeviceResult> getFilterData(String info) {        newItems.clear();        if (items.size() > 0) {            //遍历list            for (int i = 0; i < items.size(); i++) {                DeviceResult domain = items.get(i);                //如果遍历到的名字包含所输入字符串                if (domain.getDeviceName().contains(info)) {                    //将遍历到的元素重新组成一个list                    newItems.add(domain);                }            }        }        return newItems;    }}
+package com.handu.poweroperational.main.activity;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.design.widget.TextInputEditText;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.TextView;
+
+import com.flyco.dialog.widget.MaterialDialog;
+import com.handu.poweroperational.R;
+import com.handu.poweroperational.base.BaseActivity;
+import com.handu.poweroperational.db.dao.SearchContentDao;
+import com.handu.poweroperational.db.entity.SearchContent;
+import com.handu.poweroperational.db.manager.GreenDaoManager;
+import com.handu.poweroperational.ui.RecyclerView.adapter.CommonRecyclerViewAdapter;
+import com.handu.poweroperational.ui.RecyclerView.click.ItemClickListener;
+import com.handu.poweroperational.ui.RecyclerView.divide.DividerItemDecoration;
+import com.handu.poweroperational.ui.RecyclerView.holder.BaseRecyclerViewHolder;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+public class SearchActivity extends BaseActivity {
+
+    public static final int SEARCH_CODE = 212;
+    public static final String SEARCH_CONTENT = "content";
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.et_search_content)
+    TextInputEditText etSearchContent;
+    @Bind(R.id.recyclerView)
+    RecyclerView recyclerView;
+    private CommonRecyclerViewAdapter<String> mAdapter;
+    private SearchContentDao dao;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_search);
+        ButterKnife.bind(this);
+        dao = GreenDaoManager.getInstance().getNewSession().getSearchContentDao();
+        initView();
+        initData();
+    }
+
+    @Override
+    protected void initView() {
+        initToolBar(toolbar, getString(R.string.title_search), true, v -> finish());
+        initRecyclerView();
+    }
+
+    @Override
+    protected void initData() {
+        String content = getIntent().getStringExtra(SEARCH_CONTENT);
+        if (!TextUtils.isEmpty(content)) {
+            etSearchContent.setText(content);
+        }
+        queryHistorySearch();
+    }
+
+    private void initRecyclerView() {
+        LinearLayoutManager manager = new LinearLayoutManager(mContext);
+        recyclerView.setLayoutManager(manager);
+        recyclerView.addOnItemTouchListener(new ItemClickListener(recyclerView, new ItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                String str = mAdapter.getItem(position);
+                if (!TextUtils.isEmpty(str)) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(SEARCH_CONTENT, str);
+                    gotoActivitySetResult(bundle, SEARCH_CODE);
+                }
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+
+            }
+        }));
+        mAdapter = new CommonRecyclerViewAdapter<String>(mContext, R.layout.item_history_search_content_list) {
+            @Override
+            public void convert(BaseRecyclerViewHolder helper, String item, int position) {
+                TextView tv = helper.getView(R.id.tv_content);
+                tv.setText(item);
+            }
+        };
+        recyclerView.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL_LIST));
+        recyclerView.setAdapter(mAdapter);
+    }
+
+    private void queryHistorySearch() {
+        List<SearchContent> contents = dao.queryBuilder().orderDesc(SearchContentDao.Properties.Id).list();
+        List<String> list = new ArrayList<>();
+        for (SearchContent searchContent : contents) list.add(searchContent.content);
+        mAdapter.fillList(list);
+    }
+
+    private void clear() {
+        dao.deleteAll();
+        mAdapter.clearAll();
+    }
+
+    private void search() {
+        String content = etSearchContent.getText().toString();
+        if (TextUtils.isEmpty(content)) {
+            etSearchContent.setError(getString(R.string.search_content_is_null));
+            etSearchContent.requestFocus();
+            return;
+        }
+        List<SearchContent> list = dao.queryBuilder().where(SearchContentDao.Properties.Content.eq(content)).build().list();
+        if (list.size() == 0) {
+            SearchContent sc = new SearchContent(null, content, null);
+            dao.insert(sc);
+        }
+        Bundle bundle = new Bundle();
+        bundle.putString(SEARCH_CONTENT, content);
+        gotoActivitySetResult(bundle, SEARCH_CODE);
+    }
+
+    @OnClick({R.id.tv_search, R.id.ll_delete_history_search, R.id.ibt_speech_search})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tv_search:
+                search();
+                break;
+            case R.id.ll_delete_history_search:
+                MaterialDialog dialog = new MaterialDialog(mContext);
+                dialog.setTitle(R.string.action_clear_history_search);
+                dialog.btnNum(2)
+                        .content(getString(R.string.confirm_clear_search_content))
+                        .btnText(getString(R.string.bt_cancel), getString(R.string.bt_sure))
+                        .showAnim(mBasIn)
+                        .dismissAnim(mBasOut)
+                        .show();
+                dialog.setOnBtnClickL(dialog::dismiss, () -> {
+                    dialog.dismiss();
+                    clear();
+                });
+                break;
+            case R.id.ibt_speech_search:
+                SpeechActivity.runSpeechActivityForResult(SearchActivity.this, false);
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == SpeechActivity.REQUEST_CODE && data != null) {
+            String result = data.getStringExtra(SpeechActivity.REQUEST_RESULT);
+            if (!TextUtils.isEmpty(result)) {
+                etSearchContent.setText(result);
+                List<SearchContent> list = dao.queryBuilder().where(SearchContentDao.Properties.Content.eq(result)).build().list();
+                if (list.size() == 0) {
+                    SearchContent sc = new SearchContent(null, result, null);
+                    dao.insert(sc);
+                }
+                Bundle bundle = new Bundle();
+                bundle.putString(SEARCH_CONTENT, result);
+                gotoActivitySetResult(bundle, SEARCH_CODE);
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    /**
+     * @param activity      对象
+     * @param searchContent 搜索内容
+     */
+    public static void runSearchActivityForResult(Activity activity, String searchContent) {
+        Intent intent = new Intent(activity, SearchActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString(SEARCH_CONTENT, searchContent);
+        intent.putExtras(bundle);
+        activity.startActivityForResult(intent, SEARCH_CODE);
+    }
+}

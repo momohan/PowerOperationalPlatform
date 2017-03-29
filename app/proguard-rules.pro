@@ -153,6 +153,9 @@
 }
 #####混淆保护自己项目的部分代码以及引用的第三方jar包library  end#######
 
+#MPAndroidChart如果不添加，会导致动画出问题。
+-keep class com.github.mikephil.charting.** { *; }
+
 #okhttputils
 -dontwarn com.lzy.okhttputils.**
 -keep class com.lzy.okhttputils.**{*;}
@@ -172,4 +175,30 @@
 -keep class net.sourceforge.zbar.** { *; }
 -keep interface net.sourceforge.zbar.** { *; }
 -dontwarn net.sourceforge.zbar.**
+
+-keep class com.baidu.** {*;}
+-keep class vi.com.** {*;}
+-dontwarn com.baidu.**
+
+#EventBus
+-keepattributes *Annotation*
+-keepclassmembers class ** {
+    @org.greenrobot.eventbus.Subscribe <methods>;
+}
+-keep enum org.greenrobot.eventbus.ThreadMode { *; }
+
+#greenDao
+-keepclassmembers class * extends org.greenrobot.greendao.AbstractDao {
+public static java.lang.String TABLENAME;
+}
+-keep class **$Properties
+# If you do not use SQLCipher:
+-dontwarn org.greenrobot.greendao.database.**
+# If you do not use Rx:
+-dontwarn rx.**
+#讯飞语音
+-keep class com.iflytek.**{*;}
+-keepattributes Signature
+
+
 

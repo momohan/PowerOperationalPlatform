@@ -58,16 +58,16 @@ public class MainTopMenuDialog extends TopBaseDialog<MainTopMenuDialog> implemen
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_wechat_friend_circle:
-                Tools.showToast("运维");
+                Tools.toastNormal("运维");
                 break;
             case R.id.ll_wechat_friend:
-                Tools.showToast("商城");
+                Tools.toastNormal("商城");
                 break;
             case R.id.ll_sms:
-                Tools.showToast("楼宇");
+                Tools.toastNormal("楼宇");
                 break;
             case R.id.ll_qq:
-                Tools.showToast("物资");
+                Tools.toastNormal("物资");
                 break;
         }
         dismiss();

@@ -24,7 +24,6 @@ import com.chanven.lib.cptr.recyclerview.RecyclerAdapterWithHF;
 import com.google.gson.reflect.TypeToken;
 import com.handu.poweroperational.R;
 import com.handu.poweroperational.base.BaseFragment;
-import com.handu.poweroperational.main.activity.workorder.AddWorkOrderActivity;
 import com.handu.poweroperational.main.activity.workorder.HistoryWorkOrderDetailActivity;
 import com.handu.poweroperational.main.bean.constants.WorkOrderPriority;
 import com.handu.poweroperational.main.bean.constants.WorkOrderState;
@@ -32,9 +31,9 @@ import com.handu.poweroperational.main.bean.constants.WorkOrderType;
 import com.handu.poweroperational.main.bean.results.WorkOrderResult;
 import com.handu.poweroperational.request.RequestServer;
 import com.handu.poweroperational.request.callback.JsonDialogCallback;
+import com.handu.poweroperational.ui.RecyclerView.adapter.CommonRecyclerViewAdapter;
 import com.handu.poweroperational.ui.RecyclerView.click.ItemClickListener;
 import com.handu.poweroperational.ui.RecyclerView.holder.BaseRecyclerViewHolder;
-import com.handu.poweroperational.ui.RecyclerView.adapter.CommonRecyclerViewAdapter;
 import com.handu.poweroperational.utils.AnimationUtil;
 import com.handu.poweroperational.utils.AppConstant;
 import com.handu.poweroperational.utils.PreferencesUtils;
@@ -72,8 +71,6 @@ public class HistoryWorkOrderListFragment extends BaseFragment {
     PtrClassicFrameLayout refreshLayout;
     @Bind(R.id.fab_go_top)
     FloatingActionButton fabGoTop;
-    @Bind(R.id.fab_add)
-    FloatingActionButton fabAdd;
     @Bind(R.id.drop_down_menu)
     DropDownMenu dropDownMenu;
     @Bind(R.id.loading_view)
@@ -140,7 +137,6 @@ public class HistoryWorkOrderListFragment extends BaseFragment {
         initLoadingView();
         initRefreshLayout();
         initDropDownMenu();
-        fabAdd.setVisibility(View.VISIBLE);
         recyclerView.addOnItemTouchListener(new ItemClickListener(recyclerView,
                 new ItemClickListener.OnItemClickListener() {
                     @Override
@@ -206,12 +202,6 @@ public class HistoryWorkOrderListFragment extends BaseFragment {
 
     private void initRefreshLayout() {
         refreshLayout.setPtrHandler(new PtrDefaultHandler() {
-            @Override
-            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
-                hideFABTop();
-                return super.checkCanDoRefresh(frame, content, header);
-            }
-
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
                 page = 1;
@@ -292,23 +282,6 @@ public class HistoryWorkOrderListFragment extends BaseFragment {
         dropDownMenu.setIsDebug(false);
     }
 
-    private void hideFABTop() {
-        AnimationUtil.scaleHide(fabGoTop, new ViewPropertyAnimatorListener() {
-            @Override
-            public void onAnimationStart(View view) {
-            }
-
-            @Override
-            public void onAnimationEnd(View view) {
-                fabGoTop.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAnimationCancel(View view) {
-            }
-        });
-    }
-
     private void refresh() {
         if (!isFirstLoad)
             loadingView.showContent();
@@ -325,6 +298,23 @@ public class HistoryWorkOrderListFragment extends BaseFragment {
     private void scrollToTop() {
         hideFABTop();
         manager.scrollToPosition(0);
+    }
+
+    private void hideFABTop() {
+        AnimationUtil.scaleHide(fabGoTop, new ViewPropertyAnimatorListener() {
+            @Override
+            public void onAnimationStart(View view) {
+            }
+
+            @Override
+            public void onAnimationEnd(View view) {
+                fabGoTop.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(View view) {
+            }
+        });
     }
 
     /**
@@ -357,11 +347,7 @@ public class HistoryWorkOrderListFragment extends BaseFragment {
             case 0:
                 RequestServer.post(getActivity(), ServiceUrl.GetHistoryList, map,
                         new JsonDialogCallback<List<WorkOrderResult>>(getActivity(), new TypeToken<List<WorkOrderResult>>() {
-                        }.getType()) {
-
-                            @Override
-                            public void onBefore(BaseRequest request) {
-                            }
+                        }.getType(), false) {
 
                             @Override
                             public void onSuccess(List<WorkOrderResult> workOrderResults, Call call, Response response) {
@@ -384,11 +370,7 @@ public class HistoryWorkOrderListFragment extends BaseFragment {
             case 1:
                 RequestServer.post(getActivity(), ServiceUrl.GetHistoryList, map,
                         new JsonDialogCallback<List<WorkOrderResult>>(getActivity(), new TypeToken<List<WorkOrderResult>>() {
-                        }.getType()) {
-
-                            @Override
-                            public void onBefore(BaseRequest request) {
-                            }
+                        }.getType(), false) {
 
                             @Override
                             public void onSuccess(List<WorkOrderResult> workOrderResults, Call call, Response response) {
@@ -411,14 +393,11 @@ public class HistoryWorkOrderListFragment extends BaseFragment {
         }
     }
 
-    @OnClick({R.id.fab_go_top, R.id.fab_add})
+    @OnClick({R.id.fab_go_top})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.fab_go_top:
                 scrollToTop();
-                break;
-            case R.id.fab_add:
-                gotoActivity(AddWorkOrderActivity.class, false);
                 break;
         }
     }
@@ -487,7 +466,7 @@ public class HistoryWorkOrderListFragment extends BaseFragment {
                                     }
                                 }
                             } else {
-                                Tools.showToast(fragment.getString(R.string.query_no_more_data));
+                                Tools.toastWarning(fragment.getString(R.string.query_no_more_data));
                                 if (fragment.refreshLayout != null) {
                                     fragment.refreshLayout.loadMoreComplete(true);
                                     fragment.refreshLayout.setLoadMoreEnable(false);
@@ -499,7 +478,7 @@ public class HistoryWorkOrderListFragment extends BaseFragment {
                             if (fragment.refreshLayout != null) {
                                 fragment.refreshLayout.loadMoreComplete(true);
                             }
-                            Tools.showToast(e.getMessage());
+                            Tools.toastError(e.getMessage());
                             break;
                     }
                 }

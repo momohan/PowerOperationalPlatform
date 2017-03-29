@@ -11,7 +11,7 @@ import android.text.TextUtils;
 
 import com.handu.poweroperational.R;
 import com.handu.poweroperational.base.BaseEvent;
-import com.handu.poweroperational.main.application.PowerOperationalApplication;
+import com.handu.poweroperational.main.application.PowerOperationalApplicationLike;
 import com.handu.poweroperational.main.bean.constants.EventType;
 import com.handu.poweroperational.utils.AppLogger;
 import com.igexin.sdk.PushConsts;
@@ -22,10 +22,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class PushReceiver extends BroadcastReceiver {
-
-    private NotificationManager mNotificationManager;
-    private NotificationCompat.Builder mBuilder;
-    private Notification notification;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -43,7 +39,7 @@ public class PushReceiver extends BroadcastReceiver {
                 if (payload != null) {
                     String data = new String(payload);
                     AppLogger.e("receiver payload : " + data);
-                    setNewWorkWarningNotification(data);
+                    setNotification(data);
                 }
                 break;
 
@@ -53,7 +49,7 @@ public class PushReceiver extends BroadcastReceiver {
                 String cid = bundle.getString("clientid");
                 if (!TextUtils.isEmpty(cid)) {
                     AppLogger.e(cid);
-                    PowerOperationalApplication.pushCid = cid;
+                    PowerOperationalApplicationLike.pushCid = cid;
                     EventBus.getDefault().post(new BaseEvent(EventType.registerCid.getType(), cid));
                 }
                 break;
@@ -115,7 +111,7 @@ public class PushReceiver extends BroadcastReceiver {
      *
      * @param data
      */
-    private void setNewWorkWarningNotification(String data) {
+    private void setNotification(String data) {
         try {
             JSONObject object = new JSONObject(data);
             CharSequence WarningTitle = object.optString("title", "温馨提示");
@@ -131,8 +127,8 @@ public class PushReceiver extends BroadcastReceiver {
                     EventBus.getDefault().post(new BaseEvent(EventType.alarmNumUpdate.getType()));
                     break;
             }
-            mNotificationManager = (NotificationManager) PowerOperationalApplication.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
-            mBuilder = new NotificationCompat.Builder(PowerOperationalApplication.getContext());
+            NotificationManager mNotificationManager = (NotificationManager) PowerOperationalApplicationLike.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(PowerOperationalApplicationLike.getContext());
             int icon = R.mipmap.ic_app_icon;
             long when = System.currentTimeMillis();
             //设置展开后的通知类容
@@ -163,7 +159,7 @@ public class PushReceiver extends BroadcastReceiver {
             //mBuilder.setSound(Uri.withAppendedPath(MediaStore.Audio.Media.INTERNAL_CONTENT_URI, "5"));
             //获取raw下的音乐文件
             //mBuilder.setSound(Uri.parse("android.resource://" + getPackageName() + "/" + NotificationConstants.soundNewName));
-            notification = mBuilder.build();
+            Notification notification = mBuilder.build();
             mNotificationManager.notify((int) (Math.random() * 10000 + (int) (Math.random() * 10000)), notification);
         } catch (JSONException e) {
             e.printStackTrace();

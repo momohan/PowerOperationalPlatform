@@ -1,5 +1,7 @@
 package com.handu.poweroperational.utils;
 
+import com.handu.poweroperational.BuildConfig;
+
 /**
  * @创建人 柳梦
  * @时间 2016/9/13 9:32
@@ -10,11 +12,7 @@ public class ServiceUrl {
     /**
      * ip地址
      */
-    private static String[] Ips = {
-            "http://192.168.1.47:2062",//0
-            "http://192.168.1.59:2062"//1
-    };
-    private static String Ip = Ips[1];
+    private static String Ip = BuildConfig.Ip;
     private static String Api = "/api/AndroidApi/";
     public static String BaseIp = Ip;
     public static String BaseUrl = Ip + Api;

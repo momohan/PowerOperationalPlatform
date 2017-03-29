@@ -16,7 +16,9 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:layout_scrollFlags="scroll|enterAlways"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:theme="@style/ToolbarTheme"
+            app:titleTextAppearance="@style/ToolbarTitle" />
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tabs"

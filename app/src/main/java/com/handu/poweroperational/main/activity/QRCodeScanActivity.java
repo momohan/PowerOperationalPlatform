@@ -6,6 +6,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
@@ -27,7 +28,7 @@ import cn.bingoogolapple.qrcode.zxing.ZXingView;
 public class QRCodeScanActivity extends BaseActivity implements QRCodeView.Delegate {
 
     public static final int REQUEST_CODE = 100;
-    private static final int REQUEST_CODE_QRCODE_PERMISSIONS = 1;
+    private static final int REQUEST_CODE_QR_CODE_PERMISSIONS = 1;
     public static final String SCAN_RESULT = "result";
     public static final String SCAN_RESULT_ID = "id";
     public static final String SCAN_RESULT_TEXT = "text";
@@ -51,12 +52,6 @@ public class QRCodeScanActivity extends BaseActivity implements QRCodeView.Deleg
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        requestCodeQrcodePermission();
-    }
-
-    @Override
     protected void onStop() {
         super.onStop();
         mQRCodeView.stopCamera();
@@ -76,13 +71,14 @@ public class QRCodeScanActivity extends BaseActivity implements QRCodeView.Deleg
 
     @Override
     protected void initData() {
+        requestCodeQrCodePermission();
     }
 
     //申请扫描二维码权限
-    private void requestCodeQrcodePermission() {
-        //扫描二维码权限
+    private void requestCodeQrCodePermission() {
+        //相机和内存卡读写权限
         AndPermission.with(QRCodeScanActivity.this)
-                .requestCode(REQUEST_CODE_QRCODE_PERMISSIONS)
+                .requestCode(REQUEST_CODE_QR_CODE_PERMISSIONS)
                 .permission(
                         Manifest.permission.CAMERA,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -90,21 +86,21 @@ public class QRCodeScanActivity extends BaseActivity implements QRCodeView.Deleg
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         AndPermission.onRequestPermissionsResult(this, requestCode, permissions, grantResults, new PermissionListener() {
             @Override
             public void onSucceed(int requestCode) {
-                if (requestCode == REQUEST_CODE_QRCODE_PERMISSIONS) {
+                if (requestCode == REQUEST_CODE_QR_CODE_PERMISSIONS) {
                     mQRCodeView.startCamera();
-                    mQRCodeView.startSpot();
+                    mQRCodeView.stopCamera();
+                    mQRCodeView.startSpotAndShowRect();
                 }
             }
 
             @Override
             public void onFailed(int requestCode) {
-                if (requestCode == REQUEST_CODE_QRCODE_PERMISSIONS) {
+                if (requestCode == REQUEST_CODE_QR_CODE_PERMISSIONS) {
                     showSnackbar(toolbar, "扫描二维码权限被禁止，扫描功能将受影响!", "关闭", v -> {
-
                     }, false);
                 }
             }
@@ -142,7 +138,9 @@ public class QRCodeScanActivity extends BaseActivity implements QRCodeView.Deleg
         if (TextUtils.isEmpty(result)) {
             mQRCodeView.startSpotAndShowRect();
         } else {
+            //震动提升
             vibrate();
+            //播放声音
             mediaPlayer.start();
             mQRCodeView.stopSpotAndHiddenRect();
             mQRCodeView.stopCamera();

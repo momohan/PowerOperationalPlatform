@@ -100,7 +100,7 @@ if [ "$cygwin" = "false" -a "$darwin" = "false" ] ; then
     fi
 fi
 
-# For Darwin, add options to specify how the application appears in the dock
+# For Darwin, add options to specify how the applicationLike appears in the dock
 if $darwin; then
     GRADLE_OPTS="$GRADLE_OPTS \"-Xdock:text=$APP_NAME\" \"-Xdock:icon=$APP_HOME/media/gradle.icns\""
 fi

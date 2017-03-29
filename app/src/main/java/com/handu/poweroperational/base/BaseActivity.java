@@ -20,12 +20,12 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.flyco.animation.BaseAnimatorSet;
-import com.flyco.animation.SlideEnter.SlideBottomEnter;
-import com.flyco.animation.SlideExit.SlideTopExit;
+import com.flyco.animation.ZoomEnter.ZoomInEnter;
+import com.flyco.animation.ZoomExit.ZoomOutExit;
 import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.widget.MaterialDialog;
 import com.handu.poweroperational.R;
-import com.handu.poweroperational.main.application.PowerOperationalApplication;
+import com.handu.poweroperational.main.application.PowerOperationalApplicationLike;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.view.SystemBarTintManager;
 import com.lzy.okhttputils.OkHttpUtils;
@@ -37,13 +37,14 @@ import butterknife.ButterKnife;
 public abstract class BaseActivity extends AppCompatActivity {
 
     protected Context mContext;
-    protected BaseAnimatorSet mBasIn = new SlideBottomEnter();
-    protected BaseAnimatorSet mBasOut = new SlideTopExit();
+    protected BaseAnimatorSet mBasIn = new ZoomInEnter();
+    protected BaseAnimatorSet mBasOut = new ZoomOutExit();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
+        PowerOperationalApplicationLike.getInstance().getActivityList().add(this);
         initSystemBarTint();
     }
 
@@ -54,6 +55,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+        PowerOperationalApplicationLike.getInstance().getActivityList().remove(this);
         super.onDestroy();
     }
 
@@ -197,7 +199,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             if (layoutResID != null)
                 toolbar.inflateMenu(layoutResID);/*设置右上角的填充菜单*/
             else
-                toolbar.inflateMenu(R.menu.base_toolbar_menu);/*设置右上角的填充菜单*/
+                toolbar.inflateMenu(R.menu.menu_base_toolbar);/*设置右上角的填充菜单*/
         }
     }
 
@@ -263,7 +265,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         this.startActivityForResult(intent, code);
     }
 
-
     protected void gotoActivitySetResult(Bundle bundle, int code) {
         Intent intent = new Intent();
         if (bundle != null) {
@@ -307,12 +308,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 .showAnim(mBasIn)
                 .dismissAnim(mBasOut)
                 .show();
-        dialog.setOnBtnClickL(new OnBtnClickL() {
-            @Override
-            public void onBtnClick() {
-                dialog.dismiss();
-            }
-        });
+        dialog.setOnBtnClickL((OnBtnClickL) () -> dialog.dismiss());
     }
 
     /**
@@ -324,9 +320,9 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     protected void showSnackbar(View view, String msg, String action, View.OnClickListener clickListener, int duration) {
         Snackbar snackbar = Snackbar.make(view, msg, duration).setAction(action, clickListener)
-                .setActionTextColor(ContextCompat.getColor(PowerOperationalApplication.getContext(), R.color.white));
+                .setActionTextColor(ContextCompat.getColor(PowerOperationalApplicationLike.getContext(), R.color.white));
         Snackbar.SnackbarLayout ve = (Snackbar.SnackbarLayout) snackbar.getView();
-        ve.setBackgroundColor(ContextCompat.getColor(PowerOperationalApplication.getContext(), R.color.colorPrimary));
+        ve.setBackgroundColor(ContextCompat.getColor(PowerOperationalApplicationLike.getContext(), R.color.colorPrimary));
         snackbar.show();
     }
 

@@ -9,9 +9,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.media.ExifInterface;
-import android.net.Uri;
 import android.os.Environment;
-import android.util.Base64;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -111,42 +109,38 @@ public class BitmapUtils {
      */
     public static Bitmap createWaterMarkBitmap(Bitmap src, String kcode) {
         if (src == null) {
-            return src;
+            return null;
         }
         // 获取原始图片与水印图片的宽与高
         int w = src.getWidth();
         int h = src.getHeight();
-        String code = kcode;
         Calendar calendar = Calendar.getInstance();
         String date = calendar.get(Calendar.YEAR) + "年" + (calendar.get(Calendar.MONTH) + 1) + "月" + calendar.get(Calendar.DAY_OF_MONTH) + "日" + calendar.get(Calendar.HOUR_OF_DAY) + "时" + calendar.get(Calendar.MINUTE) + "分" + calendar.get(Calendar.SECOND) + "秒";
         Bitmap newBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         Canvas mCanvas = new Canvas(newBitmap);
         mCanvas.drawBitmap(src, 0, 0, null);
         // 开始加入文字
-        if (null != date) {
-            Paint textPaint = new Paint();
-            textPaint.setColor(Color.RED);
-            textPaint.setTextSize(18);
-            String familyName = "黑体";
-            Typeface typeface = Typeface.create(familyName,
-                    Typeface.BOLD_ITALIC);
-            textPaint.setTypeface(typeface);
-            textPaint.setTextAlign(Paint.Align.CENTER);
-            mCanvas.drawText(date, w - (textPaint.measureText(date) / 2), h - 18, textPaint);
-
-        }
+        Paint textPaint = new Paint();
+        textPaint.setColor(Color.RED);
+        textPaint.setTextSize(18);
+        String familyName = "黑体";
+        Typeface typeface = Typeface.create(familyName,
+                Typeface.BOLD_ITALIC);
+        textPaint.setTypeface(typeface);
+        textPaint.setTextAlign(Paint.Align.CENTER);
+        mCanvas.drawText(date, w - (textPaint.measureText(date) / 2), h - 18, textPaint);
         mCanvas.save(Canvas.ALL_SAVE_FLAG);
         mCanvas.restore();
-        if (null != code) {
-            Paint textPaint = new Paint();
+        if (kcode != null) {
+            textPaint = new Paint();
             textPaint.setColor(Color.RED);
             textPaint.setTextSize(18);
-            String familyName = "黑体";
-            Typeface typeface = Typeface.create(familyName,
+            familyName = "黑体";
+            typeface = Typeface.create(familyName,
                     Typeface.BOLD_ITALIC);
             textPaint.setTypeface(typeface);
             textPaint.setTextAlign(Paint.Align.CENTER);
-            mCanvas.drawText(code, w - (textPaint.measureText(code) / 2), h - 48, textPaint);
+            mCanvas.drawText(kcode, w - (textPaint.measureText(kcode) / 2), h - 48, textPaint);
         }
         mCanvas.save(Canvas.ALL_SAVE_FLAG);
         mCanvas.restore();
@@ -166,8 +160,7 @@ public class BitmapUtils {
         String state = Environment.getExternalStorageState();
         if (state.equals(Environment.MEDIA_MOUNTED)) {
             // 这个路径，在手机内存下创建一个AppImage的文件夹，把图片存在其中。
-            outDir = new File(Environment
-                    .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "AppImage");
+            outDir = new File(AppConstant.COMPRESS_IMAGE_PATH);
             if (!outDir.exists()) {
                 outDir.mkdirs();
             }

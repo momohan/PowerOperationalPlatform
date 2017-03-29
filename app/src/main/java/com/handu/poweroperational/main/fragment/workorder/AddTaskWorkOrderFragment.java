@@ -237,14 +237,14 @@ public class AddTaskWorkOrderFragment extends BaseFragment {
             if (fragment != null) {
                 switch (msg.what) {
                     case 1:
-                        Tools.showToast(fragment.getString(R.string.work_order_add_success));
+                        Tools.toastSuccess(fragment.getString(R.string.work_order_add_success));
                         fragment.etKhMc.setText("");
                         fragment.etKhPhone.setText("");
                         fragment.etAddress.setText("");
                         fragment.etContent.setText("");
                         break;
                     case -1:
-                        Tools.showToast(fragment.getString(R.string.work_order_add_failure));
+                        Tools.toastError(fragment.getString(R.string.work_order_add_failure));
                         break;
                 }
             }

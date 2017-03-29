@@ -144,9 +144,9 @@ public class DeviceAlarmFragment extends BaseFragment {
     @Override
     protected void initData() {
         Calendar calendar = Calendar.getInstance();
-        tvEndTime.setText(Tools.ConvertDateToString(calendar.getTime(), "yyyy-MM-dd"));
+        tvEndTime.setText(Tools.convertDateToString(calendar.getTime(), "yyyy-MM-dd"));
         calendar.add(Calendar.DATE, -6);
-        tvStartTime.setText(Tools.ConvertDateToString(calendar.getTime(), "yyyy-MM-dd"));
+        tvStartTime.setText(Tools.convertDateToString(calendar.getTime(), "yyyy-MM-dd"));
         if (OperationActivity.deviceResult != null) {
             tvDeviceName.setText(OperationActivity.deviceResult.getDeviceName());
             mHandler.postDelayed(() -> {
@@ -170,15 +170,9 @@ public class DeviceAlarmFragment extends BaseFragment {
         refreshLayout.setAutoLoadMoreEnable(false);
         refreshLayout.setLoadMoreEnable(false);
         refreshLayout.setPtrHandler(new PtrDefaultHandler() {
-
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                mHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        setData();
-                    }
-                }, 1000);
+                mHandler.postDelayed(() -> setData(), 1000);
             }
         });
     }

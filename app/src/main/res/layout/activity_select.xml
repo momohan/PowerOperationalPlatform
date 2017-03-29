@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,22 +8,19 @@
     android:orientation="vertical"
     tools:context=".main.activity.SelectActivity">
 
-    <include layout="@layout/layout_title_bar"></include>
+    <include layout="@layout/layout_title_bar" />
 
 
     <LinearLayout
         android:id="@+id/status"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/gray_light"
-        android:orientation="horizontal">
+        style="@style/MatchWrap.Horizontal"
+        android:background="@color/gray_light">
 
         <CheckBox
             android:id="@+id/btn_toggleSelection"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/WrapWrap"
             android:layout_margin="5dp"
-            android:text="多选"
+            android:text="@string/multiple_choice"
             android:textColor="@color/black" />
 
         <Button
@@ -32,7 +30,7 @@
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:enabled="false"
-            android:text="全选" />
+            android:text="@string/all_choice" />
 
         <Button
             android:id="@+id/btn_deselectAll"
@@ -41,7 +39,7 @@
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:enabled="false"
-            android:text="取消全选" />
+            android:text="@string/all_choice_cancle" />
 
         <Button
             android:id="@+id/btn_checkSelection"
@@ -50,18 +48,18 @@
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:enabled="false"
-            android:text="确定" />
+            android:text="@string/select_confirm" />
 
     </LinearLayout>
 
     <ezy.ui.layout.LoadingLayout
         android:id="@+id/loading_view"
-        style="@style/MatchMatch">
+        style="@style/MatchMatch"
+        app:llLoadingResId="@layout/layout_loading">
 
         <LinearLayout
             android:id="@+id/ll_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            style="@style/MatchMatch"
             android:layout_margin="5dp"
             android:orientation="vertical" />
 

@@ -20,17 +20,88 @@
 
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/pieChart"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+                style="@style/MatchAuto" />
+
+            <RadioGroup
+                android:id="@+id/rg_time"
+                style="@style/MatchWrap.Horizontal"
+                android:layout_height="32dp"
+                android:layout_gravity="top|start"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
+                android:background="@android:drawable/editbox_background"
+                android:gravity="center">
+
+                <RadioButton
+                    android:id="@+id/rb_today"
+                    style="@style/AutoWrap"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="今天"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/system_size_12" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="30dp"
+                    android:background="@color/gray_dark" />
+
+                <RadioButton
+                    android:id="@+id/rb_three"
+                    style="@style/AutoWrap"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="三天"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/system_size_12" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="30dp"
+                    android:background="@color/gray_dark" />
+
+                <RadioButton
+                    android:id="@+id/rb_week"
+                    style="@style/AutoWrap"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="一周"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/system_size_12" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="30dp"
+                    android:background="@color/gray_dark" />
+
+                <RadioButton
+                    android:id="@+id/rb_half_month"
+                    style="@style/AutoWrap"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="半月"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/system_size_12" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="30dp"
+                    android:background="@color/gray_dark" />
+
+                <RadioButton
+                    android:id="@+id/rb_month"
+                    style="@style/AutoWrap"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="一月"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/system_size_12" />
+            </RadioGroup>
 
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/lineChart"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1" />
+                style="@style/MatchAuto"
+                android:layout_marginBottom="10dp" />
 
         </LinearLayout>
     </com.chanven.lib.cptr.PtrClassicFrameLayout>

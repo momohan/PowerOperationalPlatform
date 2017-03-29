@@ -20,7 +20,7 @@ import com.flyco.animation.ZoomExit.ZoomOutBottomExit;
 import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.widget.MaterialDialog;
 import com.handu.poweroperational.R;
-import com.handu.poweroperational.main.application.PowerOperationalApplication;
+import com.handu.poweroperational.main.application.PowerOperationalApplicationLike;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.okhttputils.OkHttpUtils;
 
@@ -267,9 +267,9 @@ public abstract class BaseFragment extends Fragment {
      */
     protected void showSnackbar(View view, String msg, String action, View.OnClickListener clickListener, int duration) {
         Snackbar snackbar = Snackbar.make(view, msg, duration).setAction(action, clickListener)
-                .setActionTextColor(ContextCompat.getColor(PowerOperationalApplication.getContext(), R.color.white));
+                .setActionTextColor(ContextCompat.getColor(PowerOperationalApplicationLike.getContext(), R.color.white));
         Snackbar.SnackbarLayout ve = (Snackbar.SnackbarLayout) snackbar.getView();
-        ve.setBackgroundColor(ContextCompat.getColor(PowerOperationalApplication.getContext(), R.color.colorPrimary));
+        ve.setBackgroundColor(ContextCompat.getColor(PowerOperationalApplicationLike.getContext(), R.color.colorPrimary));
         snackbar.show();
     }
 

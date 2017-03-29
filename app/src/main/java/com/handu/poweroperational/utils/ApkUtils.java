@@ -9,6 +9,8 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 
+import com.handu.poweroperational.R;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,11 +35,11 @@ public class ApkUtils {
      */
     public static void install(Context context, File uriFile) {
         if (!uriFile.exists()) {
-            Tools.showToast("文件不存在，请重新下载...");
+            Tools.toastError(context.getString(R.string.file_not_find_please_restart_down_load));
             return;
         }
         //清除缓存
-        //DataCleanManager.clearAllCache(PowerOperationalApplication.getContext());
+        //DataCleanManager.clearAllCache(PowerOperationalApplicationLike.getContext());
         FileUtils.openFile(context, uriFile);
     }
 
@@ -143,7 +145,7 @@ public class ApkUtils {
             packageinfo = mContext.getPackageManager().getPackageInfo(packagename, 0);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
-            Tools.showToast("包名不存在");
+            Tools.toastError("包名不存在");
         }
         if (packageinfo == null) {
             return;
@@ -172,6 +174,19 @@ public class ApkUtils {
             intent.setComponent(cn);
             mContext.startActivity(intent);
         }
+    }
+
+    public static boolean isAppInstalled(Context context, String packageName) {
+        final PackageManager packageManager = context.getPackageManager();
+        List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);
+        List<String> pName = new ArrayList<String>();
+        if (pinfo != null) {
+            for (int i = 0; i < pinfo.size(); i++) {
+                String pn = pinfo.get(i).packageName;
+                pName.add(pn);
+            }
+        }
+        return pName.contains(packageName);
     }
 
 }

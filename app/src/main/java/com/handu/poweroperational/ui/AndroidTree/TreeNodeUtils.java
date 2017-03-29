@@ -54,7 +54,12 @@ public class TreeNodeUtils {
                     ArrayMap<String, Object> map = new ArrayMap<>();
                     for (String s : other) {
                         Object o = object.opt(s);
-                        map.put(s, o);
+                        if (o != null) {
+                            String result = o.toString();
+                            map.put(s, result);
+                        } else {
+                            map.put(s, "");
+                        }
                     }
                     node = new TreeNode(new IconTreeItemHolder.IconTreeItem(icon, text_, value_, map))
                             .setViewHolder(new SelectableHeaderHolder(mContext));
@@ -112,7 +117,12 @@ public class TreeNodeUtils {
             ArrayMap<String, Object> map = new ArrayMap<>();
             for (String s : other) {
                 Object o = object.opt(s);
-                map.put(s, o);
+                if (o != null) {
+                    String result = o.toString();
+                    map.put(s, result);
+                } else {
+                    map.put(s, "");
+                }
             }
             node = new TreeNode(
                     new IconTreeItemHolder.IconTreeItem(icon, text_, value_, map))
